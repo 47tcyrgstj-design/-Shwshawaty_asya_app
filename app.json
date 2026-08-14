@@ -1,0 +1,16 @@
+{
+  "expo": {
+    "name": "Shwshawaty ASYA",
+    "slug": "shwshawaty-asya",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.asya.shwshawaty"
+    },
+    "android": {
+      "package": "com.asya.shwshawaty"
+    }
+  }
+}
