@@ -30,6 +30,30 @@ jobs:
       - name: Export Expo Web
         run: npx expo export --platform web
 
+      - name: Add Google Analytics
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path("dist/index.html")
+          html = path.read_text()
+
+          tag = '''
+          <script async src="https://www.googletagmanager.com/gtag/js?id=G-CE2P4KP5E2"></script>
+          <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-CE2P4KP5E2');
+          </script>
+          '''
+
+          if "G-CE2P4KP5E2" not in html:
+              html = html.replace("</head>", tag + "</head>")
+
+          path.write_text(html)
+          PY
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
