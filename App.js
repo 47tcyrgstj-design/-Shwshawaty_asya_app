@@ -28,48 +28,24 @@ const cats = [
   "کۆمەڵە دیاری"
 ];
 
-/* =========================
-   ACCOUNTING DEMO DATA
-   ========================= */
-
 const accountingData = {
-  todaySales: 1250000,
-  todayProfit: 340000,
-  todayExpenses: 120000,
-  customerDebts: 2180000,
-  lowStock: 7
+  todaySales:1250000,
+  todayProfit:340000,
+  todayExpenses:120000,
+  customerDebts:2180000,
+  lowStock:7
 };
 
-const money = (value) =>
+const money = value =>
   new Intl.NumberFormat("ku-IQ").format(value) + " د.ع";
-
-/* =========================
-   ACCOUNTING DASHBOARD
-   ========================= */
 
 function AccountingDashboard({onBack}) {
 
   const cards = [
-    {
-      icon:"💰",
-      title:"فرۆشتنی ئەمڕۆ",
-      value:money(accountingData.todaySales)
-    },
-    {
-      icon:"📈",
-      title:"قازانجی ئەمڕۆ",
-      value:money(accountingData.todayProfit)
-    },
-    {
-      icon:"💸",
-      title:"خەرجی ئەمڕۆ",
-      value:money(accountingData.todayExpenses)
-    },
-    {
-      icon:"👥",
-      title:"قەرزی کڕیاران",
-      value:money(accountingData.customerDebts)
-    }
+    ["💰","فرۆشتنی ئەمڕۆ",money(accountingData.todaySales)],
+    ["📈","قازانجی ئەمڕۆ",money(accountingData.todayProfit)],
+    ["💸","خەرجی ئەمڕۆ",money(accountingData.todayExpenses)],
+    ["👥","قەرزی کڕیاران",money(accountingData.customerDebts)]
   ];
 
   const menu = [
@@ -85,16 +61,10 @@ function AccountingDashboard({onBack}) {
 
   return (
     <SafeAreaView style={s.safe}>
-
-      <ScrollView
-        contentContainerStyle={s.accountingContainer}
-        showsVerticalScrollIndicator={false}
-      >
+      <ScrollView contentContainerStyle={s.accountingContainer}>
 
         <TouchableOpacity onPress={onBack}>
-          <Text style={s.back}>
-            ‹ گەڕانەوە
-          </Text>
+          <Text style={s.back}>‹ گەڕانەوە</Text>
         </TouchableOpacity>
 
         <Text style={s.accountingTitle}>
@@ -105,133 +75,64 @@ function AccountingDashboard({onBack}) {
           کورتەی حساباتی ئەمڕۆ
         </Text>
 
-        {/* ACCOUNT CARDS */}
-
         <View style={s.accountingGrid}>
-
           {cards.map((card,index)=>(
-            <View
-              key={index}
-              style={s.accountingCard}
-            >
-
-              <Text style={s.accountingIcon}>
-                {card.icon}
-              </Text>
-
-              <Text style={s.accountingCardTitle}>
-                {card.title}
-              </Text>
-
-              <Text style={s.accountingCardValue}>
-                {card.value}
-              </Text>
-
+            <View style={s.accountingCard} key={index}>
+              <Text style={s.accountingIcon}>{card[0]}</Text>
+              <Text style={s.accountingCardTitle}>{card[1]}</Text>
+              <Text style={s.accountingCardValue}>{card[2]}</Text>
             </View>
           ))}
-
         </View>
 
-        {/* TRANSACTIONS */}
-
         <View style={s.accountingSection}>
-
           <Text style={s.accountingSectionTitle}>
             🧾 دوایین مامەڵەکان
           </Text>
 
           <View style={s.transaction}>
-
             <View style={s.transactionInfo}>
-
-              <Text style={s.transactionName}>
-                فرۆشتنی طقم جام
-              </Text>
-
-              <Text style={s.transactionDate}>
-                ئەمڕۆ • 08:45
-              </Text>
-
+              <Text style={s.transactionName}>فرۆشتنی طقم جام</Text>
+              <Text style={s.transactionDate}>ئەمڕۆ • 08:45</Text>
             </View>
-
-            <Text style={s.income}>
-              + 125,000 د.ع
-            </Text>
-
+            <Text style={s.income}>+ 125,000 د.ع</Text>
           </View>
 
           <View style={s.transaction}>
-
             <View style={s.transactionInfo}>
-
-              <Text style={s.transactionName}>
-                خەرجی گەیاندن
-              </Text>
-
-              <Text style={s.transactionDate}>
-                ئەمڕۆ • 10:20
-              </Text>
-
+              <Text style={s.transactionName}>خەرجی گەیاندن</Text>
+              <Text style={s.transactionDate}>ئەمڕۆ • 10:20</Text>
             </View>
-
-            <Text style={s.expense}>
-              - 35,000 د.ع
-            </Text>
-
+            <Text style={s.expense}>- 35,000 د.ع</Text>
           </View>
 
           <View style={s.transactionLast}>
-
             <View style={s.transactionInfo}>
-
-              <Text style={s.transactionName}>
-                کڕینی کاڵا
-              </Text>
-
-              <Text style={s.transactionDate}>
-                دوێنێ • 15:10
-              </Text>
-
+              <Text style={s.transactionName}>کڕینی کاڵا</Text>
+              <Text style={s.transactionDate}>دوێنێ • 15:10</Text>
             </View>
-
-            <Text style={s.expense}>
-              - 280,000 د.ع
-            </Text>
-
+            <Text style={s.expense}>- 280,000 د.ع</Text>
           </View>
-
         </View>
 
-        {/* LOW STOCK */}
-
         <View style={s.accountingSection}>
-
           <View style={s.warningHeader}>
-
-            <Text style={s.accountingSectionTitle}>
-              📦 کۆگای کەم
-            </Text>
-
+            <Text style={s.accountingSectionTitle}>📦 کۆگای کەم</Text>
             <Text style={s.warningNumber}>
               {accountingData.lowStock}
             </Text>
-
           </View>
 
           <Text style={s.warningText}>
             {accountingData.lowStock} بەرهەم نزیکن لە تەواوبوون.
           </Text>
-
         </View>
-
-        {/* ACCOUNTING MENU */}
 
         <Text style={s.menuTitle}>
           بەشەکانی حسابات
         </Text>
 
         <View style={s.menuGrid}>
-
           {menu.map(([icon,title],index)=>(
             <TouchableOpacity
               key={index}
@@ -243,99 +144,57 @@ function AccountingDashboard({onBack}) {
                 )
               }
             >
-
-              <Text style={s.menuIcon}>
-                {icon}
-              </Text>
-
-              <Text style={s.menuText}>
-                {title}
-              </Text>
-
+              <Text style={s.menuIcon}>{icon}</Text>
+              <Text style={s.menuText}>{title}</Text>
             </TouchableOpacity>
           ))}
-
         </View>
 
-        {/* NOTE */}
-
         <View style={s.accountingNote}>
-
-          <Text style={s.accountingNoteTitle}>
-            🔐 تێبینی
-          </Text>
-
+          <Text style={s.accountingNoteTitle}>🔐 تێبینی</Text>
           <Text style={s.accountingNoteText}>
             ئەم Dashboard ـە قۆناغی یەکەمی سیستەمی حساباتە.
             ژمارەکان لە ئێستادا Demo ـن.
             Database و حساباتی ڕاستەقینە لە قۆناغی داهاتوودا زیاد دەکرێن.
           </Text>
-
         </View>
 
       </ScrollView>
-
     </SafeAreaView>
   );
 }
 
-/* =========================
-   MAIN APP
-   ========================= */
-
 export default function App(){
 
   const [started,setStarted] = useState(false);
-
   const [tab,setTab] = useState("home");
-
-  const [category,setCategory] =
-    useState("هەموو");
-
-  const [query,setQuery] =
-    useState("");
-
-  const [cart,setCart] =
-    useState([]);
-
-  const [selected,setSelected] =
-    useState(null);
-
-  const [accounting,setAccounting] =
-    useState(false);
+  const [category,setCategory] = useState("هەموو");
+  const [query,setQuery] = useState("");
+  const [cart,setCart] = useState([]);
+  const [selected,setSelected] = useState(null);
+  const [accounting,setAccounting] = useState(false);
 
   const filtered = useMemo(
-    ()=>products.filter(p =>
-      (category==="هەموو" ||
-       p.category===category) &&
-      p.name
-        .toLowerCase()
-        .includes(query.toLowerCase())
-    ),
+    () =>
+      products.filter(p =>
+        (category==="هەموو" || p.category===category) &&
+        p.name.toLowerCase().includes(query.toLowerCase())
+      ),
     [category,query]
   );
 
-  const addToCart = (p)=>{
-
-    setCart(c=>[...c,p]);
+  const addToCart = p => {
+    setCart(c => [...c,p]);
 
     Alert.alert(
       "زیادکرا",
       `${p.name} خرایە ناو سەبەتەکە.`
     );
-
   };
 
-  /* =========================
-     WELCOME
-     ========================= */
-
   if(!started){
-
     return (
-
       <SafeAreaView style={s.welcomeSafe}>
-
         <View style={s.welcomeContainer}>
 
           <Text style={s.welcomeBrand}>
@@ -350,55 +209,31 @@ export default function App(){
             style={s.startButton}
             onPress={()=>setStarted(true)}
           >
-
             <Text style={s.startButtonText}>
               دەستپێکردنی کڕین
             </Text>
-
           </TouchableOpacity>
 
         </View>
-
       </SafeAreaView>
-
     );
-
   }
 
-  /* =========================
-     ACCOUNTING
-     ========================= */
-
   if(accounting){
-
     return (
       <AccountingDashboard
         onBack={()=>setAccounting(false)}
       />
     );
-
   }
 
-  /* =========================
-     PRODUCT DETAILS
-     ========================= */
-
   if(selected){
-
     return (
-
       <SafeAreaView style={s.safe}>
-
         <ScrollView>
 
-          <TouchableOpacity
-            onPress={()=>setSelected(null)}
-          >
-
-            <Text style={s.back}>
-              ‹ گەڕانەوە
-            </Text>
-
+          <TouchableOpacity onPress={()=>setSelected(null)}>
+            <Text style={s.back}>‹ گەڕانەوە</Text>
           </TouchableOpacity>
 
           <Image
@@ -425,61 +260,32 @@ export default function App(){
               style={s.goldBtn}
               onPress={()=>addToCart(selected)}
             >
-
               <Text style={s.goldText}>
                 🛒 زیادکردن بۆ سەبەت
               </Text>
-
             </TouchableOpacity>
 
           </View>
 
         </ScrollView>
-
       </SafeAreaView>
-
     );
-
   }
 
-  /* =========================
-     MAIN
-     ========================= */
-
   return (
-
     <SafeAreaView style={s.safe}>
 
-      {/* HEADER */}
-
       <View style={s.header}>
-
-        <Text style={s.brand}>
-          ASYA
-        </Text>
-
-        <Text style={s.sub}>
-          Welcome Shwshawaty ASYA
-        </Text>
-
+        <Text style={s.brand}>ASYA</Text>
+        <Text style={s.sub}>Welcome Shwshawaty ASYA</Text>
       </View>
 
-      {/* HOME */}
-
       {tab==="home" && (
-
         <ScrollView>
 
           <View style={s.banner}>
-
-            <Text style={s.bannerTitle}>
-              کۆمەڵە خواردن
-            </Text>
-
-            <Text style={s.bannerSub}>
-              نوێ و تایبەت بۆ تۆ
-            </Text>
-
+            <Text style={s.bannerTitle}>کۆمەڵە خواردن</Text>
+            <Text style={s.bannerSub}>نوێ و تایبەت بۆ تۆ</Text>
           </View>
 
           <TextInput
@@ -495,9 +301,7 @@ export default function App(){
             showsHorizontalScrollIndicator={false}
             style={s.cats}
           >
-
             {cats.map(c=>(
-
               <TouchableOpacity
                 key={c}
                 onPress={()=>setCategory(c)}
@@ -506,7 +310,6 @@ export default function App(){
                   category===c && s.catActive
                 ]}
               >
-
                 <Text
                   style={
                     category===c
@@ -516,11 +319,8 @@ export default function App(){
                 >
                   {c}
                 </Text>
-
               </TouchableOpacity>
-
             ))}
-
           </ScrollView>
 
           <Text style={s.section}>
@@ -534,9 +334,7 @@ export default function App(){
             keyExtractor={x=>x.id}
             columnWrapperStyle={{gap:12}}
             contentContainerStyle={s.grid}
-
             renderItem={({item})=>(
-
               <TouchableOpacity
                 style={s.card}
                 onPress={()=>setSelected(item)}
@@ -547,10 +345,7 @@ export default function App(){
                   style={s.cardImg}
                 />
 
-                <Text
-                  style={s.cardName}
-                  numberOfLines={2}
-                >
+                <Text style={s.cardName} numberOfLines={2}>
                   {item.name}
                 </Text>
 
@@ -562,27 +357,19 @@ export default function App(){
                   style={s.smallBtn}
                   onPress={()=>addToCart(item)}
                 >
-
                   <Text style={s.smallBtnText}>
                     + سەبەت
                   </Text>
-
                 </TouchableOpacity>
 
               </TouchableOpacity>
-
             )}
-
           />
 
         </ScrollView>
-
       )}
 
-      {/* CART */}
-
       {tab==="cart" && (
-
         <View style={s.pad}>
 
           <Text style={s.pageTitle}>
@@ -590,65 +377,44 @@ export default function App(){
           </Text>
 
           {cart.length===0 ? (
-
             <Text style={s.empty}>
               سەبەتەکەت بەتاڵە.
             </Text>
-
           ) : (
-
             <>
-
               {cart.map((p,i)=>(
-
                 <View
                   style={s.row}
                   key={`${p.id}-${i}`}
                 >
-
-                  <Text style={s.rowName}>
-                    {p.name}
-                  </Text>
-
+                  <Text style={s.rowName}>{p.name}</Text>
                   <Text style={s.cartPrice}>
                     {p.price.toLocaleString()} IQD
                   </Text>
-
                 </View>
-
               ))}
 
               <TouchableOpacity
                 style={s.goldBtn}
-                onPress={()=>
+                onPress={() =>
                   Alert.alert(
                     "داواکاری",
                     "لە وەشانی داهاتوودا داواکارییەکە بە سیستەمی فرۆشتن نێردراوە."
                   )
                 }
               >
-
                 <Text style={s.goldText}>
                   تەواوکردنی داواکاری
                 </Text>
-
               </TouchableOpacity>
-
             </>
-
           )}
 
         </View>
-
       )}
 
-      {/* PROFILE */}
-
       {tab==="profile" && (
-
-        <ScrollView
-          contentContainerStyle={s.pad}
-        >
+        <ScrollView contentContainerStyle={s.pad}>
 
           <Text style={s.pageTitle}>
             پڕۆفایل 👤
@@ -658,8 +424,6 @@ export default function App(){
             بەشی پڕۆفایل و مێژووی داواکارییەکان
             لە قۆناغی داهاتوودا زیاد دەکرێت.
           </Text>
-
-          {/* ACCOUNTING BUTTON */}
 
           <TouchableOpacity
             style={s.accountingEntry}
@@ -689,72 +453,33 @@ export default function App(){
           </TouchableOpacity>
 
         </ScrollView>
-
       )}
-
-      {/* NAVIGATION */}
 
       <View style={s.nav}>
 
-        <TouchableOpacity
-          onPress={()=>setTab("home")}
-        >
-
-          <Text
-            style={
-              tab==="home"
-                ? s.navOn
-                : s.navOff
-            }
-          >
+        <TouchableOpacity onPress={()=>setTab("home")}>
+          <Text style={tab==="home" ? s.navOn : s.navOff}>
             ⌂{"\n"}سەرەکی
           </Text>
-
         </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={()=>setTab("cart")}
-        >
-
-          <Text
-            style={
-              tab==="cart"
-                ? s.navOn
-                : s.navOff
-            }
-          >
+        <TouchableOpacity onPress={()=>setTab("cart")}>
+          <Text style={tab==="cart" ? s.navOn : s.navOff}>
             🛒{"\n"}سەبەت ({cart.length})
           </Text>
-
         </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={()=>setTab("profile")}
-        >
-
-          <Text
-            style={
-              tab==="profile"
-                ? s.navOn
-                : s.navOff
-            }
-          >
+        <TouchableOpacity onPress={()=>setTab("profile")}>
+          <Text style={tab==="profile" ? s.navOn : s.navOff}>
             👤{"\n"}پڕۆفایل
           </Text>
-
         </TouchableOpacity>
 
       </View>
 
     </SafeAreaView>
-
   );
-
 }
-
-/* =========================
-   STYLES
-   ========================= */
 
 const s=StyleSheet.create({
 
@@ -1033,10 +758,6 @@ const s=StyleSheet.create({
     lineHeight:26,
     marginTop:15
   },
-
-  /* =========================
-     ACCOUNTING STYLES
-     ========================= */
 
   accountingContainer:{
     padding:16,
