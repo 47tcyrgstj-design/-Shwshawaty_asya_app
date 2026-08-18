@@ -5,13 +5,21 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "dark",
+
+    "web": {
+      "bundler": "metro",
+      "output": "static"
+    },
+
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.asya.shwshawaty"
     },
+
     "android": {
       "package": "com.asya.shwshawaty"
     },
+
     "extra": {
       "eas": {
         "projectId": "5866a723-918e-413e-91c8-6b83fe1555c5"
