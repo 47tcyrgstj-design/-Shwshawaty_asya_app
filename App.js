@@ -1,7 +1,15 @@
 import React, {useMemo, useState} from "react";
 import {
-  SafeAreaView, View, Text, StyleSheet, FlatList, Image,
-  TouchableOpacity, TextInput, ScrollView, Alert
+  SafeAreaView,
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  Image,
+  TouchableOpacity,
+  TextInput,
+  ScrollView,
+  Alert
 } from "react-native";
 
 const products = [
@@ -20,33 +28,314 @@ const cats = [
   "کۆمەڵە دیاری"
 ];
 
+/* =========================
+   ACCOUNTING DEMO DATA
+   ========================= */
+
+const accountingData = {
+  todaySales: 1250000,
+  todayProfit: 340000,
+  todayExpenses: 120000,
+  customerDebts: 2180000,
+  lowStock: 7
+};
+
+const money = (value) =>
+  new Intl.NumberFormat("ku-IQ").format(value) + " د.ع";
+
+/* =========================
+   ACCOUNTING DASHBOARD
+   ========================= */
+
+function AccountingDashboard({onBack}) {
+
+  const cards = [
+    {
+      icon:"💰",
+      title:"فرۆشتنی ئەمڕۆ",
+      value:money(accountingData.todaySales)
+    },
+    {
+      icon:"📈",
+      title:"قازانجی ئەمڕۆ",
+      value:money(accountingData.todayProfit)
+    },
+    {
+      icon:"💸",
+      title:"خەرجی ئەمڕۆ",
+      value:money(accountingData.todayExpenses)
+    },
+    {
+      icon:"👥",
+      title:"قەرزی کڕیاران",
+      value:money(accountingData.customerDebts)
+    }
+  ];
+
+  const menu = [
+    ["🧾","فرۆشتن"],
+    ["🛍️","کڕین"],
+    ["📦","کۆگا"],
+    ["👥","کڕیارەکان"],
+    ["🏭","دابینکەرەکان"],
+    ["💸","خەرجییەکان"],
+    ["📈","قازانج و زیان"],
+    ["📊","ڕاپۆرتەکان"]
+  ];
+
+  return (
+    <SafeAreaView style={s.safe}>
+
+      <ScrollView
+        contentContainerStyle={s.accountingContainer}
+        showsVerticalScrollIndicator={false}
+      >
+
+        <TouchableOpacity onPress={onBack}>
+          <Text style={s.back}>
+            ‹ گەڕانەوە
+          </Text>
+        </TouchableOpacity>
+
+        <Text style={s.accountingTitle}>
+          📊 حساباتی Shwshawaty ASYA
+        </Text>
+
+        <Text style={s.accountingDate}>
+          کورتەی حساباتی ئەمڕۆ
+        </Text>
+
+        {/* ACCOUNT CARDS */}
+
+        <View style={s.accountingGrid}>
+
+          {cards.map((card,index)=>(
+            <View
+              key={index}
+              style={s.accountingCard}
+            >
+
+              <Text style={s.accountingIcon}>
+                {card.icon}
+              </Text>
+
+              <Text style={s.accountingCardTitle}>
+                {card.title}
+              </Text>
+
+              <Text style={s.accountingCardValue}>
+                {card.value}
+              </Text>
+
+            </View>
+          ))}
+
+        </View>
+
+        {/* TRANSACTIONS */}
+
+        <View style={s.accountingSection}>
+
+          <Text style={s.accountingSectionTitle}>
+            🧾 دوایین مامەڵەکان
+          </Text>
+
+          <View style={s.transaction}>
+
+            <View style={s.transactionInfo}>
+
+              <Text style={s.transactionName}>
+                فرۆشتنی طقم جام
+              </Text>
+
+              <Text style={s.transactionDate}>
+                ئەمڕۆ • 08:45
+              </Text>
+
+            </View>
+
+            <Text style={s.income}>
+              + 125,000 د.ع
+            </Text>
+
+          </View>
+
+          <View style={s.transaction}>
+
+            <View style={s.transactionInfo}>
+
+              <Text style={s.transactionName}>
+                خەرجی گەیاندن
+              </Text>
+
+              <Text style={s.transactionDate}>
+                ئەمڕۆ • 10:20
+              </Text>
+
+            </View>
+
+            <Text style={s.expense}>
+              - 35,000 د.ع
+            </Text>
+
+          </View>
+
+          <View style={s.transactionLast}>
+
+            <View style={s.transactionInfo}>
+
+              <Text style={s.transactionName}>
+                کڕینی کاڵا
+              </Text>
+
+              <Text style={s.transactionDate}>
+                دوێنێ • 15:10
+              </Text>
+
+            </View>
+
+            <Text style={s.expense}>
+              - 280,000 د.ع
+            </Text>
+
+          </View>
+
+        </View>
+
+        {/* LOW STOCK */}
+
+        <View style={s.accountingSection}>
+
+          <View style={s.warningHeader}>
+
+            <Text style={s.accountingSectionTitle}>
+              📦 کۆگای کەم
+            </Text>
+
+            <Text style={s.warningNumber}>
+              {accountingData.lowStock}
+            </Text>
+
+          </View>
+
+          <Text style={s.warningText}>
+            {accountingData.lowStock} بەرهەم نزیکن لە تەواوبوون.
+          </Text>
+
+        </View>
+
+        {/* ACCOUNTING MENU */}
+
+        <Text style={s.menuTitle}>
+          بەشەکانی حسابات
+        </Text>
+
+        <View style={s.menuGrid}>
+
+          {menu.map(([icon,title],index)=>(
+            <TouchableOpacity
+              key={index}
+              style={s.menuButton}
+              onPress={() =>
+                Alert.alert(
+                  title,
+                  "ئەم بەشە لە قۆناغی داهاتوودا بە سیستەمی ڕاستەقینەی حسابات چالاک دەکرێت."
+                )
+              }
+            >
+
+              <Text style={s.menuIcon}>
+                {icon}
+              </Text>
+
+              <Text style={s.menuText}>
+                {title}
+              </Text>
+
+            </TouchableOpacity>
+          ))}
+
+        </View>
+
+        {/* NOTE */}
+
+        <View style={s.accountingNote}>
+
+          <Text style={s.accountingNoteTitle}>
+            🔐 تێبینی
+          </Text>
+
+          <Text style={s.accountingNoteText}>
+            ئەم Dashboard ـە قۆناغی یەکەمی سیستەمی حساباتە.
+            ژمارەکان لە ئێستادا Demo ـن.
+            Database و حساباتی ڕاستەقینە لە قۆناغی داهاتوودا زیاد دەکرێن.
+          </Text>
+
+        </View>
+
+      </ScrollView>
+
+    </SafeAreaView>
+  );
+}
+
+/* =========================
+   MAIN APP
+   ========================= */
+
 export default function App(){
 
-  // پەڕەی سەرەتا
-  const [started, setStarted] = useState(false);
+  const [started,setStarted] = useState(false);
 
   const [tab,setTab] = useState("home");
-  const [category,setCategory] = useState("هەموو");
-  const [query,setQuery] = useState("");
-  const [cart,setCart] = useState([]);
-  const [selected,setSelected] = useState(null);
 
-  const filtered = useMemo(()=>products.filter(p =>
-    (category==="هەموو" || p.category===category) &&
-    p.name.toLowerCase().includes(query.toLowerCase())
-  ),[category,query]);
+  const [category,setCategory] =
+    useState("هەموو");
+
+  const [query,setQuery] =
+    useState("");
+
+  const [cart,setCart] =
+    useState([]);
+
+  const [selected,setSelected] =
+    useState(null);
+
+  const [accounting,setAccounting] =
+    useState(false);
+
+  const filtered = useMemo(
+    ()=>products.filter(p =>
+      (category==="هەموو" ||
+       p.category===category) &&
+      p.name
+        .toLowerCase()
+        .includes(query.toLowerCase())
+    ),
+    [category,query]
+  );
 
   const addToCart = (p)=>{
+
     setCart(c=>[...c,p]);
-    Alert.alert("زیادکرا", `${p.name} خرایە ناو سەبەتەکە.`);
+
+    Alert.alert(
+      "زیادکرا",
+      `${p.name} خرایە ناو سەبەتەکە.`
+    );
+
   };
 
-  // =========================
-  // پەڕەی یەکەم / Welcome
-  // =========================
+  /* =========================
+     WELCOME
+     ========================= */
+
   if(!started){
+
     return (
+
       <SafeAreaView style={s.welcomeSafe}>
+
         <View style={s.welcomeContainer}>
 
           <Text style={s.welcomeBrand}>
@@ -61,26 +350,55 @@ export default function App(){
             style={s.startButton}
             onPress={()=>setStarted(true)}
           >
+
             <Text style={s.startButtonText}>
               دەستپێکردنی کڕین
             </Text>
+
           </TouchableOpacity>
 
         </View>
+
       </SafeAreaView>
+
     );
+
   }
 
-  // =========================
-  // Product Details
-  // =========================
-  if(selected){
+  /* =========================
+     ACCOUNTING
+     ========================= */
+
+  if(accounting){
+
     return (
+      <AccountingDashboard
+        onBack={()=>setAccounting(false)}
+      />
+    );
+
+  }
+
+  /* =========================
+     PRODUCT DETAILS
+     ========================= */
+
+  if(selected){
+
+    return (
+
       <SafeAreaView style={s.safe}>
+
         <ScrollView>
 
-          <TouchableOpacity onPress={()=>setSelected(null)}>
-            <Text style={s.back}>‹ گەڕانەوە</Text>
+          <TouchableOpacity
+            onPress={()=>setSelected(null)}
+          >
+
+            <Text style={s.back}>
+              ‹ گەڕانەوە
+            </Text>
+
           </TouchableOpacity>
 
           <Image
@@ -89,6 +407,7 @@ export default function App(){
           />
 
           <View style={s.pad}>
+
             <Text style={s.title}>
               {selected.name}
             </Text>
@@ -106,37 +425,53 @@ export default function App(){
               style={s.goldBtn}
               onPress={()=>addToCart(selected)}
             >
+
               <Text style={s.goldText}>
                 🛒 زیادکردن بۆ سەبەت
               </Text>
+
             </TouchableOpacity>
 
           </View>
+
         </ScrollView>
+
       </SafeAreaView>
+
     );
+
   }
 
-  // =========================
-  // Main App
-  // =========================
+  /* =========================
+     MAIN
+     ========================= */
+
   return (
+
     <SafeAreaView style={s.safe}>
 
-      {/* Header */}
+      {/* HEADER */}
+
       <View style={s.header}>
-        <Text style={s.brand}>ASYA</Text>
+
+        <Text style={s.brand}>
+          ASYA
+        </Text>
 
         <Text style={s.sub}>
           Welcome Shwshawaty ASYA
         </Text>
+
       </View>
 
       {/* HOME */}
+
       {tab==="home" && (
+
         <ScrollView>
 
           <View style={s.banner}>
+
             <Text style={s.bannerTitle}>
               کۆمەڵە خواردن
             </Text>
@@ -144,12 +479,14 @@ export default function App(){
             <Text style={s.bannerSub}>
               نوێ و تایبەت بۆ تۆ
             </Text>
+
           </View>
 
           <TextInput
             value={query}
             onChangeText={setQuery}
             placeholder="بگەڕێ بۆ بەرهەم..."
+            placeholderTextColor="#777"
             style={s.search}
           />
 
@@ -158,7 +495,9 @@ export default function App(){
             showsHorizontalScrollIndicator={false}
             style={s.cats}
           >
+
             {cats.map(c=>(
+
               <TouchableOpacity
                 key={c}
                 onPress={()=>setCategory(c)}
@@ -167,6 +506,7 @@ export default function App(){
                   category===c && s.catActive
                 ]}
               >
+
                 <Text
                   style={
                     category===c
@@ -176,8 +516,11 @@ export default function App(){
                 >
                   {c}
                 </Text>
+
               </TouchableOpacity>
+
             ))}
+
           </ScrollView>
 
           <Text style={s.section}>
@@ -193,6 +536,7 @@ export default function App(){
             contentContainerStyle={s.grid}
 
             renderItem={({item})=>(
+
               <TouchableOpacity
                 style={s.card}
                 onPress={()=>setSelected(item)}
@@ -218,20 +562,27 @@ export default function App(){
                   style={s.smallBtn}
                   onPress={()=>addToCart(item)}
                 >
+
                   <Text style={s.smallBtnText}>
                     + سەبەت
                   </Text>
+
                 </TouchableOpacity>
 
               </TouchableOpacity>
+
             )}
+
           />
 
         </ScrollView>
+
       )}
 
       {/* CART */}
+
       {tab==="cart" && (
+
         <View style={s.pad}>
 
           <Text style={s.pageTitle}>
@@ -239,23 +590,32 @@ export default function App(){
           </Text>
 
           {cart.length===0 ? (
+
             <Text style={s.empty}>
               سەبەتەکەت بەتاڵە.
             </Text>
+
           ) : (
+
             <>
+
               {cart.map((p,i)=>(
-                <View style={s.row} key={i}>
+
+                <View
+                  style={s.row}
+                  key={`${p.id}-${i}`}
+                >
 
                   <Text style={s.rowName}>
                     {p.name}
                   </Text>
 
-                  <Text>
+                  <Text style={s.cartPrice}>
                     {p.price.toLocaleString()} IQD
                   </Text>
 
                 </View>
+
               ))}
 
               <TouchableOpacity
@@ -267,19 +627,28 @@ export default function App(){
                   )
                 }
               >
+
                 <Text style={s.goldText}>
                   تەواوکردنی داواکاری
                 </Text>
+
               </TouchableOpacity>
+
             </>
+
           )}
 
         </View>
+
       )}
 
       {/* PROFILE */}
+
       {tab==="profile" && (
-        <View style={s.pad}>
+
+        <ScrollView
+          contentContainerStyle={s.pad}
+        >
 
           <Text style={s.pageTitle}>
             پڕۆفایل 👤
@@ -290,16 +659,47 @@ export default function App(){
             لە قۆناغی داهاتوودا زیاد دەکرێت.
           </Text>
 
-        </View>
+          {/* ACCOUNTING BUTTON */}
+
+          <TouchableOpacity
+            style={s.accountingEntry}
+            onPress={()=>setAccounting(true)}
+          >
+
+            <Text style={s.accountingEntryIcon}>
+              📊
+            </Text>
+
+            <View style={s.accountingEntryText}>
+
+              <Text style={s.accountingEntryTitle}>
+                سیستەمی حسابات
+              </Text>
+
+              <Text style={s.accountingEntrySub}>
+                Dashboard ـی حسابات Shwshawaty ASYA
+              </Text>
+
+            </View>
+
+            <Text style={s.accountingEntryArrow}>
+              ‹
+            </Text>
+
+          </TouchableOpacity>
+
+        </ScrollView>
+
       )}
 
-      {/* Bottom Navigation
-          Settings بە تەواوی لابراوە */}
+      {/* NAVIGATION */}
+
       <View style={s.nav}>
 
         <TouchableOpacity
           onPress={()=>setTab("home")}
         >
+
           <Text
             style={
               tab==="home"
@@ -309,11 +709,13 @@ export default function App(){
           >
             ⌂{"\n"}سەرەکی
           </Text>
+
         </TouchableOpacity>
 
         <TouchableOpacity
           onPress={()=>setTab("cart")}
         >
+
           <Text
             style={
               tab==="cart"
@@ -323,11 +725,13 @@ export default function App(){
           >
             🛒{"\n"}سەبەت ({cart.length})
           </Text>
+
         </TouchableOpacity>
 
         <TouchableOpacity
           onPress={()=>setTab("profile")}
         >
+
           <Text
             style={
               tab==="profile"
@@ -337,19 +741,22 @@ export default function App(){
           >
             👤{"\n"}پڕۆفایل
           </Text>
+
         </TouchableOpacity>
 
       </View>
 
     </SafeAreaView>
+
   );
+
 }
 
-const s=StyleSheet.create({
+/* =========================
+   STYLES
+   ========================= */
 
-  // =========================
-  // Welcome Page
-  // =========================
+const s=StyleSheet.create({
 
   welcomeSafe:{
     flex:1,
@@ -393,10 +800,6 @@ const s=StyleSheet.create({
     fontSize:17,
     fontWeight:"800"
   },
-
-  // =========================
-  // Main
-  // =========================
 
   safe:{
     flex:1,
@@ -446,7 +849,8 @@ const s=StyleSheet.create({
     backgroundColor:"#fff",
     borderRadius:12,
     padding:12,
-    fontSize:15
+    fontSize:15,
+    color:"#111"
   },
 
   cats:{
@@ -529,10 +933,6 @@ const s=StyleSheet.create({
     fontWeight:"800"
   },
 
-  // =========================
-  // Navigation
-  // =========================
-
   nav:{
     height:68,
     borderTopWidth:1,
@@ -553,10 +953,6 @@ const s=StyleSheet.create({
     color:"#aaa",
     textAlign:"center"
   },
-
-  // =========================
-  // Cart / Profile
-  // =========================
 
   pad:{
     padding:18
@@ -588,6 +984,11 @@ const s=StyleSheet.create({
     marginRight:10
   },
 
+  cartPrice:{
+    color:"#d7a52b",
+    fontWeight:"700"
+  },
+
   goldBtn:{
     backgroundColor:"#d7a52b",
     padding:15,
@@ -601,10 +1002,6 @@ const s=StyleSheet.create({
     fontWeight:"800",
     fontSize:16
   },
-
-  // =========================
-  // Product Details
-  // =========================
 
   back:{
     color:"#d7a52b",
@@ -635,6 +1032,247 @@ const s=StyleSheet.create({
     fontSize:16,
     lineHeight:26,
     marginTop:15
+  },
+
+  /* =========================
+     ACCOUNTING STYLES
+     ========================= */
+
+  accountingContainer:{
+    padding:16,
+    paddingBottom:45
+  },
+
+  accountingTitle:{
+    color:"#d7a52b",
+    fontSize:25,
+    fontWeight:"800",
+    textAlign:"right",
+    marginTop:4
+  },
+
+  accountingDate:{
+    color:"#999",
+    fontSize:14,
+    textAlign:"right",
+    marginTop:6,
+    marginBottom:18
+  },
+
+  accountingGrid:{
+    flexDirection:"row",
+    flexWrap:"wrap",
+    justifyContent:"space-between"
+  },
+
+  accountingCard:{
+    width:"48%",
+    backgroundColor:"#1c1c1c",
+    borderRadius:16,
+    padding:15,
+    marginBottom:12,
+    borderWidth:1,
+    borderColor:"#292929"
+  },
+
+  accountingIcon:{
+    fontSize:25,
+    textAlign:"right"
+  },
+
+  accountingCardTitle:{
+    color:"#aaa",
+    fontSize:13,
+    textAlign:"right",
+    marginTop:10
+  },
+
+  accountingCardValue:{
+    color:"#fff",
+    fontSize:16,
+    fontWeight:"800",
+    textAlign:"right",
+    marginTop:6
+  },
+
+  accountingSection:{
+    backgroundColor:"#1c1c1c",
+    borderRadius:16,
+    padding:16,
+    marginTop:14,
+    borderWidth:1,
+    borderColor:"#292929"
+  },
+
+  accountingSectionTitle:{
+    color:"#fff",
+    fontSize:18,
+    fontWeight:"800",
+    textAlign:"right"
+  },
+
+  transaction:{
+    flexDirection:"row",
+    justifyContent:"space-between",
+    alignItems:"center",
+    paddingVertical:14,
+    borderBottomWidth:1,
+    borderBottomColor:"#292929"
+  },
+
+  transactionLast:{
+    flexDirection:"row",
+    justifyContent:"space-between",
+    alignItems:"center",
+    paddingTop:14
+  },
+
+  transactionInfo:{
+    flex:1,
+    marginRight:10
+  },
+
+  transactionName:{
+    color:"#fff",
+    fontSize:14,
+    fontWeight:"700",
+    textAlign:"right"
+  },
+
+  transactionDate:{
+    color:"#888",
+    fontSize:12,
+    marginTop:4,
+    textAlign:"right"
+  },
+
+  income:{
+    color:"#45d483",
+    fontWeight:"800"
+  },
+
+  expense:{
+    color:"#ff6262",
+    fontWeight:"800"
+  },
+
+  warningHeader:{
+    flexDirection:"row",
+    justifyContent:"space-between",
+    alignItems:"center"
+  },
+
+  warningNumber:{
+    color:"#ff6262",
+    fontSize:24,
+    fontWeight:"900"
+  },
+
+  warningText:{
+    color:"#aaa",
+    textAlign:"right",
+    marginTop:8
+  },
+
+  menuTitle:{
+    color:"#d7a52b",
+    fontSize:20,
+    fontWeight:"800",
+    textAlign:"right",
+    marginTop:24,
+    marginBottom:12
+  },
+
+  menuGrid:{
+    flexDirection:"row",
+    flexWrap:"wrap",
+    justifyContent:"space-between"
+  },
+
+  menuButton:{
+    width:"48%",
+    backgroundColor:"#1c1c1c",
+    borderRadius:14,
+    paddingVertical:18,
+    marginBottom:12,
+    alignItems:"center",
+    borderWidth:1,
+    borderColor:"#292929"
+  },
+
+  menuIcon:{
+    fontSize:25
+  },
+
+  menuText:{
+    color:"#fff",
+    fontSize:14,
+    fontWeight:"700",
+    marginTop:7
+  },
+
+  accountingNote:{
+    backgroundColor:"#171717",
+    borderRadius:14,
+    borderWidth:1,
+    borderColor:"#333",
+    padding:15,
+    marginTop:8
+  },
+
+  accountingNoteTitle:{
+    color:"#d7a52b",
+    fontSize:15,
+    fontWeight:"800",
+    textAlign:"right"
+  },
+
+  accountingNoteText:{
+    color:"#999",
+    fontSize:13,
+    lineHeight:22,
+    textAlign:"right",
+    marginTop:7
+  },
+
+  accountingEntry:{
+    flexDirection:"row",
+    alignItems:"center",
+    backgroundColor:"#1c1c1c",
+    borderRadius:16,
+    padding:15,
+    marginTop:24,
+    borderWidth:1,
+    borderColor:"#292929"
+  },
+
+  accountingEntryIcon:{
+    fontSize:30,
+    marginRight:12
+  },
+
+  accountingEntryText:{
+    flex:1
+  },
+
+  accountingEntryTitle:{
+    color:"#fff",
+    fontSize:17,
+    fontWeight:"800",
+    textAlign:"right"
+  },
+
+  accountingEntrySub:{
+    color:"#999",
+    fontSize:12,
+    marginTop:4,
+    textAlign:"right"
+  },
+
+  accountingEntryArrow:{
+    color:"#d7a52b",
+    fontSize:30,
+    marginLeft:8
   }
 
 });
