@@ -40,7 +40,7 @@ const products = [
     price:90000,
     category:"کۆمەڵە دیاری",
     image:"https://images.unsplash.com/photo-1603199506016-b9a594b593c0?w=800"
-  }
+  },
 ];
 
 const cats = [
@@ -51,6 +51,10 @@ const cats = [
   "کالای ماڵ",
   "کۆمەڵە دیاری"
 ];
+
+/* =========================
+   ACCOUNTING DEMO DATA
+========================= */
 
 const accountingData = {
   todaySales:1250000,
@@ -64,42 +68,33 @@ const money = value =>
   new Intl.NumberFormat("ku-IQ").format(value) + " د.ع";
 
 
-/* =====================================================
+/* =========================
    PASSWORD SCREEN
-===================================================== */
+========================= */
 
-function PasswordScreen({
-  title,
-  password,
-  onSuccess,
-  onBack
-}) {
+function PasswordScreen({title, correctPassword, onSuccess, onBack}) {
 
-  const [input,setInput] = useState("");
+  const [password,setPassword] = useState("");
+  const [error,setError] = useState("");
 
   const checkPassword = () => {
 
-    if(input === password){
+    if(password === correctPassword){
 
+      setError("");
       onSuccess();
 
-    }else{
+    } else {
 
-      Alert.alert(
-        "هەڵە",
-        "پاسکۆردەکە هەڵەیە."
-      );
-
-      setInput("");
+      setError("پاسۆردەکە هەڵەیە.");
 
     }
   };
 
   return (
-
     <SafeAreaView style={s.safe}>
 
-      <View style={s.passwordContainer}>
+      <ScrollView contentContainerStyle={s.passwordContainer}>
 
         <TouchableOpacity onPress={onBack}>
           <Text style={s.back}>
@@ -117,19 +112,28 @@ function PasswordScreen({
             {title}
           </Text>
 
-          <Text style={s.passwordText}>
-            تکایە پاسکۆرد بنووسە
+          <Text style={s.passwordSub}>
+            بۆ چوونەژوورەوە پاسۆرد بنووسە
           </Text>
 
           <TextInput
-            value={input}
-            onChangeText={setInput}
-            placeholder="پاسکۆرد"
+            value={password}
+            onChangeText={(text)=>{
+              setPassword(text);
+              setError("");
+            }}
+            placeholder="پاسۆرد"
             placeholderTextColor="#777"
             secureTextEntry
             style={s.passwordInput}
-            onSubmitEditing={checkPassword}
+            autoCapitalize="none"
           />
+
+          {error !== "" && (
+            <Text style={s.passwordError}>
+              {error}
+            </Text>
+          )}
 
           <TouchableOpacity
             style={s.goldBtn}
@@ -144,49 +148,27 @@ function PasswordScreen({
 
         </View>
 
-      </View>
+      </ScrollView>
 
     </SafeAreaView>
   );
 }
 
 
-/* =====================================================
+/* =========================
    ACCOUNTING DASHBOARD
-===================================================== */
+========================= */
 
 function AccountingDashboard({onBack}) {
 
   const cards = [
-
-    [
-      "💰",
-      "فرۆشتنی ئەمڕۆ",
-      money(accountingData.todaySales)
-    ],
-
-    [
-      "📈",
-      "قازانجی ئەمڕۆ",
-      money(accountingData.todayProfit)
-    ],
-
-    [
-      "💸",
-      "خەرجی ئەمڕۆ",
-      money(accountingData.todayExpenses)
-    ],
-
-    [
-      "👥",
-      "قەرزی کڕیاران",
-      money(accountingData.customerDebts)
-    ]
-
+    ["💰","فرۆشتنی ئەمڕۆ",money(accountingData.todaySales)],
+    ["📈","قازانجی ئەمڕۆ",money(accountingData.todayProfit)],
+    ["💸","خەرجی ئەمڕۆ",money(accountingData.todayExpenses)],
+    ["👥","قەرزی کڕیاران",money(accountingData.customerDebts)]
   ];
 
   const menu = [
-
     ["🧾","فرۆشتن"],
     ["🛍️","کڕین"],
     ["📦","کۆگا"],
@@ -195,11 +177,9 @@ function AccountingDashboard({onBack}) {
     ["💸","خەرجییەکان"],
     ["📈","قازانج و زیان"],
     ["📊","ڕاپۆرتەکان"]
-
   ];
 
   return (
-
     <SafeAreaView style={s.safe}>
 
       <ScrollView
@@ -214,7 +194,7 @@ function AccountingDashboard({onBack}) {
         </TouchableOpacity>
 
         <Text style={s.accountingTitle}>
-          📊 داشبۆردی Shwshawaty ASYA
+          📊 Dashboard ـی Shwshawaty ASYA
         </Text>
 
         <Text style={s.accountingDate}>
@@ -222,12 +202,9 @@ function AccountingDashboard({onBack}) {
         </Text>
 
 
-        {/* ACCOUNT CARDS */}
-
         <View style={s.accountingGrid}>
 
           {cards.map((card,index)=>(
-
             <View
               style={s.accountingCard}
               key={index}
@@ -246,20 +223,16 @@ function AccountingDashboard({onBack}) {
               </Text>
 
             </View>
-
           ))}
 
         </View>
 
-
-        {/* TRANSACTIONS */}
 
         <View style={s.accountingSection}>
 
           <Text style={s.accountingSectionTitle}>
             🧾 دوایین مامەڵەکان
           </Text>
-
 
           <View style={s.transaction}>
 
@@ -326,8 +299,6 @@ function AccountingDashboard({onBack}) {
         </View>
 
 
-        {/* LOW STOCK */}
-
         <View style={s.accountingSection}>
 
           <View style={s.warningHeader}>
@@ -349,28 +320,23 @@ function AccountingDashboard({onBack}) {
         </View>
 
 
-        {/* ACCOUNTING MENU */}
-
         <Text style={s.menuTitle}>
-          بەشەکانی حسابات
+          بەشەکانی Dashboard
         </Text>
 
 
         <View style={s.menuGrid}>
 
           {menu.map(([icon,title],index)=>(
-
             <TouchableOpacity
               key={index}
               style={s.menuButton}
-              onPress={()=>{
-
+              onPress={() =>
                 Alert.alert(
                   title,
                   "ئەم بەشە لە قۆناغی داهاتوودا بە سیستەمی ڕاستەقینەی حسابات چالاک دەکرێت."
-                );
-
-              }}
+                )
+              }
             >
 
               <Text style={s.menuIcon}>
@@ -382,13 +348,10 @@ function AccountingDashboard({onBack}) {
               </Text>
 
             </TouchableOpacity>
-
           ))}
 
         </View>
 
-
-        {/* NOTE */}
 
         <View style={s.accountingNote}>
 
@@ -411,18 +374,18 @@ function AccountingDashboard({onBack}) {
 }
 
 
-/* =====================================================
-   MANAGER PANEL
-===================================================== */
+/* =========================
+   MANAGER DASHBOARD
+========================= */
 
-function ManagerPanel({onBack}) {
+function ManagerDashboard({onBack}) {
 
   return (
-
     <SafeAreaView style={s.safe}>
 
       <ScrollView
         contentContainerStyle={s.managerContainer}
+        showsVerticalScrollIndicator={false}
       >
 
         <TouchableOpacity onPress={onBack}>
@@ -431,172 +394,79 @@ function ManagerPanel({onBack}) {
           </Text>
         </TouchableOpacity>
 
-
         <Text style={s.managerTitle}>
-          ⚙️ بەشی بەڕێوەبەر
+          👨‍💼 بەشی بەڕێوبەر
         </Text>
 
-        <Text style={s.managerSubtitle}>
-          بەخێربێیت بۆ بەشی بەڕێوەبردنی Shwshawaty ASYA
+        <Text style={s.managerSub}>
+          بەخێربێیت بۆ بەشی بەڕێوبەری Shwshawaty ASYA
         </Text>
 
 
-        {/* PRODUCTS */}
+        <View style={s.managerCard}>
 
-        <TouchableOpacity
-          style={s.managerCard}
-          onPress={()=>{
-
-            Alert.alert(
-              "بەرهەمەکان",
-              "بەشی زیادکردن و دەستکاریکردنی بەرهەمەکان لە قۆناغی داهاتوودا چالاک دەکرێت."
-            );
-
-          }}
-        >
-
-          <Text style={s.managerIcon}>
+          <Text style={s.managerCardIcon}>
             📦
           </Text>
 
-          <View style={s.managerTextBox}>
-
-            <Text style={s.managerCardTitle}>
-              بەرهەمەکان
-            </Text>
-
-            <Text style={s.managerCardSub}>
-              زیادکردن و دەستکاریکردنی بەرهەم
-            </Text>
-
-          </View>
-
-          <Text style={s.managerArrow}>
-            ‹
+          <Text style={s.managerCardTitle}>
+            بەڕێوبەرایەتی بەرهەمەکان
           </Text>
 
-        </TouchableOpacity>
-
-
-        {/* PRICES */}
-
-        <TouchableOpacity
-          style={s.managerCard}
-          onPress={()=>{
-
-            Alert.alert(
-              "نرخەکان",
-              "بەشی گۆڕینی نرخەکان لە قۆناغی داهاتوودا چالاک دەکرێت."
-            );
-
-          }}
-        >
-
-          <Text style={s.managerIcon}>
-            💰
+          <Text style={s.managerCardText}>
+            لە قۆناغی داهاتوودا دەتوانیت بەرهەم زیاد بکەیت،
+            دەستکاری بکەیت و بیسڕیتەوە.
           </Text>
 
-          <View style={s.managerTextBox}>
+        </View>
 
-            <Text style={s.managerCardTitle}>
-              نرخەکان
-            </Text>
 
-            <Text style={s.managerCardSub}>
-              بەڕێوەبردنی نرخی بەرهەمەکان
-            </Text>
+        <View style={s.managerCard}>
 
-          </View>
-
-          <Text style={s.managerArrow}>
-            ‹
+          <Text style={s.managerCardIcon}>
+            👥
           </Text>
 
-        </TouchableOpacity>
-
-
-        {/* STOCK */}
-
-        <TouchableOpacity
-          style={s.managerCard}
-          onPress={()=>{
-
-            Alert.alert(
-              "کۆگا",
-              "بەشی کۆگا لە قۆناغی داهاتوودا چالاک دەکرێت."
-            );
-
-          }}
-        >
-
-          <Text style={s.managerIcon}>
-            🏪
+          <Text style={s.managerCardTitle}>
+            بەڕێوبەرایەتی کڕیاران
           </Text>
 
-          <View style={s.managerTextBox}>
-
-            <Text style={s.managerCardTitle}>
-              کۆگا
-            </Text>
-
-            <Text style={s.managerCardSub}>
-              چاودێریکردنی کۆگا و ژمارەی بەرهەم
-            </Text>
-
-          </View>
-
-          <Text style={s.managerArrow}>
-            ‹
+          <Text style={s.managerCardText}>
+            زانیاری کڕیاران و مێژووی داواکارییەکان لێرە کۆدەکرێنەوە.
           </Text>
 
-        </TouchableOpacity>
+        </View>
 
 
-        {/* REPORTS */}
+        <View style={s.managerCard}>
 
-        <TouchableOpacity
-          style={s.managerCard}
-          onPress={()=>{
-
-            Alert.alert(
-              "ڕاپۆرتەکان",
-              "ڕاپۆرتەکانی فرۆشتن و کڕین لە قۆناغی داهاتوودا زیاد دەکرێن."
-            );
-
-          }}
-        >
-
-          <Text style={s.managerIcon}>
+          <Text style={s.managerCardIcon}>
             📊
           </Text>
 
-          <View style={s.managerTextBox}>
-
-            <Text style={s.managerCardTitle}>
-              ڕاپۆرتەکان
-            </Text>
-
-            <Text style={s.managerCardSub}>
-              بینینی ڕاپۆرتی فرۆشتن و کڕین
-            </Text>
-
-          </View>
-
-          <Text style={s.managerArrow}>
-            ‹
+          <Text style={s.managerCardTitle}>
+            ڕاپۆرتەکان
           </Text>
 
-        </TouchableOpacity>
-
-
-        <View style={s.managerNote}>
-
-          <Text style={s.managerNoteTitle}>
-            🔐 بەشی تایبەت
+          <Text style={s.managerCardText}>
+            ڕاپۆرتی فرۆشتن، کڕین و قازانج لە وەشانی داهاتوودا زیاد دەکرێت.
           </Text>
 
-          <Text style={s.managerNoteText}>
-            ئەم بەشە تەنها بە پاسکۆردی بەڕێوەبەر دەکرێتەوە.
+        </View>
+
+
+        <View style={s.managerCard}>
+
+          <Text style={s.managerCardIcon}>
+            ⚙️
+          </Text>
+
+          <Text style={s.managerCardTitle}>
+            ڕێکخستنەکانی سیستەم
+          </Text>
+
+          <Text style={s.managerCardText}>
+            بەشی ڕێکخستنەکان بۆ بەڕێوبەر لە قۆناغی داهاتوودا چالاک دەکرێت.
           </Text>
 
         </View>
@@ -608,9 +478,9 @@ function ManagerPanel({onBack}) {
 }
 
 
-/* =====================================================
+/* =========================
    MAIN APP
-===================================================== */
+========================= */
 
 export default function App(){
 
@@ -618,43 +488,31 @@ export default function App(){
 
   const [tab,setTab] = useState("home");
 
-  const [category,setCategory] = useState("هەموو");
+  const [category,setCategory] =
+    useState("هەموو");
 
-  const [query,setQuery] = useState("");
+  const [query,setQuery] =
+    useState("");
 
-  const [cart,setCart] = useState([]);
+  const [cart,setCart] =
+    useState([]);
 
-  const [selected,setSelected] = useState(null);
+  const [selected,setSelected] =
+    useState(null);
 
-
-  /* DASHBOARD */
-
-  const [dashboardLogin,setDashboardLogin] = useState(false);
-
-  const [dashboardOpen,setDashboardOpen] = useState(false);
-
-
-  /* MANAGER */
-
-  const [managerLogin,setManagerLogin] = useState(false);
-
-  const [managerOpen,setManagerOpen] = useState(false);
+  const [page,setPage] =
+    useState(null);
 
 
   const filtered = useMemo(
-
-    () => products.filter(p =>
-
-      (category==="هەموو" || p.category===category) &&
-
-      p.name
-        .toLowerCase()
-        .includes(query.toLowerCase())
-
-    ),
-
+    () =>
+      products.filter(p =>
+        (category==="هەموو" || p.category===category) &&
+        p.name
+          .toLowerCase()
+          .includes(query.toLowerCase())
+      ),
     [category,query]
-
   );
 
 
@@ -670,9 +528,9 @@ export default function App(){
   };
 
 
-  /* =================================================
+  /* =========================
      WELCOME
-  ================================================= */
+  ========================= */
 
   if(!started){
 
@@ -706,111 +564,74 @@ export default function App(){
       </SafeAreaView>
 
     );
-
   }
 
 
-  /* =================================================
+  /* =========================
      DASHBOARD PASSWORD
-  ================================================= */
+  ========================= */
 
-  if(dashboardLogin){
+  if(page==="dashboardPassword"){
 
     return (
-
       <PasswordScreen
-
-        title="📊 داشبۆرد"
-
-        password="gardunali"
-
-        onSuccess={()=>{
-
-          setDashboardLogin(false);
-          setDashboardOpen(true);
-
-        }}
-
-        onBack={()=>setDashboardLogin(false)}
-
+        title="📊 Dashboard"
+        correctPassword="gardunali"
+        onSuccess={()=>setPage("dashboard")}
+        onBack={()=>setPage(null)}
       />
-
     );
-
   }
 
 
-  /* =================================================
-     DASHBOARD
-  ================================================= */
-
-  if(dashboardOpen){
-
-    return (
-
-      <AccountingDashboard
-
-        onBack={()=>setDashboardOpen(false)}
-
-      />
-
-    );
-
-  }
-
-
-  /* =================================================
+  /* =========================
      MANAGER PASSWORD
-  ================================================= */
+  ========================= */
 
-  if(managerLogin){
+  if(page==="managerPassword"){
 
     return (
-
       <PasswordScreen
-
-        title="⚙️ بەشی بەڕێوەبەر"
-
-        password="1993"
-
-        onSuccess={()=>{
-
-          setManagerLogin(false);
-          setManagerOpen(true);
-
-        }}
-
-        onBack={()=>setManagerLogin(false)}
-
+        title="👨‍💼 بەشی بەڕێوبەر"
+        correctPassword="1993"
+        onSuccess={()=>setPage("manager")}
+        onBack={()=>setPage(null)}
       />
-
     );
-
   }
 
 
-  /* =================================================
-     MANAGER
-  ================================================= */
+  /* =========================
+     DASHBOARD
+  ========================= */
 
-  if(managerOpen){
+  if(page==="dashboard"){
 
     return (
-
-      <ManagerPanel
-
-        onBack={()=>setManagerOpen(false)}
-
+      <AccountingDashboard
+        onBack={()=>setPage(null)}
       />
-
     );
-
   }
 
 
-  /* =================================================
+  /* =========================
+     MANAGER
+  ========================= */
+
+  if(page==="manager"){
+
+    return (
+      <ManagerDashboard
+        onBack={()=>setPage(null)}
+      />
+    );
+  }
+
+
+  /* =========================
      PRODUCT DETAILS
-  ================================================= */
+  ========================= */
 
   if(selected){
 
@@ -871,20 +692,17 @@ export default function App(){
       </SafeAreaView>
 
     );
-
   }
 
 
-  /* =================================================
+  /* =========================
      MAIN
-  ================================================= */
+  ========================= */
 
   return (
 
     <SafeAreaView style={s.safe}>
 
-
-      {/* HEADER */}
 
       <View style={s.header}>
 
@@ -919,53 +737,37 @@ export default function App(){
 
 
           <TextInput
-
             value={query}
-
             onChangeText={setQuery}
-
             placeholder="بگەڕێ بۆ بەرهەم..."
-
             placeholderTextColor="#777"
-
             style={s.search}
-
           />
 
 
           <ScrollView
-
             horizontal
-
             showsHorizontalScrollIndicator={false}
-
             style={s.cats}
-
           >
 
             {cats.map(c=>(
 
               <TouchableOpacity
-
                 key={c}
-
                 onPress={()=>setCategory(c)}
-
                 style={[
                   s.cat,
                   category===c && s.catActive
                 ]}
-
               >
 
                 <Text
-
                   style={
                     category===c
                       ? s.catTextActive
                       : s.catText
                   }
-
                 >
                   {c}
                 </Text>
@@ -983,62 +785,40 @@ export default function App(){
 
 
           <FlatList
-
             data={filtered}
-
             numColumns={2}
-
             scrollEnabled={false}
-
             keyExtractor={x=>x.id}
-
             columnWrapperStyle={{gap:12}}
-
             contentContainerStyle={s.grid}
 
             renderItem={({item})=>(
 
               <TouchableOpacity
-
                 style={s.card}
-
                 onPress={()=>setSelected(item)}
-
               >
 
                 <Image
-
                   source={{uri:item.image}}
-
                   style={s.cardImg}
-
                 />
 
-
                 <Text
-
                   style={s.cardName}
-
                   numberOfLines={2}
-
                 >
                   {item.name}
                 </Text>
 
-
                 <Text style={s.cardPrice}>
-
                   {item.price.toLocaleString()} IQD
-
                 </Text>
 
 
                 <TouchableOpacity
-
                   style={s.smallBtn}
-
                   onPress={()=>addToCart(item)}
-
                 >
 
                   <Text style={s.smallBtnText}>
@@ -1082,11 +862,8 @@ export default function App(){
               {cart.map((p,i)=>(
 
                 <View
-
                   style={s.row}
-
                   key={`${p.id}-${i}`}
-
                 >
 
                   <Text style={s.rowName}>
@@ -1103,18 +880,13 @@ export default function App(){
 
 
               <TouchableOpacity
-
                 style={s.goldBtn}
-
-                onPress={()=>{
-
+                onPress={() =>
                   Alert.alert(
                     "داواکاری",
                     "لە وەشانی داهاتوودا داواکارییەکە بە سیستەمی فرۆشتن نێردراوە."
-                  );
-
-                }}
-
+                  )
+                }
               >
 
                 <Text style={s.goldText}>
@@ -1138,6 +910,7 @@ export default function App(){
 
         <ScrollView
           contentContainerStyle={s.pad}
+          showsVerticalScrollIndicator={false}
         >
 
           <Text style={s.pageTitle}>
@@ -1146,40 +919,34 @@ export default function App(){
 
 
           <Text style={s.desc}>
-            بەشی پڕۆفایل و مێژووی داواکارییەکان
-            لە قۆناغی داهاتوودا زیاد دەکرێت.
+            بەخێربێیت بۆ پڕۆفایلی Shwshawaty ASYA
           </Text>
 
 
           {/* DASHBOARD */}
 
           <TouchableOpacity
-
-            style={s.accountingEntry}
-
-            onPress={()=>setDashboardLogin(true)}
-
+            style={s.profileOption}
+            onPress={()=>setPage("dashboardPassword")}
           >
 
-            <Text style={s.accountingEntryIcon}>
+            <Text style={s.profileOptionIcon}>
               📊
             </Text>
 
+            <View style={s.profileOptionText}>
 
-            <View style={s.accountingEntryText}>
-
-              <Text style={s.accountingEntryTitle}>
-                داشبۆرد
+              <Text style={s.profileOptionTitle}>
+                Dashboard
               </Text>
 
-              <Text style={s.accountingEntrySub}>
-                Dashboard ـی حسابات Shwshawaty ASYA
+              <Text style={s.profileOptionSub}>
+                داشبۆردی حسابات و ڕاپۆرتەکان
               </Text>
 
             </View>
 
-
-            <Text style={s.accountingEntryArrow}>
+            <Text style={s.profileArrow}>
               ‹
             </Text>
 
@@ -1189,48 +956,41 @@ export default function App(){
           {/* MANAGER */}
 
           <TouchableOpacity
-
-            style={s.accountingEntry}
-
-            onPress={()=>setManagerLogin(true)}
-
+            style={s.profileOption}
+            onPress={()=>setPage("managerPassword")}
           >
 
-            <Text style={s.accountingEntryIcon}>
-              ⚙️
+            <Text style={s.profileOptionIcon}>
+              👨‍💼
             </Text>
 
+            <View style={s.profileOptionText}>
 
-            <View style={s.accountingEntryText}>
-
-              <Text style={s.accountingEntryTitle}>
-                بەشی بەڕێوەبەر
+              <Text style={s.profileOptionTitle}>
+                بەشی بەڕێوبەر
               </Text>
 
-              <Text style={s.accountingEntrySub}>
-                بەڕێوەبردنی Shwshawaty ASYA
+              <Text style={s.profileOptionSub}>
+                بەڕێوبەرایەتی و ڕێکخستنی سیستەم
               </Text>
 
             </View>
 
-
-            <Text style={s.accountingEntryArrow}>
+            <Text style={s.profileArrow}>
               ‹
             </Text>
 
           </TouchableOpacity>
 
 
-          {/* INFO */}
-
           <View style={s.profileInfo}>
 
             <Text style={s.profileInfoTitle}>
-              🔐 بەشە تایبەتەکان
+              🔐 پاراستنی بەشەکان
             </Text>
 
             <Text style={s.profileInfoText}>
-              داشبۆرد و بەشی بەڕێوەبەر بە پاسکۆرد پارێزراون.
+              Dashboard و بەشی بەڕێوبەر هەر یەکەیان پاسۆردی تایبەتی خۆیان هەیە.
             </Text>
 
           </View>
@@ -1303,11 +1063,11 @@ export default function App(){
 }
 
 
-/* =====================================================
+/* =========================
    STYLES
-===================================================== */
+========================= */
 
-const s = StyleSheet.create({
+const s=StyleSheet.create({
 
   welcomeSafe:{
     flex:1,
@@ -1586,53 +1346,134 @@ const s = StyleSheet.create({
   },
 
 
-  /* PASSWORD */
+  /* =========================
+     PASSWORD
+  ========================= */
 
   passwordContainer:{
-    flex:1,
-    padding:18
+    flexGrow:1,
+    padding:16
   },
 
   passwordBox:{
-    flex:1,
-    justifyContent:"center",
-    paddingHorizontal:10,
-    paddingBottom:70
+    backgroundColor:"#1c1c1c",
+    borderRadius:20,
+    padding:25,
+    marginTop:80,
+    borderWidth:1,
+    borderColor:"#292929"
   },
 
   passwordIcon:{
-    fontSize:55,
-    textAlign:"center",
-    marginBottom:15
+    fontSize:45,
+    textAlign:"center"
   },
 
   passwordTitle:{
     color:"#d7a52b",
-    fontSize:28,
+    fontSize:25,
     fontWeight:"800",
-    textAlign:"center"
+    textAlign:"center",
+    marginTop:15
   },
 
-  passwordText:{
+  passwordSub:{
     color:"#aaa",
-    fontSize:16,
+    fontSize:14,
     textAlign:"center",
-    marginTop:10,
+    marginTop:8,
     marginBottom:20
   },
 
   passwordInput:{
     backgroundColor:"#fff",
-    color:"#111",
     borderRadius:12,
-    padding:15,
-    fontSize:17,
+    padding:14,
+    fontSize:16,
+    color:"#111",
+    textAlign:"center"
+  },
+
+  passwordError:{
+    color:"#ff6262",
     textAlign:"center",
-    marginBottom:5
+    marginTop:10,
+    fontWeight:"700"
   },
 
 
-  /* ACCOUNTING */
+  /* =========================
+     PROFILE OPTIONS
+  ========================= */
+
+  profileOption:{
+    flexDirection:"row",
+    alignItems:"center",
+    backgroundColor:"#1c1c1c",
+    borderRadius:16,
+    padding:16,
+    marginTop:15,
+    borderWidth:1,
+    borderColor:"#292929"
+  },
+
+  profileOptionIcon:{
+    fontSize:32,
+    marginRight:12
+  },
+
+  profileOptionText:{
+    flex:1
+  },
+
+  profileOptionTitle:{
+    color:"#fff",
+    fontSize:17,
+    fontWeight:"800",
+    textAlign:"right"
+  },
+
+  profileOptionSub:{
+    color:"#999",
+    fontSize:12,
+    marginTop:5,
+    textAlign:"right"
+  },
+
+  profileArrow:{
+    color:"#d7a52b",
+    fontSize:30,
+    marginLeft:8
+  },
+
+  profileInfo:{
+    backgroundColor:"#171717",
+    borderRadius:15,
+    padding:16,
+    marginTop:25,
+    borderWidth:1,
+    borderColor:"#333"
+  },
+
+  profileInfoTitle:{
+    color:"#d7a52b",
+    fontSize:15,
+    fontWeight:"800",
+    textAlign:"right"
+  },
+
+  profileInfoText:{
+    color:"#999",
+    fontSize:13,
+    lineHeight:22,
+    marginTop:7,
+    textAlign:"right"
+  },
+
+
+  /* =========================
+     ACCOUNTING
+  ========================= */
 
   accountingContainer:{
     padding:16,
@@ -1832,74 +1673,9 @@ const s = StyleSheet.create({
   },
 
 
-  /* PROFILE */
-
-  accountingEntry:{
-    flexDirection:"row",
-    alignItems:"center",
-    backgroundColor:"#1c1c1c",
-    borderRadius:16,
-    padding:15,
-    marginTop:15,
-    borderWidth:1,
-    borderColor:"#292929"
-  },
-
-  accountingEntryIcon:{
-    fontSize:30,
-    marginRight:12
-  },
-
-  accountingEntryText:{
-    flex:1
-  },
-
-  accountingEntryTitle:{
-    color:"#fff",
-    fontSize:17,
-    fontWeight:"800",
-    textAlign:"right"
-  },
-
-  accountingEntrySub:{
-    color:"#999",
-    fontSize:12,
-    marginTop:4,
-    textAlign:"right"
-  },
-
-  accountingEntryArrow:{
-    color:"#d7a52b",
-    fontSize:30,
-    marginLeft:8
-  },
-
-  profileInfo:{
-    backgroundColor:"#171717",
-    borderRadius:14,
-    borderWidth:1,
-    borderColor:"#333",
-    padding:15,
-    marginTop:18
-  },
-
-  profileInfoTitle:{
-    color:"#d7a52b",
-    fontSize:15,
-    fontWeight:"800",
-    textAlign:"right"
-  },
-
-  profileInfoText:{
-    color:"#999",
-    fontSize:13,
-    textAlign:"right",
-    marginTop:7,
-    lineHeight:22
-  },
-
-
-  /* MANAGER */
+  /* =========================
+     MANAGER
+  ========================= */
 
   managerContainer:{
     padding:16,
@@ -1914,7 +1690,7 @@ const s = StyleSheet.create({
     marginTop:5
   },
 
-  managerSubtitle:{
+  managerSub:{
     color:"#999",
     fontSize:14,
     textAlign:"right",
@@ -1923,62 +1699,28 @@ const s = StyleSheet.create({
   },
 
   managerCard:{
-    flexDirection:"row",
-    alignItems:"center",
     backgroundColor:"#1c1c1c",
-    borderRadius:16,
-    padding:16,
-    marginBottom:12,
+    borderRadius:18,
+    padding:20,
+    marginBottom:14,
     borderWidth:1,
     borderColor:"#292929"
   },
 
-  managerIcon:{
-    fontSize:30,
-    marginRight:12
-  },
-
-  managerTextBox:{
-    flex:1
+  managerCardIcon:{
+    fontSize:32,
+    textAlign:"right"
   },
 
   managerCardTitle:{
     color:"#fff",
-    fontSize:17,
+    fontSize:18,
     fontWeight:"800",
-    textAlign:"right"
+    textAlign:"right",
+    marginTop:10
   },
 
-  managerCardSub:{
-    color:"#999",
-    fontSize:12,
-    marginTop:5,
-    textAlign:"right"
-  },
-
-  managerArrow:{
-    color:"#d7a52b",
-    fontSize:30,
-    marginLeft:8
-  },
-
-  managerNote:{
-    backgroundColor:"#171717",
-    borderRadius:14,
-    borderWidth:1,
-    borderColor:"#333",
-    padding:15,
-    marginTop:8
-  },
-
-  managerNoteTitle:{
-    color:"#d7a52b",
-    fontSize:15,
-    fontWeight:"800",
-    textAlign:"right"
-  },
-
-  managerNoteText:{
+  managerCardText:{
     color:"#999",
     fontSize:13,
     lineHeight:22,
