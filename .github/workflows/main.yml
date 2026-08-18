@@ -23,7 +23,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
 
       - name: Install dependencies
         run: npm install
@@ -33,9 +32,9 @@ jobs:
 
       - name: Check exported files
         run: |
-          echo "===== DIST ====="
+          echo "===== DIST FILES ====="
           find dist -maxdepth 2 -type f
-          echo "===== INDEX ====="
+          echo "===== INDEX HTML ====="
           head -50 dist/index.html
 
       - name: Setup Pages
