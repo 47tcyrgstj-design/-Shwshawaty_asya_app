@@ -1,33 +1,50 @@
-name: Build APK
+name: Deploy Web
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
+          cache: npm
 
       - name: Install dependencies
         run: npm install
 
-      - name: Setup EAS
-        run: npm install -g eas-cli
+      - name: Export Expo Web
+        run: npx expo export --platform web
 
-      - name: Link EAS project
-        env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-        run: eas init --id 5866a723-918e-413e-91c8-6b83fe1555c5 --non-interactive --force
+      - name: Check exported files
+        run: |
+          echo "===== DIST ====="
+          find dist -maxdepth 2 -type f
+          echo "===== INDEX ====="
+          head -50 dist/index.html
 
-      - name: Build APK
-        env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-        run: eas build --platform android --profile preview --non-interactive
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
