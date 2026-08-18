@@ -11,6 +11,10 @@ permissions:
   pages: write
   id-token: write
 
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -19,25 +23,45 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: npm
 
       - name: Install dependencies
         run: npm install
 
-      - name: Export Expo Web
+      - name: Build Expo Web
         run: npx expo export --platform web
 
-      - name: Check exported files
+      - name: Add Google Analytics
         run: |
-          echo "===== DIST FILES ====="
-          find dist -maxdepth 2 -type f
-          echo "===== INDEX HTML ====="
-          head -50 dist/index.html
+          python3 - <<'PY'
+          from pathlib import Path
 
-      - name: Setup Pages
+          path = Path("dist/index.html")
+
+          if path.exists():
+              html = path.read_text()
+
+              tag = '''
+          <script async src="https://www.googletagmanager.com/gtag/js?id=G-CE2P4KP5E2"></script>
+          <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-CE2P4KP5E2');
+          </script>
+          '''
+
+              if "G-CE2P4KP5E2" not in html:
+                  html = html.replace("</head>", tag + "</head>")
+
+              path.write_text(html)
+          PY
+
+      - name: Setup GitHub Pages
         uses: actions/configure-pages@v5
 
       - name: Upload Pages artifact
@@ -46,4 +70,5 @@ jobs:
           path: ./dist
 
       - name: Deploy to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v4
