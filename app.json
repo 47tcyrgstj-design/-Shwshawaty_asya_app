@@ -6,11 +6,6 @@
     "orientation": "portrait",
     "userInterfaceStyle": "dark",
 
-    "web": {
-      "bundler": "metro",
-      "output": "static"
-    },
-
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.asya.shwshawaty"
