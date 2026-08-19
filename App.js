@@ -799,7 +799,7 @@ export default function App() {
       </View>
     </SafeAreaView>
   );
-}import React, { useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   SafeAreaView,
   View,
@@ -811,7 +811,8 @@ import {
   TextInput,
   ScrollView,
   Alert,
-} from "react-native";
+} 
+  from "react-native";
 
 const products = [
   {
