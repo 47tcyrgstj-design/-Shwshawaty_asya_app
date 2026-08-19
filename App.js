@@ -1,5 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
-
+import React, { useMemo, useState } from "react";
 import {
   SafeAreaView,
   View,
@@ -13,38 +12,38 @@ import {
   Alert,
 } from "react-native";
 
-import { db } from "./firebase";
-
-import {
-  collection,
-  onSnapshot,
-  addDoc,
-  updateDoc,
-  deleteDoc,
-  doc,
-} from "firebase/firestore";
-
-const PRODUCTS_COLLECTION = "Products";
-
-const ADMIN_PASSWORD = "1993";
-const DASHBOARD_PASSWORD = "gardunali";
-
-const productsDemo = [
+const products = [
   {
-    id: "demo-1",
-    Name: "کۆمەڵە خواردن 25 پارچە",
-    Price: 75000,
-    Category: "کۆمەڵە خواردن",
+    id: "1",
+    name: "کۆمەڵە خواردن 25 پارچە",
+    price: 75000,
+    category: "کۆمەڵە خواردن",
     image:
       "https://images.unsplash.com/photo-1577937927133-66ef06acdf18?w=800",
   },
   {
-    id: "demo-2",
-    Name: "سێتی پیاڵە 12 پارچە",
-    Price: 45000,
-    Category: "پیاڵە و پیاڵەخانە",
+    id: "2",
+    name: "سێتی پیاڵە 12 پارچە",
+    price: 45000,
+    category: "پیاڵە و پیاڵەخانە",
     image:
       "https://images.unsplash.com/photo-1572119865084-43c285814d63?w=800",
+  },
+  {
+    id: "3",
+    name: "کاسە سێتە 6 پارچە",
+    price: 30000,
+    category: "کاسە و جام",
+    image:
+      "https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=800",
+  },
+  {
+    id: "4",
+    name: "کۆمەڵە دیاری",
+    price: 90000,
+    category: "کۆمەڵە دیاری",
+    image:
+      "https://images.unsplash.com/photo-1603199506016-b9a594b593c0?w=800",
   },
 ];
 
@@ -57,19 +56,18 @@ const categories = [
   "کۆمەڵە دیاری",
 ];
 
+const accountingData = {
+  todaySales: 1250000,
+  todayProfit: 340000,
+  todayExpenses: 120000,
+  customerDebts: 2180000,
+  lowStock: 7,
+};
+
 const money = (value) =>
-  new Intl.NumberFormat("ku-IQ").format(Number(value || 0)) + " د.ع";
+  new Intl.NumberFormat("ku-IQ").format(value) + " د.ع";
 
-/* =========================
-   PASSWORD SCREEN
-========================= */
-
-function PasswordScreen({
-  title,
-  passwordCorrect,
-  onSuccess,
-  onBack,
-}) {
+function PasswordScreen({ title, passwordCorrect, onSuccess, onBack }) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
@@ -124,42 +122,12 @@ function PasswordScreen({
   );
 }
 
-/* =========================
-   TRANSACTION
-========================= */
-
-function Transaction({
-  name,
-  date,
-  value,
-  income = false,
-}) {
-  return (
-    <View style={styles.transaction}>
-      <View style={styles.transactionInfo}>
-        <Text style={styles.transactionName}>{name}</Text>
-        <Text style={styles.transactionDate}>{date}</Text>
-      </View>
-
-      <Text style={income ? styles.income : styles.expense}>
-        {value}
-      </Text>
-    </View>
-  );
-}
-
-/* =========================
-   DASHBOARD
-========================= */
-
-function Dashboard({ onBack, products }) {
-  const totalProducts = products.length;
-
+function Dashboard({ onBack }) {
   const cards = [
-    ["💰", "فرۆشتنی ئەمڕۆ", "0 د.ع"],
-    ["📈", "قازانجی ئەمڕۆ", "0 د.ع"],
-    ["💸", "خەرجی ئەمڕۆ", "0 د.ع"],
-    ["👥", "قەرزی کڕیاران", "0 د.ع"],
+    ["💰", "فرۆشتنی ئەمڕۆ", money(accountingData.todaySales)],
+    ["📈", "قازانجی ئەمڕۆ", money(accountingData.todayProfit)],
+    ["💸", "خەرجی ئەمڕۆ", money(accountingData.todayExpenses)],
+    ["👥", "قەرزی کڕیاران", money(accountingData.customerDebts)],
   ];
 
   const menu = [
@@ -192,26 +160,10 @@ function Dashboard({ onBack, products }) {
           {cards.map((card, index) => (
             <View style={styles.accountingCard} key={index}>
               <Text style={styles.accountingIcon}>{card[0]}</Text>
-
-              <Text style={styles.accountingCardTitle}>
-                {card[1]}
-              </Text>
-
-              <Text style={styles.accountingCardValue}>
-                {card[2]}
-              </Text>
+              <Text style={styles.accountingCardTitle}>{card[1]}</Text>
+              <Text style={styles.accountingCardValue}>{card[2]}</Text>
             </View>
           ))}
-        </View>
-
-        <View style={styles.accountingSection}>
-          <Text style={styles.accountingSectionTitle}>
-            📦 کۆگا
-          </Text>
-
-          <Text style={styles.accountingNoteText}>
-            کۆی بەرهەمەکان: {totalProducts}
-          </Text>
         </View>
 
         <View style={styles.accountingSection}>
@@ -239,6 +191,22 @@ function Dashboard({ onBack, products }) {
           />
         </View>
 
+        <View style={styles.accountingSection}>
+          <View style={styles.warningHeader}>
+            <Text style={styles.accountingSectionTitle}>
+              📦 کۆگای کەم
+            </Text>
+
+            <Text style={styles.warningNumber}>
+              {accountingData.lowStock}
+            </Text>
+          </View>
+
+          <Text style={styles.warningText}>
+            {accountingData.lowStock} بەرهەم نزیکن لە تەواوبوون.
+          </Text>
+        </View>
+
         <Text style={styles.menuTitle}>بەشەکانی حسابات</Text>
 
         <View style={styles.menuGrid}>
@@ -260,14 +228,12 @@ function Dashboard({ onBack, products }) {
         </View>
 
         <View style={styles.accountingNote}>
-          <Text style={styles.accountingNoteTitle}>
-            🔐 تێبینی
-          </Text>
+          <Text style={styles.accountingNoteTitle}>🔐 تێبینی</Text>
 
           <Text style={styles.accountingNoteText}>
-            Dashboard ـەکە ئامادەیە و دەتوانرێت لە قۆناغی
-            داهاتوودا حساباتی ڕاستەقینەی فرۆشتن و خەرجی
-            و قازانج بە Firestore زیاد بکرێت.
+            ئەم Dashboard ـە قۆناغی یەکەمی سیستەمی حساباتە.
+            ژمارەکان لە ئێستادا Demo ـن. Database و حساباتی
+            ڕاستەقینە لە قۆناغی داهاتوودا زیاد دەکرێن.
           </Text>
         </View>
       </ScrollView>
@@ -275,124 +241,32 @@ function Dashboard({ onBack, products }) {
   );
 }
 
-/* =========================
-   MANAGER PANEL
-========================= */
+function Transaction({ name, date, value, income }) {
+  return (
+    <View style={styles.transaction}>
+      <View style={styles.transactionInfo}>
+        <Text style={styles.transactionName}>{name}</Text>
+        <Text style={styles.transactionDate}>{date}</Text>
+      </View>
 
-function ManagerPanel({ products, onBack }) {
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
-  const [category, setCategory] = useState("کالای ماڵ");
-  const [image, setImage] = useState("");
-  const [editing, setEditing] = useState(null);
+      <Text style={income ? styles.income : styles.expense}>
+        {value}
+      </Text>
+    </View>
+  );
+}
 
-  const reset = () => {
-    setName("");
-    setPrice("");
-    setCategory("کالای ماڵ");
-    setImage("");
-    setEditing(null);
-  };
-
-  const saveProduct = async () => {
-    if (!name.trim()) {
-      Alert.alert("هەڵە", "ناوی بەرهەم بنووسە.");
-      return;
-    }
-
-    if (!price.trim() || Number.isNaN(Number(price))) {
-      Alert.alert("هەڵە", "نرخ بە ژمارە بنووسە.");
-      return;
-    }
-
-    try {
-      const productData = {
-        Name: name.trim(),
-        Price: Number(price),
-        Category: category,
-        image: image.trim(),
-      };
-
-      if (editing) {
-        await updateDoc(
-          doc(db, PRODUCTS_COLLECTION, editing.id),
-          productData
-        );
-
-        Alert.alert(
-          "سەرکەوتوو بوو ✅",
-          "بەرهەمەکە نوێ کرایەوە."
-        );
-      } else {
-        await addDoc(
-          collection(db, PRODUCTS_COLLECTION),
-          productData
-        );
-
-        Alert.alert(
-          "سەرکەوتوو بوو ✅",
-          "بەرهەمەکە زیاد کرا."
-        );
-      }
-
-      reset();
-    } catch (error) {
-      console.log("Firestore error:", error);
-
-      Alert.alert(
-        "هەڵە",
-        "کێشەیەک لە Firestore ڕوویدا."
-      );
-    }
-  };
-
-  const editProduct = (product) => {
-    setEditing(product);
-    setName(product.Name || "");
-    setPrice(String(product.Price || ""));
-    setCategory(product.Category || "کالای ماڵ");
-    setImage(product.image || "");
-  };
-
-  const removeProduct = (product) => {
-    Alert.alert(
-      "سڕینەوە",
-      `دڵنیایت دەتەوێت "${product.Name}" بسڕیتەوە؟`,
-      [
-        {
-          text: "نەخێر",
-          style: "cancel",
-        },
-        {
-          text: "بەڵێ",
-          style: "destructive",
-          onPress: async () => {
-            try {
-              await deleteDoc(
-                doc(
-                  db,
-                  PRODUCTS_COLLECTION,
-                  product.id
-                )
-              );
-
-              Alert.alert(
-                "سڕایەوە ✅",
-                "بەرهەمەکە سڕایەوە."
-              );
-            } catch (error) {
-              console.log(error);
-
-              Alert.alert(
-                "هەڵە",
-                "نەتوانرا بسڕدرێتەوە."
-              );
-            }
-          },
-        },
-      ]
-    );
-  };
+function ManagerPanel({ onBack }) {
+  const items = [
+    ["📦", "بەڕێوبەرایەتی بەرهەمەکان"],
+    ["➕", "زیادکردنی بەرهەم"],
+    ["✏️", "دەستکاریکردنی بەرهەم"],
+    ["🗑️", "سڕینەوەی بەرهەم"],
+    ["👥", "بەڕێوبەرایەتی کڕیارەکان"],
+    ["🏭", "دابینکەرەکان"],
+    ["📊", "ڕاپۆرتەکانی فرۆشتن"],
+    ["⚙️", "ڕێکخستنەکان"],
+  ];
 
   return (
     <SafeAreaView style={styles.safe}>
@@ -401,255 +275,83 @@ function ManagerPanel({ products, onBack }) {
           <Text style={styles.back}>‹ گەڕانەوە</Text>
         </TouchableOpacity>
 
-        <Text style={styles.managerTitle}>
-          👨‍💼 بەشی بەڕێوبەر
+        <Text style={styles.managerTitle}>👨‍💼 بەشی بەڕێوبەر</Text>
+
+        <Text style={styles.accountingDate}>
+          بەخێربێیت بۆ بەشی بەڕێوبەرایەتی
         </Text>
 
         <View style={styles.managerWelcome}>
+          <Text style={styles.managerWelcomeIcon}>👨‍💼</Text>
+
           <Text style={styles.managerWelcomeTitle}>
-            {editing
-              ? "✏️ دەستکاریکردنی بەرهەم"
-              : "➕ زیادکردنی بەرهەم"}
+            بەڕێوبەری Shwshawaty ASYA
           </Text>
 
-          <TextInput
-            value={name}
-            onChangeText={setName}
-            placeholder="ناوی بەرهەم"
-            placeholderTextColor="#777"
-            style={styles.passwordInput}
-          />
-
-          <TextInput
-            value={price}
-            onChangeText={setPrice}
-            placeholder="نرخ"
-            placeholderTextColor="#777"
-            keyboardType="numeric"
-            style={styles.passwordInput}
-          />
-
-          <TextInput
-            value={image}
-            onChangeText={setImage}
-            placeholder="لینکی وێنە"
-            placeholderTextColor="#777"
-            style={styles.passwordInput}
-            autoCapitalize="none"
-          />
-
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            style={{ marginTop: 12 }}
-          >
-            {categories
-              .filter((x) => x !== "هەموو")
-              .map((item) => (
-                <TouchableOpacity
-                  key={item}
-                  onPress={() => setCategory(item)}
-                  style={[
-                    styles.cat,
-                    category === item && styles.catActive,
-                  ]}
-                >
-                  <Text
-                    style={
-                      category === item
-                        ? styles.catTextActive
-                        : styles.catText
-                    }
-                  >
-                    {item}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-          </ScrollView>
-
-          <TouchableOpacity
-            style={styles.goldBtn}
-            onPress={saveProduct}
-          >
-            <Text style={styles.goldText}>
-              {editing
-                ? "💾 پاشەکەوتکردن"
-                : "➕ زیادکردنی بەرهەم"}
-            </Text>
-          </TouchableOpacity>
-
-          {editing && (
-            <TouchableOpacity
-              style={styles.cancelBtn}
-              onPress={reset}
-            >
-              <Text style={styles.cancelText}>
-                هەڵوەشاندنەوە
-              </Text>
-            </TouchableOpacity>
-          )}
+          <Text style={styles.managerWelcomeText}>
+            لێرە دەتوانیت بەشەکانی بەڕێوبەرایەتی کۆنترۆڵ بکەیت.
+          </Text>
         </View>
 
-        <Text style={styles.menuTitle}>
-          📦 بەرهەمەکان
-        </Text>
+        <Text style={styles.menuTitle}>بەشەکانی بەڕێوبەر</Text>
 
-        {products.length === 0 ? (
-          <Text style={styles.empty}>
-            هیچ بەرهەمێک نییە.
-          </Text>
-        ) : (
-          products.map((product) => (
-            <View
-              key={product.id}
-              style={styles.adminProduct}
+        <View style={styles.menuGrid}>
+          {items.map(([icon, title], index) => (
+            <TouchableOpacity
+              key={index}
+              style={styles.menuButton}
+              onPress={() =>
+                Alert.alert(
+                  title,
+                  "ئەم بەشە ئامادەیە بۆ زیادکردنی سیستەمی ڕاستەقینە."
+                )
+              }
             >
-              <View style={{ flex: 1 }}>
-                <Text style={styles.adminProductName}>
-                  {product.Name}
-                </Text>
+              <Text style={styles.menuIcon}>{icon}</Text>
+              <Text style={styles.menuText}>{title}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
 
-                <Text style={styles.adminProductPrice}>
-                  {money(product.Price)}
-                </Text>
+        <View style={styles.accountingNote}>
+          <Text style={styles.accountingNoteTitle}>
+            🔒 تێبینی ئەمنی
+          </Text>
 
-                <Text style={styles.adminProductCategory}>
-                  {product.Category}
-                </Text>
-              </View>
-
-              <TouchableOpacity
-                style={styles.editBtn}
-                onPress={() => editProduct(product)}
-              >
-                <Text>✏️</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={styles.deleteSmallBtn}
-                onPress={() => removeProduct(product)}
-              >
-                <Text>🗑️</Text>
-              </TouchableOpacity>
-            </View>
-          ))
-        )}
+          <Text style={styles.accountingNoteText}>
+            ئەم بەشە تەنها بۆ بەڕێوبەرە و بە پاسۆردی جیاواز پارێزراوە.
+          </Text>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
 }
 
-/* =========================
-   APP
-========================= */
-
 export default function App() {
   const [started, setStarted] = useState(false);
-
   const [tab, setTab] = useState("home");
-
   const [category, setCategory] = useState("هەموو");
-
   const [query, setQuery] = useState("");
-
   const [cart, setCart] = useState([]);
-
   const [selected, setSelected] = useState(null);
-
   const [screen, setScreen] = useState("main");
 
-  const [products, setProducts] = useState(productsDemo);
-
-  useEffect(() => {
-    let unsubscribe;
-
-    try {
-      const productsRef = collection(
-        db,
-        PRODUCTS_COLLECTION
-      );
-
-      unsubscribe = onSnapshot(
-        productsRef,
-        (snapshot) => {
-          const data = snapshot.docs.map((item) => ({
-            id: item.id,
-            ...item.data(),
-          }));
-
-          setProducts(
-            data.length > 0 ? data : productsDemo
-          );
-        },
-        (error) => {
-          console.log("Products listener error:", error);
-          setProducts(productsDemo);
-        }
-      );
-    } catch (error) {
-      console.log("Firestore setup error:", error);
-      setProducts(productsDemo);
-    }
-
-    return () => {
-      if (unsubscribe) {
-        unsubscribe();
-      }
-    };
-  }, []);
-
-  const normalizedProducts = useMemo(() => {
-    return products.map((product) => ({
-      id: product.id,
-      name:
-        product.name ||
-        product.Name ||
-        "بەرهەم",
-      price:
-        product.price ??
-        product.Price ??
-        0,
-      category:
-        product.category ||
-        product.Category ||
-        "کالای ماڵ",
-      image:
-        product.image ||
-        product.Image ||
-        "https://images.unsplash.com/photo-1577937927133-66ef06acdf18?w=800",
-    }));
-  }, [products]);
-
   const filtered = useMemo(() => {
-    return normalizedProducts.filter(
+    return products.filter(
       (product) =>
-        (category === "هەموو" ||
-          product.category === category) &&
-        product.name
-          .toLowerCase()
-          .includes(query.toLowerCase())
+        (category === "هەموو" || product.category === category) &&
+        product.name.toLowerCase().includes(query.toLowerCase())
     );
-  }, [
-    normalizedProducts,
-    category,
-    query,
-  ]);
+  }, [category, query]);
 
   const addToCart = (product) => {
-    setCart((current) => [
-      ...current,
-      product,
-    ]);
+    setCart((current) => [...current, product]);
 
     Alert.alert(
       "زیادکرا",
       `${product.name} خرایە ناو سەبەتەکە.`
     );
   };
-
-  /* =========================
-     WELCOME
-  ========================= */
 
   if (!started) {
     return (
@@ -676,85 +378,51 @@ export default function App() {
     );
   }
 
-  /* =========================
-     PASSWORD SCREENS
-  ========================= */
-
   if (screen === "dashboardPassword") {
     return (
       <PasswordScreen
         title="Dashboard"
-        passwordCorrect={DASHBOARD_PASSWORD}
+        passwordCorrect="gardunali"
         onSuccess={() => setScreen("dashboard")}
         onBack={() => setScreen("main")}
       />
     );
   }
 
+  if (screen === "dashboard") {
+    return <Dashboard onBack={() => setScreen("main")} />;
+  }
+
   if (screen === "managerPassword") {
     return (
       <PasswordScreen
         title="بەشی بەڕێوبەر"
-        passwordCorrect={ADMIN_PASSWORD}
+        passwordCorrect="1993"
         onSuccess={() => setScreen("manager")}
         onBack={() => setScreen("main")}
       />
     );
   }
 
-  /* =========================
-     DASHBOARD
-  ========================= */
-
-  if (screen === "dashboard") {
-    return (
-      <Dashboard
-        products={products}
-        onBack={() => setScreen("main")}
-      />
-    );
-  }
-
-  /* =========================
-     MANAGER
-  ========================= */
-
   if (screen === "manager") {
-    return (
-      <ManagerPanel
-        products={products}
-        onBack={() => setScreen("main")}
-      />
-    );
+    return <ManagerPanel onBack={() => setScreen("main")} />;
   }
-
-  /* =========================
-     PRODUCT DETAILS
-  ========================= */
 
   if (selected) {
     return (
       <SafeAreaView style={styles.safe}>
         <ScrollView>
-          <TouchableOpacity
-            onPress={() => setSelected(null)}
-          >
-            <Text style={styles.back}>
-              ‹ گەڕانەوە
-            </Text>
+          <TouchableOpacity onPress={() => setSelected(null)}>
+            <Text style={styles.back}>‹ گەڕانەوە</Text>
           </TouchableOpacity>
 
           <Image
-            source={{
-              uri: selected.image,
-            }}
+            source={{ uri: selected.image }}
             style={styles.hero}
           />
 
           <View style={styles.pad}>
-            <Text style={styles.title}>
-              {selected.name}
-            </Text>
+            <Text style={styles.title}>{selected.name}</Text>
 
             <Text style={styles.price}>
               {money(selected.price)}
@@ -767,9 +435,7 @@ export default function App() {
 
             <TouchableOpacity
               style={styles.goldBtn}
-              onPress={() =>
-                addToCart(selected)
-              }
+              onPress={() => addToCart(selected)}
             >
               <Text style={styles.goldText}>
                 🛒 زیادکردن بۆ سەبەت
@@ -781,32 +447,18 @@ export default function App() {
     );
   }
 
-  /* =========================
-     MAIN APP
-  ========================= */
-
   return (
     <SafeAreaView style={styles.safe}>
       <View style={styles.header}>
         <Text style={styles.brand}>ASYA</Text>
-
-        <Text style={styles.sub}>
-          Welcome Shwshawaty ASYA
-        </Text>
+        <Text style={styles.sub}>Welcome Shwshawaty ASYA</Text>
       </View>
 
       {tab === "home" && (
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-        >
+        <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.banner}>
-            <Text style={styles.bannerTitle}>
-              کۆمەڵە خواردن
-            </Text>
-
-            <Text style={styles.bannerSub}>
-              نوێ و تایبەت بۆ تۆ
-            </Text>
+            <Text style={styles.bannerTitle}>کۆمەڵە خواردن</Text>
+            <Text style={styles.bannerSub}>نوێ و تایبەت بۆ تۆ</Text>
           </View>
 
           <TextInput
@@ -828,8 +480,7 @@ export default function App() {
                 onPress={() => setCategory(item)}
                 style={[
                   styles.cat,
-                  category === item &&
-                    styles.catActive,
+                  category === item && styles.catActive,
                 ]}
               >
                 <Text
@@ -845,9 +496,7 @@ export default function App() {
             ))}
           </ScrollView>
 
-          <Text style={styles.section}>
-            بەرهەمە نوێکان
-          </Text>
+          <Text style={styles.section}>بەرهەمە نوێکان</Text>
 
           <FlatList
             data={filtered}
@@ -862,16 +511,11 @@ export default function App() {
                 onPress={() => setSelected(item)}
               >
                 <Image
-                  source={{
-                    uri: item.image,
-                  }}
+                  source={{ uri: item.image }}
                   style={styles.cardImg}
                 />
 
-                <Text
-                  style={styles.cardName}
-                  numberOfLines={2}
-                >
+                <Text style={styles.cardName} numberOfLines={2}>
                   {item.name}
                 </Text>
 
@@ -881,13 +525,9 @@ export default function App() {
 
                 <TouchableOpacity
                   style={styles.smallBtn}
-                  onPress={() =>
-                    addToCart(item)
-                  }
+                  onPress={() => addToCart(item)}
                 >
-                  <Text style={styles.smallBtnText}>
-                    + سەبەت
-                  </Text>
+                  <Text style={styles.smallBtnText}>+ سەبەت</Text>
                 </TouchableOpacity>
               </TouchableOpacity>
             )}
@@ -897,14 +537,10 @@ export default function App() {
 
       {tab === "cart" && (
         <ScrollView contentContainerStyle={styles.pad}>
-          <Text style={styles.pageTitle}>
-            سەبەت 🛒
-          </Text>
+          <Text style={styles.pageTitle}>سەبەت 🛒</Text>
 
           {cart.length === 0 ? (
-            <Text style={styles.empty}>
-              سەبەتەکەت بەتاڵە.
-            </Text>
+            <Text style={styles.empty}>سەبەتەکەت بەتاڵە.</Text>
           ) : (
             <>
               {cart.map((product, index) => (
@@ -912,9 +548,7 @@ export default function App() {
                   style={styles.row}
                   key={`${product.id}-${index}`}
                 >
-                  <Text style={styles.rowName}>
-                    {product.name}
-                  </Text>
+                  <Text style={styles.rowName}>{product.name}</Text>
 
                   <Text style={styles.cartPrice}>
                     {money(product.price)}
@@ -945,9 +579,7 @@ export default function App() {
           contentContainerStyle={styles.pad}
           showsVerticalScrollIndicator={false}
         >
-          <Text style={styles.pageTitle}>
-            پڕۆفایل 👤
-          </Text>
+          <Text style={styles.pageTitle}>پڕۆفایل 👤</Text>
 
           <Text style={styles.desc}>
             بەخێربێیت بۆ پڕۆفایلی Shwshawaty ASYA.
@@ -955,13 +587,9 @@ export default function App() {
 
           <TouchableOpacity
             style={styles.profileEntry}
-            onPress={() =>
-              setScreen("dashboardPassword")
-            }
+            onPress={() => setScreen("dashboardPassword")}
           >
-            <Text style={styles.profileEntryIcon}>
-              📊
-            </Text>
+            <Text style={styles.profileEntryIcon}>📊</Text>
 
             <View style={styles.profileEntryText}>
               <Text style={styles.profileEntryTitle}>
@@ -973,20 +601,14 @@ export default function App() {
               </Text>
             </View>
 
-            <Text style={styles.profileArrow}>
-              ‹
-            </Text>
+            <Text style={styles.profileArrow}>‹</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             style={styles.profileEntry}
-            onPress={() =>
-              setScreen("managerPassword")
-            }
+            onPress={() => setScreen("managerPassword")}
           >
-            <Text style={styles.profileEntryIcon}>
-              👨‍💼
-            </Text>
+            <Text style={styles.profileEntryIcon}>👨‍💼</Text>
 
             <View style={styles.profileEntryText}>
               <Text style={styles.profileEntryTitle}>
@@ -998,9 +620,7 @@ export default function App() {
               </Text>
             </View>
 
-            <Text style={styles.profileArrow}>
-              ‹
-            </Text>
+            <Text style={styles.profileArrow}>‹</Text>
           </TouchableOpacity>
         </ScrollView>
       )}
@@ -1011,11 +631,7 @@ export default function App() {
           style={styles.navButton}
         >
           <Text
-            style={
-              tab === "home"
-                ? styles.navOn
-                : styles.navOff
-            }
+            style={tab === "home" ? styles.navOn : styles.navOff}
           >
             ⌂{"\n"}سەرەکی
           </Text>
@@ -1026,11 +642,7 @@ export default function App() {
           style={styles.navButton}
         >
           <Text
-            style={
-              tab === "cart"
-                ? styles.navOn
-                : styles.navOff
-            }
+            style={tab === "cart" ? styles.navOn : styles.navOff}
           >
             🛒{"\n"}سەبەت ({cart.length})
           </Text>
@@ -1041,11 +653,7 @@ export default function App() {
           style={styles.navButton}
         >
           <Text
-            style={
-              tab === "profile"
-                ? styles.navOn
-                : styles.navOff
-            }
+            style={tab === "profile" ? styles.navOn : styles.navOff}
           >
             👤{"\n"}پڕۆفایل
           </Text>
@@ -1054,10 +662,6 @@ export default function App() {
     </SafeAreaView>
   );
 }
-
-/* =========================
-   STYLES
-========================= */
 
 const styles = StyleSheet.create({
   welcomeSafe: {
@@ -1288,7 +892,6 @@ const styles = StyleSheet.create({
     color: "#aaa",
     fontSize: 17,
     textAlign: "right",
-    marginTop: 15,
   },
 
   row: {
@@ -1403,7 +1006,6 @@ const styles = StyleSheet.create({
     padding: 14,
     fontSize: 17,
     textAlign: "center",
-    marginTop: 10,
   },
 
   passwordError: {
@@ -1564,6 +1166,24 @@ const styles = StyleSheet.create({
     fontWeight: "800",
   },
 
+  warningHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+
+  warningNumber: {
+    color: "#ff6262",
+    fontSize: 24,
+    fontWeight: "900",
+  },
+
+  warningText: {
+    color: "#aaa",
+    textAlign: "right",
+    marginTop: 8,
+  },
+
   menuTitle: {
     color: "#d7a52b",
     fontSize: 20,
@@ -1640,74 +1260,26 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#292929",
     padding: 20,
-    marginTop: 15,
+    alignItems: "center",
+  },
+
+  managerWelcomeIcon: {
+    fontSize: 50,
   },
 
   managerWelcomeTitle: {
     color: "#fff",
     fontSize: 19,
     fontWeight: "800",
-    textAlign: "center",
-    marginBottom: 10,
-  },
-
-  adminProduct: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#1c1c1c",
-    borderRadius: 14,
-    padding: 12,
-    marginBottom: 10,
-    borderWidth: 1,
-    borderColor: "#292929",
-  },
-
-  adminProductName: {
-    color: "#fff",
-    fontSize: 15,
-    fontWeight: "800",
-    textAlign: "right",
-  },
-
-  adminProductPrice: {
-    color: "#d7a52b",
-    fontSize: 14,
-    fontWeight: "800",
-    marginTop: 5,
-    textAlign: "right",
-  },
-
-  adminProductCategory: {
-    color: "#888",
-    fontSize: 12,
-    marginTop: 3,
-    textAlign: "right",
-  },
-
-  editBtn: {
-    backgroundColor: "#292929",
-    padding: 10,
-    borderRadius: 10,
-    marginLeft: 7,
-  },
-
-  deleteSmallBtn: {
-    backgroundColor: "#292929",
-    padding: 10,
-    borderRadius: 10,
-    marginLeft: 7,
-  },
-
-  cancelBtn: {
-    backgroundColor: "#333",
-    padding: 14,
-    borderRadius: 12,
-    alignItems: "center",
     marginTop: 10,
+    textAlign: "center",
   },
 
-  cancelText: {
-    color: "#fff",
-    fontWeight: "700",
+  managerWelcomeText: {
+    color: "#aaa",
+    fontSize: 14,
+    lineHeight: 23,
+    marginTop: 8,
+    textAlign: "center",
   },
 });
