@@ -12,6 +12,19 @@ import {
   Alert,
 } from "react-native";
 
+/* Web error catcher */
+if (typeof window !== "undefined") {
+  window.onerror = function (message, source, lineno, colno, error) {
+    document.body.innerHTML =
+      "<pre style='color:red;padding:20px;white-space:pre-wrap;font-size:16px'>" +
+      "ASYA ERROR:\n\n" +
+      message +
+      "\n\n" +
+      (error && error.stack ? error.stack : "") +
+      "</pre>";
+  };
+}
+
 const products = [
   {
     id: "1",
