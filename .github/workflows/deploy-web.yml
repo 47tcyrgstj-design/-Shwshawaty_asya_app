@@ -16,28 +16,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 22
 
-      - name: Install dependencies
-        run: npm install
+      - run: npm install
 
-      - name: Export Expo Web
-        run: npx expo export --platform web
+      - run: npx expo export --platform web
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
+      - name: Fix paths
+        run: |
+          sed -i 's|src="/_expo/|src="./_expo/|g' dist/index.html
+          sed -i 's|href="/_expo/|href="./_expo/|g' dist/index.html
 
-      - name: Upload web build
-        uses: actions/upload-pages-artifact@v3
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
 
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - uses: actions/deploy-pages@v4
