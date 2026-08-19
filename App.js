@@ -61,10 +61,10 @@ const categories = [
 ];
 
 /* =========================
-   ACCOUNTING DEMO
+   ACCOUNTING
 ========================= */
 
-const accountingData = {
+const initialAccountingData = {
   todaySales: 1250000,
   todayProfit: 340000,
   todayExpenses: 120000,
@@ -76,10 +76,15 @@ const money = (value) =>
   new Intl.NumberFormat("ku-IQ").format(value) + " د.ع";
 
 /* =========================
-   PASSWORD SCREEN
+   PASSWORD
 ========================= */
 
-function PasswordScreen({ title, correctPassword, onSuccess, onBack }) {
+function PasswordScreen({
+  title,
+  correctPassword,
+  onSuccess,
+  onBack,
+}) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
@@ -106,7 +111,9 @@ function PasswordScreen({ title, correctPassword, onSuccess, onBack }) {
         <View style={styles.lockBox}>
           <Text style={styles.lockIcon}>🔐</Text>
 
-          <Text style={styles.passwordTitle}>{title}</Text>
+          <Text style={styles.passwordTitle}>
+            {title}
+          </Text>
 
           <Text style={styles.passwordSubtitle}>
             بۆ چوونەژوورەوە پاسۆردەکە بنووسە
@@ -125,14 +132,18 @@ function PasswordScreen({ title, correctPassword, onSuccess, onBack }) {
           />
 
           {error !== "" && (
-            <Text style={styles.passwordError}>{error}</Text>
+            <Text style={styles.passwordError}>
+              {error}
+            </Text>
           )}
 
           <TouchableOpacity
             style={styles.goldBtn}
             onPress={checkPassword}
           >
-            <Text style={styles.goldText}>چوونەژوورەوە</Text>
+            <Text style={styles.goldText}>
+              چوونەژوورەوە
+            </Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -145,11 +156,45 @@ function PasswordScreen({ title, correctPassword, onSuccess, onBack }) {
 ========================= */
 
 function Dashboard({ onBack }) {
+  const [data, setData] = useState(initialAccountingData);
+  const [editing, setEditing] = useState(null);
+  const [value, setValue] = useState("");
+
+  const editValue = (key) => {
+    setEditing(key);
+    setValue(String(data[key]));
+  };
+
+  const saveValue = () => {
+    const number = Number(value.replace(/,/g, ""));
+
+    if (!Number.isFinite(number)) {
+      Alert.alert(
+        "هەڵە",
+        "تکایە ژمارەیەکی دروست بنووسە."
+      );
+      return;
+    }
+
+    setData((old) => ({
+      ...old,
+      [editing]: number,
+    }));
+
+    setEditing(null);
+    setValue("");
+
+    Alert.alert(
+      "سەرکەوتوو بوو",
+      "ژمارەکە بە سەرکەوتوویی گۆڕدرا."
+    );
+  };
+
   const cards = [
-    ["💰", "فرۆشتنی ئەمڕۆ", money(accountingData.todaySales)],
-    ["📈", "قازانجی ئەمڕۆ", money(accountingData.todayProfit)],
-    ["💸", "خەرجی ئەمڕۆ", money(accountingData.todayExpenses)],
-    ["👥", "قەرزی کڕیاران", money(accountingData.customerDebts)],
+    ["💰", "فرۆشتنی ئەمڕۆ", "todaySales"],
+    ["📈", "قازانجی ئەمڕۆ", "todayProfit"],
+    ["💸", "خەرجی ئەمڕۆ", "todayExpenses"],
+    ["👥", "قەرزی کڕیاران", "customerDebts"],
   ];
 
   const menu = [
@@ -170,7 +215,9 @@ function Dashboard({ onBack }) {
         showsVerticalScrollIndicator={false}
       >
         <TouchableOpacity onPress={onBack}>
-          <Text style={styles.back}>‹ گەڕانەوە</Text>
+          <Text style={styles.back}>
+            ‹ گەڕانەوە
+          </Text>
         </TouchableOpacity>
 
         <Text style={styles.accountingTitle}>
@@ -181,21 +228,75 @@ function Dashboard({ onBack }) {
           کورتەی حساباتی ئەمڕۆ
         </Text>
 
+        {/* EDIT BOX */}
+
+        {editing && (
+          <View style={styles.editBox}>
+            <Text style={styles.editTitle}>
+              ✏️ دەستکاریکردنی ژمارە
+            </Text>
+
+            <TextInput
+              value={value}
+              onChangeText={setValue}
+              keyboardType="numeric"
+              style={styles.passwordInput}
+              placeholder="ژمارە بنووسە"
+              placeholderTextColor="#777"
+            />
+
+            <TouchableOpacity
+              style={styles.goldBtn}
+              onPress={saveValue}
+            >
+              <Text style={styles.goldText}>
+                💾 پاشەکەوتکردن
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => {
+                setEditing(null);
+                setValue("");
+              }}
+              style={styles.cancelBtn}
+            >
+              <Text style={styles.cancelText}>
+                هەڵوەشاندنەوە
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
+
+        {/* CARDS */}
+
         <View style={styles.accountingGrid}>
-          {cards.map((card, index) => (
-            <View style={styles.accountingCard} key={index}>
-              <Text style={styles.accountingIcon}>{card[0]}</Text>
+          {cards.map(([icon, title, key]) => (
+            <TouchableOpacity
+              style={styles.accountingCard}
+              key={key}
+              onPress={() => editValue(key)}
+            >
+              <Text style={styles.accountingIcon}>
+                {icon}
+              </Text>
 
               <Text style={styles.accountingCardTitle}>
-                {card[1]}
+                {title}
               </Text>
 
               <Text style={styles.accountingCardValue}>
-                {card[2]}
+                {money(data[key])}
               </Text>
-            </View>
+
+              <Text style={styles.editHint}>
+                ✏️ کرتە بکە بۆ دەستکاری
+              </Text>
+            </TouchableOpacity>
           ))}
         </View>
+
+        {/* TRANSACTIONS */}
 
         <View style={styles.accountingSection}>
           <Text style={styles.accountingSectionTitle}>
@@ -251,6 +352,8 @@ function Dashboard({ onBack }) {
           </View>
         </View>
 
+        {/* LOW STOCK */}
+
         <View style={styles.accountingSection}>
           <View style={styles.warningHeader}>
             <Text style={styles.accountingSectionTitle}>
@@ -258,16 +361,29 @@ function Dashboard({ onBack }) {
             </Text>
 
             <Text style={styles.warningNumber}>
-              {accountingData.lowStock}
+              {data.lowStock}
             </Text>
           </View>
 
           <Text style={styles.warningText}>
-            {accountingData.lowStock} بەرهەم نزیکن لە تەواوبوون.
+            {data.lowStock} بەرهەم نزیکن لە تەواوبوون.
           </Text>
+
+          <TouchableOpacity
+            style={styles.stockEditBtn}
+            onPress={() => editValue("lowStock")}
+          >
+            <Text style={styles.stockEditText}>
+              ✏️ دەستکاری کۆگا
+            </Text>
+          </TouchableOpacity>
         </View>
 
-        <Text style={styles.menuTitle}>بەشەکانی حسابات</Text>
+        {/* MENU */}
+
+        <Text style={styles.menuTitle}>
+          بەشەکانی حسابات
+        </Text>
 
         <View style={styles.menuGrid}>
           {menu.map(([icon, title], index) => (
@@ -277,13 +393,17 @@ function Dashboard({ onBack }) {
               onPress={() =>
                 Alert.alert(
                   title,
-                  "ئەم بەشە لە قۆناغی داهاتوودا بە سیستەمی ڕاستەقینەی حسابات چالاک دەکرێت."
+                  "ئەم بەشە لە قۆناغی داهاتوودا چالاک دەکرێت."
                 )
               }
             >
-              <Text style={styles.menuIcon}>{icon}</Text>
+              <Text style={styles.menuIcon}>
+                {icon}
+              </Text>
 
-              <Text style={styles.menuText}>{title}</Text>
+              <Text style={styles.menuText}>
+                {title}
+              </Text>
             </TouchableOpacity>
           ))}
         </View>
@@ -294,9 +414,9 @@ function Dashboard({ onBack }) {
           </Text>
 
           <Text style={styles.accountingNoteText}>
-            ئەم Dashboard ـە قۆناغی یەکەمی سیستەمی حساباتە.
-            ژمارەکان لە ئێستادا Demo ـن.
-            Database و حساباتی ڕاستەقینە لە قۆناغی داهاتوودا زیاد دەکرێن.
+            ژمارەکانی سەرەوە ئێستا دەستکاریکراون.
+            لە قۆناغی داهاتوودا Database ـی ڕاستەقینە
+            زیاد دەکرێت بۆ هەڵگرتنی حسابات.
           </Text>
         </View>
       </ScrollView>
@@ -327,7 +447,9 @@ function ManagerPanel({ onBack }) {
         showsVerticalScrollIndicator={false}
       >
         <TouchableOpacity onPress={onBack}>
-          <Text style={styles.back}>‹ گەڕانەوە</Text>
+          <Text style={styles.back}>
+            ‹ گەڕانەوە
+          </Text>
         </TouchableOpacity>
 
         <Text style={styles.managerTitle}>
@@ -339,7 +461,9 @@ function ManagerPanel({ onBack }) {
         </Text>
 
         <View style={styles.managerWelcome}>
-          <Text style={styles.managerWelcomeIcon}>👨‍💼</Text>
+          <Text style={styles.managerWelcomeIcon}>
+            👨‍💼
+          </Text>
 
           <Text style={styles.managerWelcomeTitle}>
             بەڕێوبەری Shwshawaty ASYA
@@ -366,9 +490,13 @@ function ManagerPanel({ onBack }) {
                 )
               }
             >
-              <Text style={styles.menuIcon}>{icon}</Text>
+              <Text style={styles.menuIcon}>
+                {icon}
+              </Text>
 
-              <Text style={styles.menuText}>{title}</Text>
+              <Text style={styles.menuText}>
+                {title}
+              </Text>
             </TouchableOpacity>
           ))}
         </View>
@@ -383,11 +511,7 @@ function ManagerPanel({ onBack }) {
           </Text>
         </View>
       </ScrollView>
-    </SafeAreaView>
-  );
-}
-
-/* =========================
+    <//* =========================
    MAIN APP
 ========================= */
 
@@ -562,7 +686,9 @@ export default function App() {
   return (
     <SafeAreaView style={styles.safe}>
       <View style={styles.header}>
-        <Text style={styles.brand}>ASYA</Text>
+        <Text style={styles.brand}>
+          ASYA
+        </Text>
 
         <Text style={styles.sub}>
           Welcome Shwshawaty ASYA
@@ -731,7 +857,9 @@ export default function App() {
 
           <TouchableOpacity
             style={styles.profileEntry}
-            onPress={() => setScreen("dashboardPassword")}
+            onPress={() =>
+              setScreen("dashboardPassword")
+            }
           >
             <Text style={styles.profileEntryIcon}>
               📊
@@ -756,7 +884,9 @@ export default function App() {
 
           <TouchableOpacity
             style={styles.profileEntry}
-            onPress={() => setScreen("managerPassword")}
+            onPress={() =>
+              setScreen("managerPassword")
+            }
           >
             <Text style={styles.profileEntryIcon}>
               👨‍💼
@@ -1275,6 +1405,54 @@ const styles = StyleSheet.create({
     fontWeight: "800",
     textAlign: "right",
     marginTop: 6,
+  },
+
+  editHint: {
+    color: "#d7a52b",
+    fontSize: 11,
+    textAlign: "right",
+    marginTop: 8,
+  },
+
+  editBox: {
+    backgroundColor: "#1c1c1c",
+    padding: 18,
+    borderRadius: 16,
+    marginBottom: 15,
+    borderWidth: 1,
+    borderColor: "#d7a52b",
+  },
+
+  editTitle: {
+    color: "#d7a52b",
+    fontSize: 18,
+    fontWeight: "800",
+    textAlign: "right",
+    marginBottom: 12,
+  },
+
+  cancelBtn: {
+    marginTop: 12,
+    alignItems: "center",
+    padding: 10,
+  },
+
+  cancelText: {
+    color: "#aaa",
+    fontSize: 14,
+  },
+
+  stockEditBtn: {
+    marginTop: 12,
+    padding: 10,
+    borderRadius: 10,
+    backgroundColor: "#292929",
+    alignItems: "center",
+  },
+
+  stockEditText: {
+    color: "#d7a52b",
+    fontWeight: "700",
   },
 
   accountingSection: {
