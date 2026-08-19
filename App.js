@@ -511,7 +511,7 @@ function ManagerPanel({ onBack }) {
           </Text>
         </View>
       </ScrollView>
-    <//* =========================
+    //* =========================
    MAIN APP
 ========================= */
 
