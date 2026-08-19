@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   SafeAreaView,
   View,
@@ -11,6 +11,9 @@ import {
   ScrollView,
   Alert,
 } from "react-native";
+
+import { collection, onSnapshot } from "firebase/firestore";
+import { db } from "./firebase";
 
 /* Web error catcher */
 if (typeof window !== "undefined") {
@@ -25,49 +28,9 @@ if (typeof window !== "undefined") {
   };
 }
 
-const products = [
-  {
-    id: "1",
-    name: "کۆمەڵە خواردن 25 پارچە",
-    price: 75000,
-    category: "کۆمەڵە خواردن",
-    image:
-      "https://images.unsplash.com/photo-1577937927133-66ef06acdf18?w=800",
-  },
-  {
-    id: "2",
-    name: "سێتی پیاڵە 12 پارچە",
-    price: 45000,
-    category: "پیاڵە و پیاڵەخانە",
-    image:
-      "https://images.unsplash.com/photo-1572119865084-43c285814d63?w=800",
-  },
-  {
-    id: "3",
-    name: "کاسە سێتە 6 پارچە",
-    price: 30000,
-    category: "کاسە و جام",
-    image:
-      "https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=800",
-  },
-  {
-    id: "4",
-    name: "کۆمەڵە دیاری",
-    price: 90000,
-    category: "کۆمەڵە دیاری",
-    image:
-      "https://images.unsplash.com/photo-1603199506016-b9a594b593c0?w=800",
-  },
-];
-
-const categories = [
-  "هەموو",
-  "کۆمەڵە خواردن",
-  "پیاڵە و پیاڵەخانە",
-  "کاسە و جام",
-  "کالای ماڵ",
-  "کۆمەڵە دیاری",
-];
+/* =========================
+   ACCOUNTING DEMO DATA
+========================= */
 
 const accountingData = {
   todaySales: 1250000,
@@ -80,7 +43,16 @@ const accountingData = {
 const money = (value) =>
   new Intl.NumberFormat("ku-IQ").format(value) + " د.ع";
 
-function PasswordScreen({ title, passwordCorrect, onSuccess, onBack }) {
+/* =========================
+   PASSWORD SCREEN
+========================= */
+
+function PasswordScreen({
+  title,
+  passwordCorrect,
+  onSuccess,
+  onBack,
+}) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
@@ -135,6 +107,10 @@ function PasswordScreen({ title, passwordCorrect, onSuccess, onBack }) {
   );
 }
 
+/* =========================
+   DASHBOARD
+========================= */
+
 function Dashboard({ onBack }) {
   const cards = [
     ["💰", "فرۆشتنی ئەمڕۆ", money(accountingData.todaySales)],
@@ -173,8 +149,12 @@ function Dashboard({ onBack }) {
           {cards.map((card, index) => (
             <View style={styles.accountingCard} key={index}>
               <Text style={styles.accountingIcon}>{card[0]}</Text>
-              <Text style={styles.accountingCardTitle}>{card[1]}</Text>
-              <Text style={styles.accountingCardValue}>{card[2]}</Text>
+              <Text style={styles.accountingCardTitle}>
+                {card[1]}
+              </Text>
+              <Text style={styles.accountingCardValue}>
+                {card[2]}
+              </Text>
             </View>
           ))}
         </View>
@@ -254,6 +234,10 @@ function Dashboard({ onBack }) {
   );
 }
 
+/* =========================
+   TRANSACTION
+========================= */
+
 function Transaction({ name, date, value, income }) {
   return (
     <View style={styles.transaction}>
@@ -268,6 +252,10 @@ function Transaction({ name, date, value, income }) {
     </View>
   );
 }
+
+/* =========================
+   MANAGER PANEL
+========================= */
 
 function ManagerPanel({ onBack }) {
   const items = [
@@ -288,7 +276,9 @@ function ManagerPanel({ onBack }) {
           <Text style={styles.back}>‹ گەڕانەوە</Text>
         </TouchableOpacity>
 
-        <Text style={styles.managerTitle}>👨‍💼 بەشی بەڕێوبەر</Text>
+        <Text style={styles.managerTitle}>
+          👨‍💼 بەشی بەڕێوبەر
+        </Text>
 
         <Text style={styles.accountingDate}>
           بەخێربێیت بۆ بەشی بەڕێوبەرایەتی
@@ -340,6 +330,10 @@ function ManagerPanel({ onBack }) {
   );
 }
 
+/* =========================
+   MAIN APP
+========================= */
+
 export default function App() {
   const [started, setStarted] = useState(false);
   const [tab, setTab] = useState("home");
@@ -349,13 +343,84 @@ export default function App() {
   const [selected, setSelected] = useState(null);
   const [screen, setScreen] = useState("main");
 
+  /* =========================
+     FIRESTORE PRODUCTS
+  ========================= */
+
+  const [products, setProducts] = useState([]);
+  const [productsLoading, setProductsLoading] = useState(true);
+  const [productsError, setProductsError] = useState("");
+
+  useEffect(() => {
+    const productsRef = collection(db, "products");
+
+    const unsubscribe = onSnapshot(
+      productsRef,
+      (snapshot) => {
+        const firestoreProducts = snapshot.docs.map((doc) => {
+          const data = doc.data();
+
+          return {
+            id: doc.id,
+            name: data.name || "بەرهەم",
+            price: Number(data.price) || 0,
+            category: data.category || "کالای ماڵ",
+            image: data.image || "",
+          };
+        });
+
+        setProducts(firestoreProducts);
+        setProductsLoading(false);
+        setProductsError("");
+      },
+      (error) => {
+        console.error("Firestore products error:", error);
+
+        setProductsError(
+          "کێشەیەک هەیە لە پەیوەندی بە Database."
+        );
+
+        setProductsLoading(false);
+      }
+    );
+
+    return () => unsubscribe();
+  }, []);
+
+  /* =========================
+     FIRESTORE CATEGORIES
+  ========================= */
+
+  const categories = useMemo(() => {
+    const uniqueCategories = [
+      ...new Set(
+        products
+          .map((product) => product.category)
+          .filter(Boolean)
+      ),
+    ];
+
+    return ["هەموو", ...uniqueCategories];
+  }, [products]);
+
+  /* =========================
+     FILTER PRODUCTS
+  ========================= */
+
   const filtered = useMemo(() => {
     return products.filter(
       (product) =>
-        (category === "هەموو" || product.category === category) &&
-        product.name.toLowerCase().includes(query.toLowerCase())
+        (category === "هەموو" ||
+          product.category === category) &&
+        product.name
+          .toLowerCase()
+          .includes(query.toLowerCase())
     );
-  }, [category, query]);
+  }, [products, category, query]);
+
+  /* =========================
+     CART
+  ========================= */
 
   const addToCart = (product) => {
     setCart((current) => [...current, product]);
@@ -365,6 +430,10 @@ export default function App() {
       `${product.name} خرایە ناو سەبەتەکە.`
     );
   };
+
+  /* =========================
+     WELCOME
+  ========================= */
 
   if (!started) {
     return (
@@ -391,6 +460,10 @@ export default function App() {
     );
   }
 
+  /* =========================
+     DASHBOARD PASSWORD
+  ========================= */
+
   if (screen === "dashboardPassword") {
     return (
       <PasswordScreen
@@ -402,9 +475,17 @@ export default function App() {
     );
   }
 
+  /* =========================
+     DASHBOARD
+  ========================= */
+
   if (screen === "dashboard") {
     return <Dashboard onBack={() => setScreen("main")} />;
   }
+
+  /* =========================
+     MANAGER PASSWORD
+  ========================= */
 
   if (screen === "managerPassword") {
     return (
@@ -417,9 +498,17 @@ export default function App() {
     );
   }
 
+  /* =========================
+     MANAGER
+  ========================= */
+
   if (screen === "manager") {
     return <ManagerPanel onBack={() => setScreen("main")} />;
   }
+
+  /* =========================
+     PRODUCT DETAILS
+  ========================= */
 
   if (selected) {
     return (
@@ -429,10 +518,18 @@ export default function App() {
             <Text style={styles.back}>‹ گەڕانەوە</Text>
           </TouchableOpacity>
 
-          <Image
-            source={{ uri: selected.image }}
-            style={styles.hero}
-          />
+          {selected.image ? (
+            <Image
+              source={{ uri: selected.image }}
+              style={styles.hero}
+            />
+          ) : (
+            <View style={styles.noImage}>
+              <Text style={styles.noImageText}>
+                وێنەی بەرهەم بەردەست نییە
+              </Text>
+            </View>
+          )}
 
           <View style={styles.pad}>
             <Text style={styles.title}>{selected.name}</Text>
@@ -460,6 +557,10 @@ export default function App() {
     );
   }
 
+  /* =========================
+     MAIN APP
+  ========================= */
+
   return (
     <SafeAreaView style={styles.safe}>
       <View style={styles.header}>
@@ -467,11 +568,17 @@ export default function App() {
         <Text style={styles.sub}>Welcome Shwshawaty ASYA</Text>
       </View>
 
+      {/* HOME */}
       {tab === "home" && (
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.banner}>
-            <Text style={styles.bannerTitle}>کۆمەڵە خواردن</Text>
-            <Text style={styles.bannerSub}>نوێ و تایبەت بۆ تۆ</Text>
+            <Text style={styles.bannerTitle}>
+              کۆمەڵە خواردن
+            </Text>
+
+            <Text style={styles.bannerSub}>
+              نوێ و تایبەت بۆ تۆ
+            </Text>
           </View>
 
           <TextInput
@@ -482,6 +589,7 @@ export default function App() {
             style={styles.search}
           />
 
+          {/* CATEGORIES */}
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
@@ -509,8 +617,32 @@ export default function App() {
             ))}
           </ScrollView>
 
-          <Text style={styles.section}>بەرهەمە نوێکان</Text>
+          <Text style={styles.section}>
+            بەرهەمە نوێکان
+          </Text>
 
+          {/* LOADING */}
+          {productsLoading && (
+            <Text style={styles.loadingText}>
+              بەرهەمەکان دەهێنرێن...
+            </Text>
+          )}
+
+          {/* ERROR */}
+          {productsError !== "" && (
+            <Text style={styles.errorText}>
+              {productsError}
+            </Text>
+          )}
+
+          {/* EMPTY */}
+          {!productsLoading && products.length === 0 && (
+            <Text style={styles.emptyProducts}>
+              هیچ بەرهەمێک لە Database نەدۆزرایەوە.
+            </Text>
+          )}
+
+          {/* PRODUCTS */}
           <FlatList
             data={filtered}
             numColumns={2}
@@ -523,12 +655,23 @@ export default function App() {
                 style={styles.card}
                 onPress={() => setSelected(item)}
               >
-                <Image
-                  source={{ uri: item.image }}
-                  style={styles.cardImg}
-                />
+                {item.image ? (
+                  <Image
+                    source={{ uri: item.image }}
+                    style={styles.cardImg}
+                  />
+                ) : (
+                  <View style={styles.cardImgPlaceholder}>
+                    <Text style={styles.cardImgPlaceholderText}>
+                      وێنە نییە
+                    </Text>
+                  </View>
+                )}
 
-                <Text style={styles.cardName} numberOfLines={2}>
+                <Text
+                  style={styles.cardName}
+                  numberOfLines={2}
+                >
                   {item.name}
                 </Text>
 
@@ -540,7 +683,9 @@ export default function App() {
                   style={styles.smallBtn}
                   onPress={() => addToCart(item)}
                 >
-                  <Text style={styles.smallBtnText}>+ سەبەت</Text>
+                  <Text style={styles.smallBtnText}>
+                    + سەبەت
+                  </Text>
                 </TouchableOpacity>
               </TouchableOpacity>
             )}
@@ -548,12 +693,17 @@ export default function App() {
         </ScrollView>
       )}
 
+      {/* CART */}
       {tab === "cart" && (
         <ScrollView contentContainerStyle={styles.pad}>
-          <Text style={styles.pageTitle}>سەبەت 🛒</Text>
+          <Text style={styles.pageTitle}>
+            سەبەت 🛒
+          </Text>
 
           {cart.length === 0 ? (
-            <Text style={styles.empty}>سەبەتەکەت بەتاڵە.</Text>
+            <Text style={styles.empty}>
+              سەبەتەکەت بەتاڵە.
+            </Text>
           ) : (
             <>
               {cart.map((product, index) => (
@@ -561,7 +711,9 @@ export default function App() {
                   style={styles.row}
                   key={`${product.id}-${index}`}
                 >
-                  <Text style={styles.rowName}>{product.name}</Text>
+                  <Text style={styles.rowName}>
+                    {product.name}
+                  </Text>
 
                   <Text style={styles.cartPrice}>
                     {money(product.price)}
@@ -587,12 +739,15 @@ export default function App() {
         </ScrollView>
       )}
 
+      {/* PROFILE */}
       {tab === "profile" && (
         <ScrollView
           contentContainerStyle={styles.pad}
           showsVerticalScrollIndicator={false}
         >
-          <Text style={styles.pageTitle}>پڕۆفایل 👤</Text>
+          <Text style={styles.pageTitle}>
+            پڕۆفایل 👤
+          </Text>
 
           <Text style={styles.desc}>
             بەخێربێیت بۆ پڕۆفایلی Shwshawaty ASYA.
@@ -600,9 +755,13 @@ export default function App() {
 
           <TouchableOpacity
             style={styles.profileEntry}
-            onPress={() => setScreen("dashboardPassword")}
+            onPress={() =>
+              setScreen("dashboardPassword")
+            }
           >
-            <Text style={styles.profileEntryIcon}>📊</Text>
+            <Text style={styles.profileEntryIcon}>
+              📊
+            </Text>
 
             <View style={styles.profileEntryText}>
               <Text style={styles.profileEntryTitle}>
@@ -614,14 +773,20 @@ export default function App() {
               </Text>
             </View>
 
-            <Text style={styles.profileArrow}>‹</Text>
+            <Text style={styles.profileArrow}>
+              ‹
+            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             style={styles.profileEntry}
-            onPress={() => setScreen("managerPassword")}
+            onPress={() =>
+              setScreen("managerPassword")
+            }
           >
-            <Text style={styles.profileEntryIcon}>👨‍💼</Text>
+            <Text style={styles.profileEntryIcon}>
+              👨‍💼
+            </Text>
 
             <View style={styles.profileEntryText}>
               <Text style={styles.profileEntryTitle}>
@@ -633,18 +798,25 @@ export default function App() {
               </Text>
             </View>
 
-            <Text style={styles.profileArrow}>‹</Text>
+            <Text style={styles.profileArrow}>
+              ‹
+            </Text>
           </TouchableOpacity>
         </ScrollView>
       )}
 
+      {/* NAVIGATION */}
       <View style={styles.nav}>
         <TouchableOpacity
           onPress={() => setTab("home")}
           style={styles.navButton}
         >
           <Text
-            style={tab === "home" ? styles.navOn : styles.navOff}
+            style={
+              tab === "home"
+                ? styles.navOn
+                : styles.navOff
+            }
           >
             ⌂{"\n"}سەرەکی
           </Text>
@@ -655,7 +827,11 @@ export default function App() {
           style={styles.navButton}
         >
           <Text
-            style={tab === "cart" ? styles.navOn : styles.navOff}
+            style={
+              tab === "cart"
+                ? styles.navOn
+                : styles.navOff
+            }
           >
             🛒{"\n"}سەبەت ({cart.length})
           </Text>
@@ -666,7 +842,11 @@ export default function App() {
           style={styles.navButton}
         >
           <Text
-            style={tab === "profile" ? styles.navOn : styles.navOff}
+            style={
+              tab === "profile"
+                ? styles.navOn
+                : styles.navOff
+            }
           >
             👤{"\n"}پڕۆفایل
           </Text>
@@ -675,6 +855,10 @@ export default function App() {
     </SafeAreaView>
   );
 }
+
+/* =========================
+   STYLES
+========================= */
 
 const styles = StyleSheet.create({
   welcomeSafe: {
@@ -812,6 +996,27 @@ const styles = StyleSheet.create({
     textAlign: "right",
   },
 
+  loadingText: {
+    color: "#d7a52b",
+    textAlign: "center",
+    fontSize: 16,
+    padding: 30,
+  },
+
+  errorText: {
+    color: "#ff6262",
+    textAlign: "center",
+    fontSize: 15,
+    padding: 20,
+  },
+
+  emptyProducts: {
+    color: "#aaa",
+    textAlign: "center",
+    fontSize: 16,
+    padding: 30,
+  },
+
   grid: {
     padding: 16,
   },
@@ -832,6 +1037,19 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 145,
     borderRadius: 10,
+  },
+
+  cardImgPlaceholder: {
+    width: "100%",
+    height: 145,
+    borderRadius: 10,
+    backgroundColor: "#292929",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  cardImgPlaceholderText: {
+    color: "#888",
   },
 
   cardName: {
@@ -951,6 +1169,19 @@ const styles = StyleSheet.create({
   hero: {
     width: "100%",
     height: 330,
+  },
+
+  noImage: {
+    width: "100%",
+    height: 330,
+    backgroundColor: "#1c1c1c",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  noImageText: {
+    color: "#888",
+    fontSize: 16,
   },
 
   title: {
