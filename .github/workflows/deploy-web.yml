@@ -33,10 +33,19 @@ jobs:
       - name: Build Expo Web
         run: npx expo export --platform web
 
-      - name: Fix GitHub Pages paths
+      - name: Fix GitHub Pages base path
         run: |
-          sed -i 's|src="/_expo/|src="./_expo/|g' dist/index.html
-          sed -i 's|href="/_expo/|href="./_expo/|g' dist/index.html
+          python - <<'PY'
+          from pathlib import Path
+          p = Path("dist/index.html")
+          s = p.read_text(encoding="utf-8")
+          base = "/-Shwshawaty_asya_app/"
+          s = s.replace('src="/_expo/', f'src="{base}_expo/')
+          s = s.replace('href="/_expo/', f'href="{base}_expo/')
+          s = s.replace('src="/favicon', f'src="{base}favicon')
+          s = s.replace('href="/favicon', f'href="{base}favicon')
+          p.write_text(s, encoding="utf-8")
+          PY
 
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v5
