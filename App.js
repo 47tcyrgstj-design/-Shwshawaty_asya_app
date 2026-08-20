@@ -640,7 +640,7 @@ if (screen === "checkout") {
             placeholder="ناونیشان"
             placeholderTextColor="#777"
             value={customerAddress}
-onCh        angeText={setCustomerAddress}
+            onChangeText={setCustomerAddress}
           />
 
           <TextInput
