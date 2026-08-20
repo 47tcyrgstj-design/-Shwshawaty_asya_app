@@ -361,6 +361,7 @@ export default function App() {
   const [customerName, setCustomerName] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
   const [customerAddress, setCustomerAddress] = useState("");
+  const [customerNote, setCustomerNote] = useState("");
   const [selected, setSelected] = useState(null);
   const [screen, setScreen] = useState("main");
 
@@ -657,6 +658,8 @@ onCh        angeText={setCustomerAddress}
             placeholder="تێبینی"
             placeholderTextColor="#777"
             multiline
+            value={customerNote}
+onCha       ngeText={setCustomerNote}
           />
 
           <View
@@ -681,11 +684,26 @@ onCh        angeText={setCustomerAddress}
           <TouchableOpacity
             style={styles.goldBtn}
             onPress={() => {
-  const message =
-    "🛍️ داواکاری نوێ\n\n" +
-    "Shwshawaty ASYA\n" +
-    "کۆی گشتی: " +
-    money(total);
+const message =
+  "🛍️ داواکاری نوێ\n\n" +
+  "Shwshawaty ASYA\n\n" +
+  "👤 ناو: " +
+  customerName +
+  "\n📱 ژمارەی تەلەفون: " +
+  customerPhone +
+  "\n📍 ناونیشان: " +
+  customerAddress +
+  "\n📝 تێبینی: " +
+  customerNote +
+  "\n\n🛒 بەرهەمەکان:\n" +
+  cart
+    .map(
+      (product, index) =>
+        `${index + 1}. ${product.name} - ${money(product.price)}`
+    )
+    .join("\n") +
+  "\n\n💰 کۆی گشتی: " +
+  money(total);
 
   const url =
     "https://wa.me/9647708758585?text=" +
