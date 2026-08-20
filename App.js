@@ -358,6 +358,7 @@ export default function App() {
   const [category, setCategory] = useState("هەموو");
   const [query, setQuery] = useState("");
   const [cart, setCart] = useState([]);
+  const [customerName, setCustomerName] = useState("");
   const [selected, setSelected] = useState(null);
   const [screen, setScreen] = useState("main");
 
