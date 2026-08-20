@@ -704,10 +704,10 @@ const message =
   money(total);
 
   const url =
-    "https://wa.me/9647718758585?text=" +
-    encodeURIComponent(message);
+  "https://wa.me/9647718758585?text=" +
+  encodeURIComponent(message);
 
-  Linking.openURL(url).catch(() => {
+Linking.openURL(url).catch(() => {
   Alert.alert("هەڵە", "نەتوانرا WhatsApp بکرێتەوە.");
 });
 }}
