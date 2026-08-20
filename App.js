@@ -669,12 +669,19 @@ if (screen === "checkout") {
 
           <TouchableOpacity
             style={styles.goldBtn}
-            onPress={() =>
-              showMessage(
-                "داواکاری",
-                "داواکارییەکەت وەرگیرا."
-              )
-            }
+            onPress={() => {
+  const message =
+    "🛍️ داواکاری نوێ\n\n" +
+    "Shwshawaty ASYA\n" +
+    "کۆی گشتی: " +
+    money(total);
+
+  const url =
+    "https://wa.me/9647708758585?text=" +
+    encodeURIComponent(message);
+
+  Linking.openURL(url);
+}}
           >
             <Text style={styles.goldText}>
               ناردنی داواکاری
