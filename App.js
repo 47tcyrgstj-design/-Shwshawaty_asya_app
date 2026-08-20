@@ -359,6 +359,7 @@ export default function App() {
   const [query, setQuery] = useState("");
   const [cart, setCart] = useState([]);
   const [customerName, setCustomerName] = useState("");
+  const [customerPhone, setCustomerPhone] = useState("");
   const [selected, setSelected] = useState(null);
   const [screen, setScreen] = useState("main");
 
