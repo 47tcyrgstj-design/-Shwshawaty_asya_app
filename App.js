@@ -485,7 +485,7 @@ export default function App() {
       <SafeAreaView style={styles.welcomeSafe}>
         <View style={styles.welcomeContainer}>
        <Text style={styles.welcomeBrand}>
-  بەخێربێن بۆ شوشەواتی ئاسیا
+  {"\u0628\u06d5\u062e\u06ce\u0631\u0628\u06ce\u0646\u0020\u0628\u06c6\u0020\u0634\u0648\u0634\u06d5\u0648\u0627\u062a\u06cc\u0020\u0626\u0627\u0633\u06cc\u0627"}
 </Text>
 
           <Text style={styles.welcomeText}>
