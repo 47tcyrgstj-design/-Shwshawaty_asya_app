@@ -716,11 +716,36 @@ const message =
   <Text style={styles.goldText}>
     ناردنی داواکاری
   </Text>
+<TouchableOpacity
+  style={styles.goldBtn}
+  onPress={() => {
+    const message =
+      "🛍️ داواکاری نوێ\n\n" +
+      "Shwshawaty ASYA\n\n" +
+      "👤 ناو: " + customerName +
+      "\n📱 ژمارەی تەلەفون: " + customerPhone +
+      "\n📍 ناونیشان: " + customerAddress +
+      "\n📝 تێبینی: " + customerNote +
+      "\n\n🛒 بەرهەمەکان:\n" +
+      cart.map(
+        (product, index) =>
+          `${index + 1}. ${product.name} - ${money(product.price)}`
+      ).join("\n") +
+      "\n\n💰 کۆی گشتی: " + money(total);
+
+    const url =
+      "https://wa.me/9647718758585?text=" +
+      encodeURIComponent(message);
+
+    Linking.openURL(url).catch(() => {
+      Alert.alert("هەڵە", "نەتوانرا WhatsApp بکرێتەوە.");
+    });
+  }}
+>
+  <Text style={styles.goldText}>
+    ناردنی داواکاری
+  </Text>
 </TouchableOpacity>
-            <Text style={styles.goldText}>
-              ناردنی داواکاری
-            </Text>
-          </TouchableOpacity>
         </View>
       </ScrollView>
     </SafeAreaView>
