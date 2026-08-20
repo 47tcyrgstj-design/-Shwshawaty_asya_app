@@ -714,7 +714,7 @@ if (screen === "checkout") {
       </ScrollView>
     </SafeAreaView>
   );
-
+}
   /* =========================
      MANAGER PASSWORD
   ========================= */
