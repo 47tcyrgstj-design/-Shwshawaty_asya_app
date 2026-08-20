@@ -703,15 +703,20 @@ const message =
   "\n\n💰 کۆی گشتی: " +
   money(total);
 
+  onPress={() => {
   const url =
-  "https://wa.me/9647718758585?text=" +
-  encodeURIComponent(message);
+    "https://wa.me/9647718758585?text=" +
+    encodeURIComponent(message);
 
-Linking.openURL(url).catch(() => {
-  Alert.alert("هەڵە", "نەتوانرا WhatsApp بکرێتەوە.");
-});
+  Linking.openURL(url).catch(() => {
+    Alert.alert("هەڵە", "نەتوانرا WhatsApp بکرێتەوە.");
+  });
 }}
-          >
+>
+  <Text style={styles.goldText}>
+    ناردنی داواکاری
+  </Text>
+</TouchableOpacity>
             <Text style={styles.goldText}>
               ناردنی داواکاری
             </Text>
