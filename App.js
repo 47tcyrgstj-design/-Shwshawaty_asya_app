@@ -657,7 +657,7 @@ if (screen === "checkout") {
             placeholder="تێبینی"
             placeholderTextColor="#777"
             value={customerNote}
-onCha       ngeText={setCustomerNote}
+            onChangeText={setCustomerNote}
           />
 
           <View
