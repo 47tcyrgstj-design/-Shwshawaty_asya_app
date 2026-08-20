@@ -639,7 +639,6 @@ if (screen === "checkout") {
             }}
             placeholder="ناونیشان"
             placeholderTextColor="#777"
-            multiline
             value={customerAddress}
 onCh        angeText={setCustomerAddress}
           />
@@ -657,7 +656,6 @@ onCh        angeText={setCustomerAddress}
             }}
             placeholder="تێبینی"
             placeholderTextColor="#777"
-            multiline
             value={customerNote}
 onCha       ngeText={setCustomerNote}
           />
