@@ -814,12 +814,7 @@ export default function App() {
 
                 <TouchableOpacity
                   style={styles.goldBtn}
-                  onPress={() =>
-                    showMessage(
-                      "داواکاری",
-                      "لە وەشانی داهاتوودا داواکارییەکە بە سیستەمی فرۆشتن نێردراوە."
-                    )
-                  }
+                  onPress={() => setScreen("checkout")}
                 >
                   <Text style={styles.goldText}>
                     تەواوکردنی داواکاری
