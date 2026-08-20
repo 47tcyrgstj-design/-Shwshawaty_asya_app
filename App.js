@@ -600,6 +600,10 @@ if (screen === "checkout") {
             }}
             placeholder="ناو"
             placeholderTextColor="#777"
+            value={customerName}
+            onChangeText={setCustomerName}
+
+            
           />
 
           <TextInput
