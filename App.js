@@ -821,9 +821,9 @@ const message =
         <View style={styles.header}>
           <Text style={styles.brand}>ASYA</Text>
 
-          <Text style={styles.sub}>
-              بەخێربێن بۆ شوشەواتی ئاسیا    
-          </Text>
+         <Text style={styles.sub}>
+  بەخێربێن بۆ شوشەواتی ئاسیا
+</Text>
         </View>
 
         {/* HOME */}
