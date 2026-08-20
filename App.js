@@ -265,7 +265,7 @@ function Dashboard({ onBack }) {
    MANAGER PANEL
 ========================= */
 
-function ManagerPanel({ onBack }) {
+function ManagerPanel({ onBack, onAddProduct}) {
   const items = [
     ["📦", "بەڕێوبەرایەتی بەرهەمەکان"],
     ["➕", "زیادکردنی بەرهەم"],
