@@ -715,6 +715,7 @@ if (screen === "checkout") {
     </SafeAreaView>
   );
 }
+
   /* =========================
      MANAGER PASSWORD
   ========================= */
