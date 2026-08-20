@@ -360,6 +360,7 @@ export default function App() {
   const [cart, setCart] = useState([]);
   const [customerName, setCustomerName] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
+  const [customerAddress, setCustomerAddress] = useState("");
   const [selected, setSelected] = useState(null);
   const [screen, setScreen] = useState("main");
 
@@ -638,6 +639,8 @@ if (screen === "checkout") {
             placeholder="ناونیشان"
             placeholderTextColor="#777"
             multiline
+            value={customerAddress}
+onCh        angeText={setCustomerAddress}
           />
 
           <TextInput
