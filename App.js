@@ -707,7 +707,9 @@ const message =
     "https://wa.me/9647708758585?text=" +
     encodeURIComponent(message);
 
-  Linking.openURL(url);
+  Linking.openURL(url).catch(() => {
+  Alert.alert("هەڵە", "نەتوانرا WhatsApp بکرێتەوە.");
+});
 }}
           >
             <Text style={styles.goldText}>
