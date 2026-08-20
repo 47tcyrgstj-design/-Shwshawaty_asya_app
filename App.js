@@ -822,7 +822,7 @@ const message =
           <Text style={styles.brand}>ASYA</Text>
 
           <Text style={styles.sub}>
-            Welcome Shwshawaty ASYA
+              بەخێربێن بۆ شوشەواتی ئاسیا    
           </Text>
         </View>
 
