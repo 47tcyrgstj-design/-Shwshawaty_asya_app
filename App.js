@@ -15,6 +15,7 @@ import {
 
 import { collection, onSnapshot } from "firebase/firestore";
 import { db } from "./firebase";
+import AddProduct from "./AddProduct";
 
 /* =========================
    ACCOUNTING DEMO DATA
@@ -315,12 +316,16 @@ function ManagerPanel({ onBack }) {
             <TouchableOpacity
               key={index}
               style={styles.menuButton}
-              onPress={() =>
-                showMessage(
-                  title,
-                  "ئەم بەشە ئامادەیە بۆ زیادکردنی سیستەمی ڕاستەقینە."
-                )
-              }
+              onPress={() => {
+                 if (title === "زیادکردنی بەرهەم") {
+                   onAddProduct();
+                 } else {
+                   Alert.alert(
+                     title,
+      "ئەم بەشە ئامادەیە بۆ زیادکردنی سیستەمی ڕاستەقینە."  
+    );
+  }
+}}
             >
               <Text style={styles.menuIcon}>{icon}</Text>
               <Text style={styles.menuText}>{title}</Text>
@@ -521,7 +526,13 @@ export default function App() {
       />
     );
   }
-
+  if (screen === "addProduct") {
+    return (
+      <AddProduct
+        onBack={() => setScreen("manager")}
+      />
+    );
+  }
   /* =========================
      MANAGER PASSWORD
   ========================= */
@@ -541,14 +552,16 @@ export default function App() {
      MANAGER
   ========================= */
 
-  if (screen === "manager") {
+  if (screen === "dashboardPassword") {
     return (
-      <ManagerPanel
+      <PasswordScreen
+        title="Dashboard"
+        passwordCorrect="gardunali"
+        onSuccess={() => setScreen("dashboard")}
         onBack={() => setScreen("main")}
       />
     );
   }
-
   /* =========================
      PRODUCT DETAILS
   ========================= */
