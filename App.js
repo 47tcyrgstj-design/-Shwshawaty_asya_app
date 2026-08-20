@@ -704,7 +704,7 @@ const message =
   money(total);
 
   const url =
-    "https://wa.me/9647708758585?text=" +
+    "https://wa.me/9647718758585?text=" +
     encodeURIComponent(message);
 
   Linking.openURL(url).catch(() => {
