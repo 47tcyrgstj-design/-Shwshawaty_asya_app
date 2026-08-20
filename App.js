@@ -541,6 +541,84 @@ export default function App() {
       />
     );
   }
+  
+    /* =========================
+     CHECKOUT
+  ========================= */
+
+  if (screen === "checkout") {
+    const total = cart.reduce(
+      (sum, product) => sum + Number(product.price || 0),
+      0
+    );
+
+    return (
+      <SafeAreaView style={styles.safe}>
+        <ScrollView
+          contentContainerStyle={styles.pad}
+          showsVerticalScrollIndicator={false}
+        >
+          <TouchableOpacity
+            onPress={() => setScreen("main")}
+          >
+            <Text style={styles.back}>
+              ‹ گەڕانەوە
+            </Text>
+          </TouchableOpacity>
+
+          <Text style={styles.pageTitle}>
+            تەواوکردنی داواکاری 🛍️
+          </Text>
+
+          <TextInput
+            style={styles.input}
+            placeholder="ناو"
+            placeholderTextColor="#777"
+          />
+
+          <TextInput
+            style={styles.input}
+            placeholder="ژمارەی تەلەفون"
+            placeholderTextColor="#777"
+            keyboardType="phone-pad"
+          />
+
+          <TextInput
+            style={styles.input}
+            placeholder="ناونیشان"
+            placeholderTextColor="#777"
+            multiline
+          />
+
+          <TextInput
+            style={[styles.input, { minHeight: 100 }]}
+            placeholder="تێبینی (ئەگەر هەیە)"
+            placeholderTextColor="#777"
+            multiline
+          />
+
+          <Text style={styles.pageTitle}>
+            کۆی گشتی: {money(total)}
+          </Text>
+
+          <TouchableOpacity
+            style={styles.goldBtn}
+            onPress={() =>
+              showMessage(
+                "داواکاری",
+                "داواکارییەکەت وەرگیرا."
+              )
+            }
+          >
+            <Text style={styles.goldText}>
+              ناردنی داواکاری
+            </Text>
+          </TouchableOpacity>
+        </ScrollView>
+      </SafeAreaView>
+    );
+  }
+  
   /* =========================
      MANAGER PASSWORD
   ========================= */
