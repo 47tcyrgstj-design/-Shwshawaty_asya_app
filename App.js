@@ -485,7 +485,7 @@ export default function App() {
       <SafeAreaView style={styles.welcomeSafe}>
         <View style={styles.welcomeContainer}>
           <Text style={styles.welcomeBrand}>
-            Welcome Shwshawaty ASYA
+            بەخێربێن بۆ شوشەواتی ئاسیا
           </Text>
 
           <Text style={styles.welcomeText}>
