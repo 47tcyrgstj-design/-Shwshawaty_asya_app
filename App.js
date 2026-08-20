@@ -620,6 +620,8 @@ if (screen === "checkout") {
             placeholder="ژمارەی تەلەفون"
             placeholderTextColor="#777"
             keyboardType="phone-pad"
+            value={customerPhone}
+            onChangeText={setCustomerPhone}
           />
 
           <TextInput
