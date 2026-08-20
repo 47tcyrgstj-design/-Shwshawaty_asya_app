@@ -543,63 +543,128 @@ export default function App() {
   }
   
     /* =========================
-     CHECKOUT
-  ========================= */
+   CHECKOUT
+========================= */
 
-  if (screen === "checkout") {
-    const total = cart.reduce(
-      (sum, product) => sum + Number(product.price || 0),
-      0
-    );
+if (screen === "checkout") {
+  const total = cart.reduce(
+    (sum, product) => sum + Number(product.price || 0),
+    0
+  );
 
-    return (
-      <SafeAreaView style={styles.safe}>
-        <ScrollView
-          contentContainerStyle={styles.pad}
-          showsVerticalScrollIndicator={false}
+  return (
+    <SafeAreaView style={styles.safe}>
+      <ScrollView
+        contentContainerStyle={styles.pad}
+        showsVerticalScrollIndicator={false}
+      >
+        <TouchableOpacity
+          onPress={() => setScreen("main")}
         >
-          <TouchableOpacity
-            onPress={() => setScreen("main")}
-          >
-            <Text style={styles.back}>
-              ‹ گەڕانەوە
-            </Text>
-          </TouchableOpacity>
+          <Text style={styles.back}>
+            ‹ گەڕانەوە
+          </Text>
+        </TouchableOpacity>
 
-          <Text style={styles.pageTitle}>
-            تەواوکردنی داواکاری 🛍️
+        <View
+          style={{
+            backgroundColor: "#FFD700",
+            borderRadius: 20,
+            padding: 20,
+            marginTop: 10,
+            marginBottom: 20,
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 24,
+              fontWeight: "bold",
+              textAlign: "center",
+              marginBottom: 20,
+            }}
+          >
+            تەواوکردنی کڕین 🛒
           </Text>
 
           <TextInput
-            style={styles.input}
+            style={{
+              backgroundColor: "#fff",
+              borderRadius: 12,
+              height: 55,
+              paddingHorizontal: 15,
+              marginBottom: 12,
+              fontSize: 17,
+              textAlign: "right",
+            }}
             placeholder="ناو"
             placeholderTextColor="#777"
           />
 
           <TextInput
-            style={styles.input}
+            style={{
+              backgroundColor: "#fff",
+              borderRadius: 12,
+              height: 55,
+              paddingHorizontal: 15,
+              marginBottom: 12,
+              fontSize: 17,
+              textAlign: "right",
+            }}
             placeholder="ژمارەی تەلەفون"
             placeholderTextColor="#777"
             keyboardType="phone-pad"
           />
 
           <TextInput
-            style={styles.input}
+            style={{
+              backgroundColor: "#fff",
+              borderRadius: 12,
+              minHeight: 75,
+              paddingHorizontal: 15,
+              paddingVertical: 12,
+              marginBottom: 12,
+              fontSize: 17,
+              textAlign: "right",
+            }}
             placeholder="ناونیشان"
             placeholderTextColor="#777"
             multiline
           />
 
           <TextInput
-            style={[styles.input, { minHeight: 100 }]}
-            placeholder="تێبینی (ئەگەر هەیە)"
+            style={{
+              backgroundColor: "#fff",
+              borderRadius: 12,
+              minHeight: 100,
+              paddingHorizontal: 15,
+              paddingVertical: 12,
+              marginBottom: 20,
+              fontSize: 17,
+              textAlign: "right",
+            }}
+            placeholder="تێبینی"
             placeholderTextColor="#777"
             multiline
           />
 
-          <Text style={styles.pageTitle}>
-            کۆی گشتی: {money(total)}
-          </Text>
+          <View
+            style={{
+              backgroundColor: "#fff",
+              borderRadius: 12,
+              padding: 15,
+              marginBottom: 15,
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 20,
+                fontWeight: "bold",
+                textAlign: "right",
+              }}
+            >
+              کۆی گشتی: {money(total)}
+            </Text>
+          </View>
 
           <TouchableOpacity
             style={styles.goldBtn}
@@ -614,10 +679,11 @@ export default function App() {
               ناردنی داواکاری
             </Text>
           </TouchableOpacity>
-        </ScrollView>
-      </SafeAreaView>
-    );
-  }
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
   
   /* =========================
      MANAGER PASSWORD
