@@ -526,6 +526,14 @@ export default function App() {
       />
     );
   }
+  if (screen === "manager") {
+  return (
+    <ManagerPanel
+      onBack={() => setScreen("main")}
+      onAddProduct={() => setScreen("addProduct")}
+    />
+  );
+}
   if (screen === "addProduct") {
     return (
       <AddProduct
