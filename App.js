@@ -1795,5 +1795,5 @@ const styles = StyleSheet.create({
   lineHeight: 23,
   marginTop: 8,
   textAlign: "center",
-}
+},
 });
