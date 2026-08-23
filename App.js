@@ -1789,11 +1789,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 
-    managerWelcomeText: {
-    color: "#aaa",
-    fontSize: 14,
-    lineHeight: 23,
-    marginTop: 8,
-    textAlign: "center",
-  },
+   managerWelcomeText: {
+  color: "#aaa",
+  fontSize: 14,
+  lineHeight: 23,
+  marginTop: 8,
+  textAlign: "center",
+}
 });
