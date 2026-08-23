@@ -7,8 +7,10 @@ import {
   StyleSheet,
   ScrollView,
   Alert,
+    Image,
 } from "react-native";
 import { addDoc, collection } from "firebase/firestore";
+import * as ImagePicker from "expo-image-picker";
 import { db } from "./firebase";
 
 export default function AddProduct({ onBack }) {
@@ -16,6 +18,25 @@ export default function AddProduct({ onBack }) {
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
   const [image, setImage] = useState("");
+  const pickImage = async () => {
+  const permission =
+    await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+  if (!permission.granted) {
+    Alert.alert("ئاگاداری", "دەبێت ڕێگە بە گەلەری بدەیت.");
+    return;
+  }
+
+  const result = await ImagePicker.launchImageLibraryAsync({
+    mediaTypes: ["images"],
+    allowsEditing: true,
+    quality: 0.8,
+  });
+
+  if (!result.canceled) {
+    setImage(result.assets[0].uri);
+  }
+};
   const [stock, setStock] = useState("");
   const [saving, setSaving] = useState(false);
 
@@ -131,18 +152,24 @@ export default function AddProduct({ onBack }) {
           textAlign="right"
         />
 
-        <Text style={styles.label}>لینکی وێنە</Text>
+        <Text style={styles.label}>وێنەی بەرهەم</Text>
 
-        <TextInput
-          value={image}
-          onChangeText={setImage}
-          placeholder="https://..."
-          placeholderTextColor="#777"
-          autoCapitalize="none"
-          keyboardType="url"
-          style={styles.input}
-          textAlign="left"
-        />
+<TouchableOpacity
+  style={styles.imageButton}
+  onPress={pickImage}
+>
+  <Text style={styles.imageButtonText}>
+    📷 هەڵبژاردنی وێنە لە گەلەری
+  </Text>
+</TouchableOpacity>
+
+{image !== "" && (
+  <Image
+    source={{ uri: image }}
+    style={styles.previewImage}
+    resizeMode="cover"
+  />
+)}
 
         <TouchableOpacity
           style={styles.saveButton}
@@ -232,4 +259,24 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "800",
   },
+imageButton: {
+  backgroundColor: "#292929",
+  borderRadius: 12,
+  padding: 15,
+  alignItems: "center",
+  marginTop: 5,
+},
+
+imageButtonText: {
+  color: "#d7a52b",
+  fontSize: 16,
+  fontWeight: "800",
+},
+
+previewImage: {
+  width: "100%",
+  height: 220,
+  borderRadius: 12,
+  marginTop: 12,
+},
 });
