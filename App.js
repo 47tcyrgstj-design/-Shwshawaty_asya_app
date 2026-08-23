@@ -13,7 +13,6 @@ import {
   Alert,
   Platform,
 } from "react-native";
-
 import {
   collection,
   onSnapshot,
