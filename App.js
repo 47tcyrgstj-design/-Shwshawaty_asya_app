@@ -811,7 +811,6 @@ if (screen === "checkout") {
   /* =========================
    MANAGER PASSWORD
 ========================= */
-
 if (screen === "managerPassword") {
   return (
     <PasswordScreen
