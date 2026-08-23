@@ -756,7 +756,6 @@ const addToCart = (product) => {
 }
 
 if (screen === "manageProducts") {
-if (screen === "manageProducts") {
   return (
     <SafeAreaView style={styles.safe}>
       <ScrollView
