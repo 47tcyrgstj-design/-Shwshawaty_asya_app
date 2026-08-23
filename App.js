@@ -242,13 +242,25 @@ function Dashboard({ onBack }) {
             <TouchableOpacity
               key={index}
               style={styles.menuButton}
-              onPress={() =>
-                showMessage(
-                  title,
-                  "ئەم بەشە لە قۆناغی داهاتوودا چالاک دەکرێت."
-                )
-              }
-            >
+             onPress={() => {
+  if (title === "بەڕێوبەرایەتی بەرهەمەکان") {
+    onManageProducts();
+  } else if (title === "زیادکردنی بەرهەم") {
+    onAddProduct();
+  } else if (title === "سڕینەوەی بەرهەم") {
+    showMessage(
+      "سڕینەوەی بەرهەم",
+      "بەرهەمێک هەڵبژێرە بۆ سڕینەوە."
+    );
+  } else if (title === "بەڕێوبەرایەتی کڕیارەکان") {
+    setScreen("customers");
+  } else {
+    showMessage(
+      title,
+      "ئەم بەشە ئامادەیە بۆ زیادکردنی سیستەمی ڕاستەقینە."
+    );
+  }
+}}
               <Text style={styles.menuIcon}>{icon}</Text>
               <Text style={styles.menuText}>{title}</Text>
             </TouchableOpacity>
