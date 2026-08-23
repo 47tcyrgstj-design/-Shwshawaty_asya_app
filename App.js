@@ -416,6 +416,7 @@ export default function App() {
   const [category, setCategory] = useState("هەموو");
   const [query, setQuery] = useState("");
   const [cart, setCart] = useState([]);
+  const [cartError, setCartError] = useState("");
   const [customerName, setCustomerName] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
   const [customerAddress, setCustomerAddress] = useState("");
