@@ -817,7 +817,16 @@ if (screen === "checkout") {
       <PasswordScreen
         title="بەشی بەڕێوبەر"
         passwordCorrect="1993"
-        onSuccess={() => setScreen("manager")}
+        if (screen === "dashboardPassword") {
+  return (
+    <PasswordScreen
+      title="Dashboard"
+      passwordCorrect="gardunali"
+      onSuccess={() => setScreen("manager")}
+      onBack={() => setScreen("main")}
+    />
+  );
+}
         onBack={() => setScreen("main")}
       />
     );
