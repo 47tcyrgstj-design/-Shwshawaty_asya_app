@@ -321,10 +321,10 @@ function ManagerPanel({ onBack, onAddProduct}) {
                  if (title === "زیادکردنی بەرهەم") {
                    onAddProduct();
                  } else {
-                   Alert.alert(
-                     title,
-      "ئەم بەشە ئامادەیە بۆ زیادکردنی سیستەمی ڕاستەقینە."  
-    );
+                   showMessage(
+  title,
+  "ئەم بەشە ئامادەیە بۆ زیادکردنی سیستەمی ڕاستەقینە."
+);
   }
 }}
             >
