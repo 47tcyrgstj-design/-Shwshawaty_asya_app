@@ -285,24 +285,7 @@ function Dashboard({ onBack }) {
    MANAGER PANEL
 ========================= */
 
-function ManagerPanel({
-  onBack,
-  onAddProduct,
-  onManageProducts,
-  products,
-  onDeleteProduct,
-  setScreen
-}) {
-  const items = [
-    ["📦", "بەڕێوبەرایەتی بەرهەمەکان"],
-    ["➕", "زیادکردنی بەرهەم"],
-    ["✏️", "دەستکاریکردنی بەرهەم"],
-    ["🗑️", "سڕینەوەی بەرهەم"],
-    ["👥", "بەڕێوبەرایەتی کڕیارەکان"],
-    ["🏭", "دابینکەرەکان"],
-    ["📊", "ڕاپۆرتەکانی فرۆشتن"],
-    ["⚙️", "ڕێکخستنەکان"],
-  ];
+ئ
 
   return (
     <SafeAreaView style={styles.safe}>
@@ -1173,6 +1156,7 @@ if (screen === "manager") {
       onManageProducts={() => setScreen("manageProducts")}
       products={products}
       onDeleteProduct={deleteProduct}
+      setScreen={setScreen}
     />
   );
 }
