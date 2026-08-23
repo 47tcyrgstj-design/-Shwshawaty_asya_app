@@ -852,10 +852,10 @@ if (screen === "customers") {
           </Text>
         </View>
       </ScrollView>
-    );
+      );
     }
      if (screen === "manageProducts") {
-  return (
+       return (
     <SafeAreaView style={styles.safe}>
       <ScrollView
         contentContainerStyle={styles.accountingContainer}
