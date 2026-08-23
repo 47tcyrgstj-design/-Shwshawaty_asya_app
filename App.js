@@ -158,7 +158,7 @@ function Dashboard({ onBack }) {
     ["📈", "قازانج و زیان"],
     ["📊", "ڕاپۆرتەکان"],
   ];
-
+if (screen === "customers") {
   return (
     <SafeAreaView style={styles.safe}>
       <ScrollView
