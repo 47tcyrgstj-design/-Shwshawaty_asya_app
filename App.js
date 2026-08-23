@@ -703,6 +703,82 @@ const addToCart = (product) => {
         <Text style={styles.managerTitle}>
           👥 بەڕێوبەرایەتی کڕیارەکان
         </Text>
+        <View style={styles.accountingNote}>
+  <Text style={styles.accountingNoteTitle}>
+    ➕ زیادکردنی کڕیار
+  </Text>
+
+  <TextInput
+    placeholder="ناوی کڕیار"
+    placeholderTextColor="#777"
+    value={customerName}
+    onChangeText={setCustomerName}
+    style={styles.input}
+  />
+
+  <TextInput
+    placeholder="ژمارەی تەلەفۆن"
+    placeholderTextColor="#777"
+    value={customerPhone}
+    onChangeText={setCustomerPhone}
+    style={styles.input}
+    keyboardType="phone-pad"
+  />
+
+  <TextInput
+    placeholder="ناوی مادە / بەرهەم"
+    placeholderTextColor="#777"
+    value={productName}
+    onChangeText={setProductName}
+    style={styles.input}
+  />
+
+  <TextInput
+    placeholder="کۆی نرخی کڕین"
+    placeholderTextColor="#777"
+    value={customerTotal}
+    onChangeText={setCustomerTotal}
+    style={styles.input}
+    keyboardType="numeric"
+  />
+
+  <TouchableOpacity
+    style={styles.startButton}
+    onPress={async () => {
+      if (!customerName.trim()) {
+        Alert.alert("ئاگاداری", "ناوی کڕیار بنووسە.");
+        return;
+      }
+
+      const total = Number(customerTotal) || 0;
+
+      try {
+        await addDoc(collection(db, "customers"), {
+          name: customerName.trim(),
+          phone: customerPhone.trim(),
+          productName: productName.trim(),
+          totalPurchases: total,
+          paid: 0,
+          debt: total,
+        });
+
+        setCustomerName("");
+        setCustomerPhone("");
+        setProductName("");
+        setCustomerTotal("");
+
+        Alert.alert("سەرکەوتوو", "کڕیار بە سەرکەوتوویی زیاد کرا.");
+      } catch (error) {
+        console.error("Add customer error:", error);
+        Alert.alert("هەڵە", "کێشەیەک ڕوویدا لە زیادکردنی کڕیار.");
+      }
+    }}
+  >
+    <Text style={styles.startButtonText}>
+      زیادکردنی کڕیار
+    </Text>
+  </TouchableOpacity>
+</View>
 {customersLoading ? (
   <Text style={styles.accountingNoteText}>
     چاوەڕێ بکە...
@@ -1882,7 +1958,18 @@ const styles = StyleSheet.create({
     fontSize: 17,
     textAlign: "center",
   },
-
+input: {
+  width: "100%",
+  backgroundColor: "#1c1c1c",
+  color: "#fff",
+  borderRadius: 12,
+  padding: 14,
+  fontSize: 16,
+  marginTop: 10,
+  textAlign: "right",
+  borderWidth: 1,
+  borderColor: "#333",
+},
   passwordError: {
     color: "#ff6262",
     marginTop: 12,
