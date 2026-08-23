@@ -809,31 +809,34 @@ if (screen === "checkout") {
 }
 
   /* =========================
-     MANAGER PASSWORD
-  ========================= */
+   MANAGER PASSWORD
+========================= */
 
-  if (screen === "managerPassword") {
-    return (
-      <PasswordScreen
-        title="بەشی بەڕێوبەر"
-        passwordCorrect="1993"
-        if (screen === "dashboardPassword") {
+if (screen === "managerPassword") {
   return (
     <PasswordScreen
-      title="Dashboard"
-      passwordCorrect="gardunali"
+      title="بەشی بەڕێوبەر"
+      passwordCorrect="1993"
       onSuccess={() => setScreen("manager")}
       onBack={() => setScreen("main")}
     />
   );
 }
-        onBack={() => setScreen("main")}
-      />
-    );
+
+/* =========================
+   DASHBOARD PASSWORD
+========================= */
+
+if (screen === "dashboardPassword") {
+  return (
+    <PasswordScreen
+      title="Dashboard"
+      passwordCorrect="gardunali"
+      onSuccess={() => setScreen("dashboard")}
+      onBack={() => setScreen("main")}
+    />
+  );
 }
-  /* =========================
-     MANAGER
-  ========================= */
 
   if (screen === "dashboardPassword") {
     return (
