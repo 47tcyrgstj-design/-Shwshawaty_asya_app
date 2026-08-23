@@ -322,8 +322,8 @@ function ManagerPanel({ onBack, onAddProduct, products, onDeleteProduct }) {
   onAddProduct();
 } else if (title === "سڕینەوەی بەرهەم") {
   showMessage(
-    "سڕینەوە",
-    "لە خوارەوە بەرهەمەکە هەڵبژێرە."
+    "سڕینەوەی بەرهەم",
+    "بەرهەمێک هەڵبژێرە بۆ سڕینەوە."
   );
 } else {
   showMessage(
