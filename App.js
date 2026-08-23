@@ -620,19 +620,10 @@ const deleteProduct = async (product) => {
           📦 بەڕێوبەرایەتی بەرهەمەکان
         </Text>
 
-        {products.map((product) => (
-          <TouchableOpacity
-            key={product.id}
-            style={styles.menuButton}
-            onPress={() => {
-              showMessage(
-                product.name,
-                "قۆناغی دەستکاریکردن لە هەنگاوی دواتردا زیاد دەکرێت."
-              );
-            }}
+      onPress={() => onDeleteProduct(product)}
           >
             <Text style={styles.menuIcon}>
-              📦
+              🗑️
             </Text>
 
             <Text style={styles.menuText}>
@@ -645,15 +636,41 @@ const deleteProduct = async (product) => {
   );
 }
 
-if (screen === "manager") {
+if (screen === "manageProducts") {
   return (
-    <ManagerPanel
-      onBack={() => setScreen("main")}
-      onAddProduct={() => setScreen("addProduct")}
-      onManageProducts={() => setScreen("manageProducts")}
-      products={products}
-      onDeleteProduct={deleteProduct}
-    />
+    <SafeAreaView style={styles.safe}>
+      <ScrollView
+        contentContainerStyle={styles.accountingContainer}
+      >
+        <TouchableOpacity
+          onPress={() => setScreen("manager")}
+        >
+          <Text style={styles.back}>
+            ‹ گەڕانەوە
+          </Text>
+        </TouchableOpacity>
+
+        <Text style={styles.managerTitle}>
+          🗑️ سڕینەوەی بەرهەم
+        </Text>
+
+        {products.map((product) => (
+          <TouchableOpacity
+            key={product.id}
+            style={styles.menuButton}
+            onPress={() => onDeleteProduct(product)}
+          >
+            <Text style={styles.menuIcon}>
+              🗑️
+            </Text>
+
+            <Text style={styles.menuText}>
+              {product.name}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
+    </SafeAreaView>
   );
 }
   
