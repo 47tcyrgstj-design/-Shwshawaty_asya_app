@@ -14,7 +14,12 @@ import {
   Platform,
 } from "react-native";
 
-import { collection, onSnapshot, deleteDoc, doc } from "firebase/firestore";
+import {
+  collection,
+  onSnapshot,
+  deleteDoc,
+  doc,
+} from "firebase/firestore";
 import { db } from "./firebase";
 import AddProduct from "./AddProduct";
 
