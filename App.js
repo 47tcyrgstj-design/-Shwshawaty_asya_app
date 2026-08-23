@@ -591,39 +591,7 @@ const deleteProduct = async (product) => {
       />
     );
   }
-    if (screen === "manageProducts") {
-  return (
-    <SafeAreaView style={styles.safe}>
-      <ScrollView
-        contentContainerStyle={styles.accountingContainer}
-      >
-        <TouchableOpacity
-          onPress={() => setScreen("manager")}
-        >
-          <Text style={styles.back}>
-            ‹ گەڕانەوە
-          </Text>
-        </TouchableOpacity>
-
-        <Text style={styles.managerTitle}>
-          📦 بەڕێوبەرایەتی بەرهەمەکان
-        </Text>
-
-      onPress={() => onDeleteProduct(product)}
-          >
-            <Text style={styles.menuIcon}>
-              🗑️
-            </Text>
-
-            <Text style={styles.menuText}>
-              {product.name}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
-    </SafeAreaView>
-  );
-}
+    
 
 if (screen === "manageProducts") {
   return (
