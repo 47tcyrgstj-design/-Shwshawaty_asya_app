@@ -1152,7 +1152,16 @@ if (screen === "dashboardPassword") {
   /* =========================
    MANAGER
 ========================= */
-
+if (screen === "managerPassword") {
+  return (
+    <PasswordScreen
+      title="بەشی بەڕێوبەر"
+      passwordCorrect="gardunali"
+      onSuccess={() => setScreen("manager")}
+      onBack={() => setScreen("main")}
+    />
+  );
+}
 if (screen === "manager") {
   return (
     <ManagerPanel
