@@ -660,13 +660,25 @@ if (screen === "manageProducts") {
   setScreen("editProduct");
 }}
           >
-            <Text style={styles.menuIcon}>
-              📦
-            </Text>
+          {product.image ? (
+  <Image
+    source={{ uri: product.image }}
+    style={{
+      width: 80,
+      height: 80,
+      borderRadius: 12,
+    }}
+    resizeMode="cover"
+  />
+) : (
+  <Text style={styles.menuIcon}>
+    📦
+  </Text>
+)}
 
-            <Text style={styles.menuText}>
-              {product.name}
-            </Text>
+<Text style={styles.menuText}>
+  {product.name}
+</Text>
           </TouchableOpacity>
         ))}
       </ScrollView>
