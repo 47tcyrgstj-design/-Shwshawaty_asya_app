@@ -266,7 +266,7 @@ function Dashboard({ onBack }) {
    MANAGER PANEL
 ========================= */
 
-function ManagerPanel({ onBack, onAddProduct}) {
+function ManagerPanel({ onBack, onAddProduct, products, onDeleteProduct }) {
   const items = [
     ["📦", "بەڕێوبەرایەتی بەرهەمەکان"],
     ["➕", "زیادکردنی بەرهەم"],
@@ -319,13 +319,18 @@ function ManagerPanel({ onBack, onAddProduct}) {
               style={styles.menuButton}
               onPress={() => {
                  if (title === "زیادکردنی بەرهەم") {
-                   onAddProduct();
-                 } else {
-                   showMessage(
-  title,
-  "ئەم بەشە ئامادەیە بۆ زیادکردنی سیستەمی ڕاستەقینە."
-);
-  }
+  onAddProduct();
+} else if (title === "سڕینەوەی بەرهەم") {
+  showMessage(
+    "سڕینەوە",
+    "لە خوارەوە بەرهەمەکە هەڵبژێرە."
+  );
+} else {
+  showMessage(
+    title,
+    "ئەم بەشە ئامادەیە بۆ زیادکردنی سیستەمی ڕاستەقینە."
+  );
+}
 }}
             >
               <Text style={styles.menuIcon}>{icon}</Text>
@@ -333,6 +338,23 @@ function ManagerPanel({ onBack, onAddProduct}) {
             </TouchableOpacity>
           ))}
         </View>
+        <Text style={styles.menuTitle}>
+  🗑️ سڕینەوەی بەرهەم
+</Text>
+
+{products.map((product) => (
+  <TouchableOpacity
+    key={product.id}
+    style={styles.menuButton}
+    onPress={() => onDeleteProduct(product)}
+  >
+    <Text style={styles.menuIcon}>🗑️</Text>
+
+    <Text style={styles.menuText}>
+      {product.name}
+    </Text>
+  </TouchableOpacity>
+))}
 
         <View style={styles.accountingNote}>
           <Text style={styles.accountingNoteTitle}>
@@ -467,6 +489,31 @@ export default function App() {
      CART
   ========================= */
 
+const deleteProduct = async (product) => {
+  if (Platform.OS === "web") {
+    const ok = window.confirm(
+      `دڵنیایت لە سڕینەوەی "${product.name}"؟`
+    );
+
+    if (!ok) return;
+  }
+
+  try {
+    await deleteDoc(doc(db, "products", product.id));
+
+    showMessage(
+      "سڕایەوە",
+      `${product.name} بە سەرکەوتوویی سڕایەوە.`
+    );
+  } catch (error) {
+    console.error("Delete product error:", error);
+
+    showMessage(
+      "هەڵە",
+      "نەتوانرا بەرهەمەکە بسڕدرێتەوە."
+    );
+  }
+};
   const addToCart = (product) => {
     setCart((current) => [...current, product]);
 
@@ -536,7 +583,11 @@ export default function App() {
     <ManagerPanel
       onBack={() => setScreen("main")}
       onAddProduct={() => setScreen("addProduct")}
+      products={products}
+      onDeleteProduct={deleteProduct}
     />
+  );
+}
   );
 }
   if (screen === "addProduct") {
