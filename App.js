@@ -19,6 +19,7 @@ import {
   onSnapshot,
   deleteDoc,
   doc,
+  updateDoc,
 } from "firebase/firestore";
 import { db } from "./firebase";
 import AddProduct from "./AddProduct";
@@ -526,10 +527,40 @@ const deleteProduct = async (product) => {
       "هەڵە",
       "نەتوانرا بەرهەمەکە بسڕدرێتەوە."
     );
+    }
+};
+
+const updateProduct = async () => {
+  if (!selectedProduct) return;
+
+  try {
+    await updateDoc(
+      doc(db, "products", selectedProduct.id),
+      {
+        name: selectedProduct.name,
+        price: selectedProduct.price,
+      }
+    );
+
+    showMessage(
+      "پاشەکەوت کرا",
+      "زانیارییەکانی بەرهەم بە سەرکەوتوویی نوێکرانەوە."
+    );
+
+    setScreen("manageProducts");
+    setSelectedProduct(null);
+  } catch (error) {
+    console.error("Update product error:", error);
+
+    showMessage(
+      "هەڵە",
+      "نەتوانرا گۆڕانکارییەکان پاشەکەوت بکرێن."
+    );
   }
 };
-  const addToCart = (product) => {
-    setCart((current) => [...current, product]);
+
+const addToCart = (product) => {
+   setCart((current) => [...current, product]);
 
     showMessage(
       "زیادکرا",
@@ -661,6 +692,39 @@ if (screen === "manageProducts") {
             <Text style={styles.accountingNoteTitle}>
               📦 {selectedProduct.name}
             </Text>
+            <TextInput
+  value={selectedProduct.name}
+  onChangeText={(text) =>
+    setSelectedProduct({
+      ...selectedProduct,
+      name: text,
+    })
+  }
+  placeholder="ناوی بەرهەم"
+  placeholderTextColor="#777"
+  style={styles.passwordInput}
+/>
+<TextInput
+  value={String(selectedProduct.price ?? "")}
+  onChangeText={(text) =>
+    setSelectedProduct({
+      ...selectedProduct,
+      price: text,
+    })
+  }
+  placeholder="نرخی بەرهەم"
+  placeholderTextColor="#777"
+  keyboardType="numeric"
+  style={styles.passwordInput}
+/>
+<TouchableOpacity
+  style={styles.goldBtn}
+  onPress={updateProduct}
+>
+  <Text style={styles.goldText}>
+    💾 پاشەکەوتکردن
+  </Text>
+</TouchableOpacity>
 
             <Text style={styles.accountingNoteText}>
               ئەم بەشە بۆ دەستکاریکردنی زانیارییەکانی بەرهەمە.
@@ -671,12 +735,14 @@ if (screen === "manageProducts") {
     </SafeAreaView>
   );
 }
-    return (
-      <AddProduct
-        onBack={() => setScreen("manager")}
-      />
-    );
-  }
+
+if (screen === "addProduct") {
+  return (
+    <AddProduct
+      onBack={() => setScreen("manager")}
+    />
+  );
+}
   
     /* =========================
    CHECKOUT
