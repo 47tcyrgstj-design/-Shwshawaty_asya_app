@@ -853,6 +853,8 @@ if (screen === "customers") {
         </View>
       </ScrollView>
     );
+    }
+     if (screen === "manageProducts") {
   return (
     <SafeAreaView style={styles.safe}>
       <ScrollView
