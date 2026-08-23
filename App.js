@@ -811,6 +811,7 @@ if (screen === "checkout") {
   /* =========================
    MANAGER PASSWORD
 ========================= */
+
 if (screen === "managerPassword") {
   return (
     <PasswordScreen
@@ -837,16 +838,21 @@ if (screen === "dashboardPassword") {
   );
 }
 
-  if (screen === "dashboardPassword") {
-    return (
-      <PasswordScreen
-        title="Dashboard"
-        passwordCorrect="gardunali"
-        onSuccess={() => setScreen("dashboard")}
-        onBack={() => setScreen("main")}
-      />
-    );
-  }
+  /* =========================
+   MANAGER
+========================= */
+
+if (screen === "manager") {
+  return (
+    <ManagerPanel
+      onBack={() => setScreen("main")}
+      onAddProduct={() => setScreen("addProduct")}
+      onManageProducts={() => setScreen("manageProducts")}
+      products={products}
+      onDeleteProduct={deleteProduct}
+    />
+  );
+}
   /* =========================
      PRODUCT DETAILS
   ========================= */
