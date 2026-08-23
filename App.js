@@ -588,8 +588,6 @@ const deleteProduct = async (product) => {
     />
   );
 }
-  );
-}
   if (screen === "addProduct") {
     return (
       <AddProduct
