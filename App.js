@@ -336,6 +336,8 @@ function ManagerPanel({
     onAddProduct();
   } else if (title === "سڕینەوەی بەرهەم") {
     showMessage(
+        } else if (title === "بەڕێوبەرایەتی کڕیارەکان") {
+  setScreen("customers");
       "سڕینەوەی بەرهەم",
       "بەرهەمێک هەڵبژێرە بۆ سڕینەوە."
     );
@@ -632,7 +634,20 @@ const addToCart = (product) => {
     );
   }
     
+// شاشەی کڕیارەکان
+if (screen === "customers") {
+  return (
+    <SafeAreaView style={styles.safe}>
+      ...
+    </SafeAreaView>
+  );
+}
 
+if (screen === "manageProducts") {
+  return (
+    ...
+  );
+}
 if (screen === "manageProducts") {
   return (
     <SafeAreaView style={styles.safe}>
