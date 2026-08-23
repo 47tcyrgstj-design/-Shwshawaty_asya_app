@@ -419,6 +419,8 @@ export default function App() {
   const [cartError, setCartError] = useState("");
   const [customerName, setCustomerName] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
+  const [productName, setProductName] = useState("");
+const [customerTotal, setCustomerTotal] = useState("");
   const [customerAddress, setCustomerAddress] = useState("");
   const [customerNote, setCustomerNote] = useState("");
   const [selected, setSelected] = useState(null);
