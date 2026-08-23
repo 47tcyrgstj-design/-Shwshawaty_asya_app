@@ -765,10 +765,13 @@ const addToCart = (product) => {
 
         Alert.alert("سەرکەوتوو", "کڕیار بە سەرکەوتوویی زیاد کرا.");
       } catch (error) {
-        console.error("Add customer error:", error);
-        Alert.alert("هەڵە", "کێشەیەک ڕوویدا لە زیادکردنی کڕیار.");
-      }
-    }}
+  console.error("Add customer error:", error);
+
+  Alert.alert(
+    "هەڵەی Firebase",
+    error?.message || "هەڵەیەکی نەناسراو ڕوویدا."
+  );
+}
   >
     <Text style={styles.startButtonText}>
       زیادکردنی کڕیار
