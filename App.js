@@ -680,7 +680,31 @@ const addToCart = (product) => {
       />
     );
   }
-  if (screen === "customers") {
+if (screen === "customers") {
+  return (
+    <SafeAreaView style={styles.safe}>
+      <View style={{ flex: 1, padding: 30 }}>
+        <Text style={{ color: "#fff", fontSize: 25 }}>
+          👥 بەڕێوبەرایەتی کڕیارەکان
+        </Text>
+
+        <Text style={{ color: "#aaa", fontSize: 16, marginTop: 20 }}>
+          ئەگەر ئەمە دەبینیت، screen ـی customers دروستە.
+        </Text>
+
+        <TouchableOpacity
+          onPress={() => setScreen("manager")}
+          style={{ marginTop: 30 }}
+        >
+          <Text style={{ color: "#d7a52b", fontSize: 18 }}>
+            ‹ گەڕانەوە
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
+  );
+}
+    
   return (
     <SafeAreaView style={styles.safe}>
       <ScrollView
