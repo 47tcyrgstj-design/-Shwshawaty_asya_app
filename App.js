@@ -772,7 +772,7 @@ const addToCart = (product) => {
     error?.message || "هەڵەیەکی نەناسراو ڕوویدا."
   );
 }
-  >
+
     <Text style={styles.startButtonText}>
       زیادکردنی کڕیار
     </Text>
