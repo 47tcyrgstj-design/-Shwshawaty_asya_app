@@ -362,18 +362,15 @@ function ManagerPanel({
     style={styles.menuButton}
     onPress={() => onDeleteProduct(product)}
   >
-  {product.image ? (
-  <Image
-    source={{ uri: product.image }}
-    style={{
-      width: 70,
-      height: 70,
-      borderRadius: 10,
-    }}
-  />
-) : (
-  <Text style={styles.menuIcon}>📦</Text>
-)}
+<Image
+  source={{ uri: product.image }}
+  style={{
+    width: 100,
+    height: 100,
+    borderRadius: 10,
+  }}
+  resizeMode="cover"
+/>
 
 <Text style={styles.menuText}>
   {product.name}
