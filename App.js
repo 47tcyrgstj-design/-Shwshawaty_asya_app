@@ -344,6 +344,7 @@ function ManagerPanel({
       "ئەم بەشە ئامادەیە بۆ زیادکردنی سیستەمی ڕاستەقینە."
     );
   }
+  }}
  >
               <Text style={styles.menuIcon}>{icon}</Text>
               <Text style={styles.menuText}>{title}</Text>
