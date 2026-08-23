@@ -336,11 +336,7 @@ function ManagerPanel({
     onAddProduct();
   } else if (title === "سڕینەوەی بەرهەم") {
     showMessage(
-        } else if (title === "بەڕێوبەرایەتی کڕیارەکان") {
-  setScreen("customers");
-      "سڕینەوەی بەرهەم",
-      "بەرهەمێک هەڵبژێرە بۆ سڕینەوە."
-    );
+        
   } else {
     showMessage(
       title,
