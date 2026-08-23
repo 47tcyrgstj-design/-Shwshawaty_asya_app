@@ -432,7 +432,11 @@ export default function App() {
 const [customersLoading, setCustomersLoading] = useState(true);
   const [productsLoading, setProductsLoading] = useState(true);
   const [productsError, setProductsError] = useState("");
-
+  
+const [customerName, setCustomerName] = useState("");
+const [customerPhone, setCustomerPhone] = useState("");
+const [productName, setProductName] = useState("");
+const [customerTotal, setCustomerTotal] = useState("");
   /* =========================
      FIRESTORE PRODUCTS
   ========================= */
