@@ -20,6 +20,7 @@ import {
   deleteDoc,
   doc,
   updateDoc,
+  addDoc
 } from "firebase/firestore";
 import { db } from "./firebase";
 import AddProduct from "./AddProduct";
@@ -414,6 +415,9 @@ export default function App() {
   const [screen, setScreen] = useState("main");
 
   const [products, setProducts] = useState([]);
+  
+  const [customers, setCustomers] = useState([]);
+const [customersLoading, setCustomersLoading] = useState(true);
   const [productsLoading, setProductsLoading] = useState(true);
   const [productsError, setProductsError] = useState("");
 
@@ -423,6 +427,7 @@ export default function App() {
 
   useEffect(() => {
     let unsubscribe = null;
+    let unsubscribeCustomers = null;
 
     try {
       const productsRef = collection(db, "products");
@@ -465,12 +470,43 @@ export default function App() {
         "کێشەیەک هەیە لە ڕێکخستنی Database."
       );
     }
+    const customersRef = collection(db, "customers");
 
-    return () => {
-      if (typeof unsubscribe === "function") {
-        unsubscribe();
+    unsubscribeCustomers = onSnapshot(
+      customersRef,
+      (snapshot) => {
+        const firestoreCustomers = snapshot.docs.map((doc) => {
+          const data = doc.data() || {};
+
+          return {
+            id: doc.id,
+            name: data.name || "کڕیار",
+            phone: data.phone || "",
+            address: data.address || "",
+            totalPurchases: Number(data.totalPurchases) || 0,
+            paid: Number(data.paid) || 0,
+            debt: Number(data.debt) || 0,
+          };
+        });
+
+        setCustomers(firestoreCustomers);
+        setCustomersLoading(false);
+      },
+      (error) => {
+        console.error("Firestore customers error:", error);
+        setCustomers([]);
+        setCustomersLoading(false);
       }
-    };
+    );
+    return () => {
+  if (typeof unsubscribe === "function") {
+    unsubscribe();
+  }
+
+  if (typeof unsubscribeCustomers === "function") {
+    unsubscribeCustomers();
+  }
+};
   }, []);
 
   /* =========================
@@ -634,6 +670,80 @@ const addToCart = (product) => {
       />
     );
   }
+  if (screen === "customers") {
+  return (
+    <SafeAreaView style={styles.safe}>
+      <ScrollView
+        contentContainerStyle={styles.accountingContainer}
+      >
+        <TouchableOpacity
+          onPress={() => setScreen("manager")}
+        >
+          <Text style={styles.back}>
+            ‹ گەڕانەوە
+          </Text>
+        </TouchableOpacity>
+
+        <Text style={styles.managerTitle}>
+          👥 بەڕێوبەرایەتی کڕیارەکان
+        </Text>
+{customersLoading ? (
+  <Text style={styles.accountingNoteText}>
+    چاوەڕێ بکە...
+  </Text>
+) : customers.length === 0 ? (
+  <View style={styles.accountingNote}>
+    <Text style={styles.accountingNoteTitle}>
+      👤 هیچ کڕیارێک نییە
+    </Text>
+
+    <Text style={styles.accountingNoteText}>
+      هێشتا هیچ کڕیارێک تۆمار نەکراوە.
+    </Text>
+  </View>
+) : (
+  customers.map((customer) => (
+    <View
+      key={customer.id}
+      style={styles.accountingNote}
+    >
+      <Text style={styles.accountingNoteTitle}>
+        👤 {customer.name}
+      </Text>
+
+      <Text style={styles.accountingNoteText}>
+        📞 {customer.phone || "ژمارە نییە"}
+      </Text>
+
+      <Text style={styles.accountingNoteText}>
+        💰 کۆی کڕین: {customer.totalPurchases.toLocaleString()} د.ع
+      </Text>
+
+      <Text style={styles.accountingNoteText}>
+        💵 پارەی دراو: {customer.paid.toLocaleString()} د.ع
+      </Text>
+
+      <Text style={styles.accountingNoteText}>
+        🔴 قەرزی ماوە: {customer.debt.toLocaleString()} د.ع
+      </Text>
+    </View>
+  ))
+)}
+        <View style={styles.accountingNote}>
+          <Text style={styles.accountingNoteTitle}>
+            👤 کڕیارەکان
+          </Text>
+
+          <Text style={styles.accountingNoteText}>
+            لەم بەشەدا دەتوانین کڕیار زیاد بکەین و ناوی بەرهەمەکانی کڕیوە، کۆی کڕین، پارەی دراو و قەرزی ماوەی هەر کڕیارێک تۆمار بکەین.
+          </Text>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
+
+if (screen === "manageProducts") {
 if (screen === "manageProducts") {
   return (
     <SafeAreaView style={styles.safe}>
