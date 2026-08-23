@@ -851,11 +851,13 @@ if (screen === "customers") {
             لەم بەشەدا دەتوانین کڕیار زیاد بکەین و ناوی بەرهەمەکانی کڕیوە، کۆی کڕین، پارەی دراو و قەرزی ماوەی هەر کڕیارێک تۆمار بکەین.
           </Text>
         </View>
-      </ScrollView>
-      );
-    }
-     if (screen === "manageProducts") {
-       return (
+          </ScrollView>
+    </SafeAreaView>
+  );
+}
+
+if (screen === "manageProducts") {
+  return (
     <SafeAreaView style={styles.safe}>
       <ScrollView
         contentContainerStyle={styles.accountingContainer}
