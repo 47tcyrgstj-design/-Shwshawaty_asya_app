@@ -790,7 +790,7 @@ if (screen === "checkout") {
               بۆ زانیاری زیاتر پەیوەندیمان پێوە بکە.
             </Text>
 
-            <TouchableOpacity
+                      <TouchableOpacity
               style={styles.goldBtn}
               onPress={() => addToCart(selected)}
             >
@@ -800,8 +800,9 @@ if (screen === "checkout") {
             </TouchableOpacity>
           </View>
         </ScrollView>
-     </SafeAreaView>
-);
+      </SafeAreaView>
+    );
+  }
 
 /* MANAGER PASSWORD */
 
