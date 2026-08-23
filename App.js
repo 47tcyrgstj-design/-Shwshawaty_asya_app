@@ -329,7 +329,6 @@ function ManagerPanel({
               key={index}
               style={styles.menuButton}
               onPress={() => {
-                 onPress={() => {
   if (title === "بەڕێوبەرایەتی بەرهەمەکان") {
     onManageProducts();
   } else if (title === "زیادکردنی بەرهەم") {
