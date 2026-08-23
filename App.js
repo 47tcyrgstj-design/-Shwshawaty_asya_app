@@ -284,7 +284,14 @@ function Dashboard({ onBack }) {
 /* =========================
    MANAGER PANEL
 ========================= */
-
+function ManagerPanel({
+  onBack,
+  onAddProduct,
+  onManageProducts,
+  products,
+  onDeleteProduct,
+  setScreen,
+}) {
   return (
     <SafeAreaView style={styles.safe}>
       <ScrollView
