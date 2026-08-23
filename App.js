@@ -608,7 +608,7 @@ if (screen === "manageProducts") {
         </TouchableOpacity>
 
         <Text style={styles.managerTitle}>
-          🗑️ سڕینەوەی بەرهەم
+      📦 بەڕێوبەرایەتی بەرهەمەکان
         </Text>
 
         {products.map((product) => (
