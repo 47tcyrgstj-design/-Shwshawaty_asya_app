@@ -17,6 +17,9 @@
       "bundler": "metro",
       "output": "single"
     },
+    "experiments": {
+  "baseUrl": "/-Shwshawaty_asya_app"
+},
     "extra": {
       "eas": {
         "projectId": "5866a723-918e-413e-91c8-6b83fe1555c5"
