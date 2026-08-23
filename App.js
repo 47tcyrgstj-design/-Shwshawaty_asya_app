@@ -285,8 +285,6 @@ function Dashboard({ onBack }) {
    MANAGER PANEL
 ========================= */
 
-ئ
-
   return (
     <SafeAreaView style={styles.safe}>
       <ScrollView
