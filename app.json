@@ -15,7 +15,7 @@
     },
     "web": {
       "bundler": "metro",
-      "output": "single"
+      "output": "static"
     },
     "extra": {
       "eas": {
