@@ -139,8 +139,8 @@ function Transaction({ name, date, value, income }) {
 /* =========================
    DASHBOARD
 ========================= */
-
-function Dashboard({ onBack }) {
+function Dashboard({ onBack, onNavigate }) {
+  
   const cards = [
     ["💰", "فرۆشتنی ئەمڕۆ", money(accountingData.todaySales)],
     ["📈", "قازانجی ئەمڕۆ", money(accountingData.todayProfit)],
@@ -349,9 +349,9 @@ function ManagerPanel({
   if (title === "بەڕێوبەرایەتی بەرهەمەکان") {
   onManageProducts();
   } else if (title === "فرۆشتن") {
-  setScreen("sales");
+  onNavigate("sales");
   } else if (title === "کۆگا") {
-  setScreen("inventory");
+  onNavigate("inventory");
 } else if (title === "زیادکردنی بەرهەم") {
   onAddProduct();
 } else if (title === "سڕینەوەی بەرهەم") {
@@ -800,12 +800,13 @@ const addToCart = (product) => {
   ========================= */
 
   if (screen === "dashboard") {
-    return (
-      <Dashboard
-        onBack={() => setScreen("main")}
-      />
-    );
-  }
+  return (
+    <Dashboard
+      onBack={() => setScreen("main")}
+      onNavigate={(nextScreen) => setScreen(nextScreen)}
+    />
+  );
+}
       if (screen === "customers") {
     return (
     <SafeAreaView style={styles.safe}>
