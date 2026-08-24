@@ -252,6 +252,8 @@ function Dashboard({ onBack }) {
     );
   } else if (title === "بەڕێوبەرایەتی کڕیارەکان") {
     setScreen("customers");
+    } else if (title === "فرۆشتن") {
+  setScreen("sales");
     } else if (title === "کۆگا") {
   setScreen("inventory");
   } else {
