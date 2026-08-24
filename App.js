@@ -397,6 +397,37 @@ function ManagerPanel({
 <Text style={styles.stockText}>
   📦 کۆگا: {product.stock ?? 0} دانە
 </Text>
+<View style={styles.stockControls}>
+  <TouchableOpacity
+    style={styles.stockButton}
+    onPress={async () => {
+      const newStock = Math.max(0, (product.stock ?? 0) - 1);
+
+      await updateDoc(doc(db, "products", product.id), {
+        stock: newStock,
+      });
+    }}
+  >
+    <Text style={styles.stockButtonText}>−</Text>
+  </TouchableOpacity>
+
+  <Text style={styles.stockNumber}>
+    {product.stock ?? 0}
+  </Text>
+
+  <TouchableOpacity
+    style={styles.stockButton}
+    onPress={async () => {
+      const newStock = (product.stock ?? 0) + 1;
+
+      await updateDoc(doc(db, "products", product.id), {
+        stock: newStock,
+      });
+    }}
+  >
+    <Text style={styles.stockButtonText}>+</Text>
+  </TouchableOpacity>
+</View>
 
   </TouchableOpacity>
 ))}
@@ -2570,5 +2601,35 @@ input: {
   fontSize: 13,
   marginTop: 4,
   textAlign: "right",
+},
+stockControls: {
+  flexDirection: "row",
+  alignItems: "center",
+  justifyContent: "center",
+  marginTop: 10,
+  gap: 15,
+},
+
+stockButton: {
+  width: 42,
+  height: 42,
+  borderRadius: 10,
+  backgroundColor: "#d7a52b",
+  alignItems: "center",
+  justifyContent: "center",
+},
+
+stockButtonText: {
+  color: "#111",
+  fontSize: 25,
+  fontWeight: "800",
+},
+
+stockNumber: {
+  color: "#fff",
+  fontSize: 18,
+  fontWeight: "800",
+  minWidth: 35,
+  textAlign: "center",
 },
 });
