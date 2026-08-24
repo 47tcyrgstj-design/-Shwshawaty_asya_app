@@ -427,7 +427,8 @@ const [customerTotal, setCustomerTotal] = useState("");
   const [screen, setScreen] = useState("main");
 
   const [products, setProducts] = useState([]);
-  
+  const [paymentAmount, setPaymentAmount] = useState("");
+const [payingCustomer, setPayingCustomer] = useState(null);
   const [customers, setCustomers] = useState([]);
 const [customersLoading, setCustomersLoading] = useState(true);
   const [productsLoading, setProductsLoading] = useState(true);
@@ -617,7 +618,57 @@ const updateProduct = async () => {
     );
   }
 };
+const payCustomerDebt = async () => {
+  if (!payingCustomer) return;
 
+  const amount = Number(paymentAmount) || 0;
+
+  if (amount <= 0) {
+    showMessage("ئاگاداری", "بڕی پارە بنووسە.");
+    return;
+  }
+
+  const currentDebt = Number(payingCustomer.debt) || 0;
+
+  if (amount > currentDebt) {
+    showMessage(
+      "ئاگاداری",
+      "بڕی پارە لە قەرزی کڕیار زیاترە."
+    );
+    return;
+  }
+
+  try {
+    const newPaid =
+      (Number(payingCustomer.paid) || 0) + amount;
+
+    const newDebt =
+      currentDebt - amount;
+
+    await updateDoc(
+      doc(db, "customers", payingCustomer.id),
+      {
+        paid: newPaid,
+        debt: newDebt,
+      }
+    );
+
+    setPaymentAmount("");
+    setPayingCustomer(null);
+
+    showMessage(
+      "سەرکەوتوو",
+      `پارەدان تۆمار کرا.\nقەرزی ماوە: ${newDebt.toLocaleString()} د.ع`
+    );
+  } catch (error) {
+    console.error("Payment error:", error);
+
+    showMessage(
+      "هەڵە",
+      error?.message || "نەتوانرا پارەدان تۆمار بکرێت."
+    );
+  }
+};
 const addToCart = (product) => {
    setCart((current) => [...current, product]);
 
@@ -818,6 +869,39 @@ const addToCart = (product) => {
       <Text style={styles.accountingNoteText}>
         🔴 قەرزی ماوە: {customer.debt.toLocaleString()} د.ع
       </Text>
+      <TouchableOpacity
+  style={styles.goldBtn}
+  onPress={() => {
+    setPayingCustomer(customer);
+    setPaymentAmount("");
+  }}
+>
+  <Text style={styles.goldText}>
+    💵 پارەدان
+  </Text>
+</TouchableOpacity>
+
+{payingCustomer?.id === customer.id && (
+  <View style={{ marginTop: 10 }}>
+    <TextInput
+      value={paymentAmount}
+      onChangeText={setPaymentAmount}
+      placeholder="بڕی پارە"
+      placeholderTextColor="#777"
+      keyboardType="numeric"
+      style={styles.input}
+    />
+
+    <TouchableOpacity
+      style={styles.startButton}
+      onPress={payCustomerDebt}
+    >
+      <Text style={styles.startButtonText}>
+        ✅ تۆمارکردنی پارەدان
+      </Text>
+    </TouchableOpacity>
+  </View>
+)}
     </View>
   ))
 )}
