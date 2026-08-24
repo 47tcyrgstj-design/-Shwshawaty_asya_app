@@ -393,6 +393,10 @@ function ManagerPanel({
 <Text style={styles.menuText}>
   {product.name}
 </Text>
+<Text style={styles.stockText}>
+  📦 کۆگا: {product.stock ?? 0} دانە
+</Text>
+
   </TouchableOpacity>
 ))}
 
@@ -2555,4 +2559,10 @@ input: {
     marginTop: 8,
     textAlign: "center",
   },
+  stockText: {
+  color: "#d7a52b",
+  fontSize: 13,
+  marginTop: 4,
+  textAlign: "right",
+},
 });
