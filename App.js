@@ -393,6 +393,7 @@ function ManagerPanel({
 <Text style={styles.menuText}>
   {product.name}
 </Text>
+
 <Text style={styles.stockText}>
   📦 کۆگا: {product.stock ?? 0} دانە
 </Text>
