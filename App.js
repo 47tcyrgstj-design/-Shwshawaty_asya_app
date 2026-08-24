@@ -896,6 +896,21 @@ const addToCart = (product) => {
       <Text style={styles.accountingNoteText}>
         🔴 قەرزی ماوە: {customer.debt.toLocaleString()} د.ع
       </Text>
+      <Text style={styles.accountingNoteText}>
+  🔴 قەرزی ماوە: {customer.debt.toLocaleString()} د.ع
+</Text>
+
+<TouchableOpacity
+  style={styles.goldBtn}
+  onPress={() => {
+    setPayingCustomer(customer);
+    setPaymentAmount("");
+  }}
+>
+  <Text style={styles.goldText}>
+    💵 پارەدان
+  </Text>
+</TouchableOpacity>
       
       <TouchableOpacity
   style={styles.startButton}
