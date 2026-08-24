@@ -669,6 +669,33 @@ const payCustomerDebt = async () => {
     );
   }
 };
+const deleteCustomer = async (customer) => {
+  if (Platform.OS === "web") {
+    const ok = window.confirm(
+      `دڵنیایت لە سڕینەوەی "${customer.name}"؟`
+    );
+
+    if (!ok) return;
+  }
+
+  try {
+    await deleteDoc(
+      doc(db, "customers", customer.id)
+    );
+
+    showMessage(
+      "سڕایەوە",
+      `${customer.name} بە سەرکەوتوویی سڕایەوە.`
+    );
+  } catch (error) {
+    console.error("Delete customer error:", error);
+
+    showMessage(
+      "هەڵە",
+      "نەتوانرا کڕیارەکە بسڕدرێتەوە."
+    );
+  }
+};
 const addToCart = (product) => {
    setCart((current) => [...current, product]);
 
@@ -869,6 +896,27 @@ const addToCart = (product) => {
       <Text style={styles.accountingNoteText}>
         🔴 قەرزی ماوە: {customer.debt.toLocaleString()} د.ع
       </Text>
+      
+      <TouchableOpacity
+  style={styles.startButton}
+  onPress={() => deleteCustomer(customer)}
+>
+  <Text style={styles.startButtonText}>
+    🗑️ سڕینەوەی کڕیار
+  </Text>
+  
+</TouchableOpacity>
+<TouchableOpacity
+  style={styles.goldBtn}
+  onPress={() => {
+    setSelected(customer);
+    setScreen("editCustomer");
+  }}
+>
+  <Text style={styles.goldText}>
+    ✏️ دەستکاریکردن
+  </Text>
+</TouchableOpacity>
       <TouchableOpacity
   style={styles.goldBtn}
   onPress={() => {
@@ -918,7 +966,114 @@ const addToCart = (product) => {
     </SafeAreaView>
   );
 }
+if (screen === "editCustomer") {
+  return (
+    <SafeAreaView style={styles.safe}>
+      <ScrollView
+        contentContainerStyle={styles.accountingContainer}
+      >
+        <TouchableOpacity
+          onPress={() => {
+            setSelected(null);
+            setScreen("customers");
+          }}
+        >
+          <Text style={styles.back}>
+            ‹ گەڕانەوە
+          </Text>
+        </TouchableOpacity>
 
+        <Text style={styles.managerTitle}>
+          ✏️ دەستکاریکردنی کڕیار
+        </Text>
+
+        {selected && (
+          <View style={styles.accountingNote}>
+
+            <TextInput
+              value={selected.name}
+              onChangeText={(text) =>
+                setSelected({
+                  ...selected,
+                  name: text,
+                })
+              }
+              placeholder="ناوی کڕیار"
+              placeholderTextColor="#777"
+              style={styles.input}
+            />
+
+            <TextInput
+              value={selected.phone}
+              onChangeText={(text) =>
+                setSelected({
+                  ...selected,
+                  phone: text,
+                })
+              }
+              placeholder="ژمارەی تەلەفۆن"
+              placeholderTextColor="#777"
+              keyboardType="phone-pad"
+              style={styles.input}
+            />
+
+            <TextInput
+              value={selected.address}
+              onChangeText={(text) =>
+                setSelected({
+                  ...selected,
+                  address: text,
+                })
+              }
+              placeholder="ناونیشان"
+              placeholderTextColor="#777"
+              style={styles.input}
+            />
+
+            <TouchableOpacity
+              style={styles.goldBtn}
+              onPress={async () => {
+                try {
+                  await updateDoc(
+                    doc(db, "customers", selected.id),
+                    {
+                      name: selected.name,
+                      phone: selected.phone,
+                      address: selected.address,
+                    }
+                  );
+
+                  showMessage(
+                    "سەرکەوتوو",
+                    "زانیارییەکانی کڕیار نوێ کرانەوە."
+                  );
+
+                  setSelected(null);
+                  setScreen("customers");
+                } catch (error) {
+                  console.error(
+                    "Update customer error:",
+                    error
+                  );
+
+                  showMessage(
+                    "هەڵە",
+                    "نەتوانرا زانیارییەکانی کڕیار نوێ بکرێنەوە."
+                  );
+                }
+              }}
+            >
+              <Text style={styles.goldText}>
+                💾 پاشەکەوتکردن
+              </Text>
+            </TouchableOpacity>
+
+          </View>
+        )}
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
 if (screen === "manageProducts") {
   return (
     <SafeAreaView style={styles.safe}>
