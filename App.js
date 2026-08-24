@@ -2655,40 +2655,40 @@ input: {
     textAlign: "center",
   },
   stockText: {
-  color: "#d7a52b",
-  fontSize: 13,
-  marginTop: 4,
-  textAlign: "right",
-},
+    color: "#d7a52b",
+    fontSize: 13,
+    marginTop: 4,
+    textAlign: "right",
+  },
 
-stockControls: {
-  flexDirection: "row",
-  alignItems: "center",
-  justifyContent: "center",
-  marginTop: 10,
-  gap: 15,
-},
+  stockControls: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 10,
+    gap: 15,
+  },
 
-stockButton: {
-  width: 42,
-  height: 42,
-  borderRadius: 10,
-  backgroundColor: "#d7a52b",
-  alignItems: "center",
-  justifyContent: "center",
-},
+  stockButton: {
+    width: 42,
+    height: 42,
+    borderRadius: 10,
+    backgroundColor: "#d7a52b",
+    alignItems: "center",
+    justifyContent: "center",
+  },
 
-stockButtonText: {
-  color: "#111",
-  fontSize: 25,
-  fontWeight: "800",
-},
+  stockButtonText: {
+    color: "#111",
+    fontSize: 25,
+    fontWeight: "800",
+  },
 
-stockNumber: {
-  color: "#fff",
-  fontSize: 18,
-  fontWeight: "800",
-  minWidth: 35,
-  textAlign: "center",
-},
+  stockNumber: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "800",
+    minWidth: 35,
+    textAlign: "center",
+  },
 });
