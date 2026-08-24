@@ -139,7 +139,12 @@ function Transaction({ name, date, value, income }) {
 /* =========================
    DASHBOARD
 ========================= */
-function Dashboard({ onBack, onNavigate }) {
+function Dashboard({
+  onBack,
+  onNavigate,
+  onAddProduct,
+  onManageProducts,
+}) {
   
   const cards = [
     ["💰", "فرۆشتنی ئەمڕۆ", money(accountingData.todaySales)],
@@ -253,9 +258,9 @@ function Dashboard({ onBack, onNavigate }) {
   } else if (title === "بەڕێوبەرایەتی کڕیارەکان") {
     setScreen("customers");
     } else if (title.trim() === "فرۆشتن") {
-  setScreen("sales");
+  onNavigate("sales");
     } else if (title === "کۆگا") {
-  setScreen("inventory");
+  onNavigate("inventory");
   } else {
     showMessage(
       title,
@@ -801,12 +806,12 @@ const addToCart = (product) => {
 
   if (screen === "dashboard") {
   return (
-    <Dashboard
-      onBack={() => setScreen("main")}
-      onNavigate={(nextScreen) => setScreen(nextScreen)}
-    />
-  );
-}
+   <Dashboard
+  onBack={() => setScreen("main")}
+  onNavigate={(nextScreen) => setScreen(nextScreen)}
+  onAddProduct={() => setScreen("addProduct")}
+  onManageProducts={() => setScreen("manageProducts")}
+/>
       if (screen === "customers") {
     return (
     <SafeAreaView style={styles.safe}>
@@ -1037,7 +1042,7 @@ if (screen === "editCustomer") {
         <TouchableOpacity
           onPress={() => {
             setSelected(null);
-            setScreen("customers");
+            onNavigate("customers");
           }}
         >
           <Text style={styles.back}>
