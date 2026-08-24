@@ -2660,6 +2660,7 @@ input: {
   marginTop: 4,
   textAlign: "right",
 },
+
 stockControls: {
   flexDirection: "row",
   alignItems: "center",
