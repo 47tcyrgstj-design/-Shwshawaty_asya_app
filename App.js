@@ -808,7 +808,6 @@ const addToCart = (product) => {
   );
 }
 
-if (screen === "customers") {
       if (screen === "customers") {
     return (
     <SafeAreaView style={styles.safe}>
