@@ -806,12 +806,16 @@ const addToCart = (product) => {
 
   if (screen === "dashboard") {
   return (
-   <Dashboard
-  onBack={() => setScreen("main")}
-  onNavigate={(nextScreen) => setScreen(nextScreen)}
-  onAddProduct={() => setScreen("addProduct")}
-  onManageProducts={() => setScreen("manageProducts")}
-/>
+    <Dashboard
+      onBack={() => setScreen("main")}
+      onNavigate={(nextScreen) => setScreen(nextScreen)}
+      onAddProduct={() => setScreen("addProduct")}
+      onManageProducts={() => setScreen("manageProducts")}
+    />
+  );
+}
+
+if (screen === "customers") {
       if (screen === "customers") {
     return (
     <SafeAreaView style={styles.safe}>
