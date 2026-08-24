@@ -1135,6 +1135,10 @@ if (screen === "inventory") {
               <Text style={styles.accountingNoteText}>
                 💰 نرخ: {money(product.price)}
               </Text>
+              
+              <Text style={styles.accountingNoteText}>
+  📦 کۆگا: {product.stock ?? 0} دانە
+</Text>
             </View>
           ))
         )}
