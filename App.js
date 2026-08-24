@@ -467,6 +467,7 @@ const [customersLoading, setCustomersLoading] = useState(true);
               price: Number(data.price) || 0,
               category: data.category || "کالای ماڵ",
               image: data.image || "",
+              stock: Number(data.stock) || 0,
             };
           });
 
