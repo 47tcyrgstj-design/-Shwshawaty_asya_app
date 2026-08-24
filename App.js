@@ -346,6 +346,8 @@ function ManagerPanel({
               onPress={() => {
   if (title === "بەڕێوبەرایەتی بەرهەمەکان") {
   onManageProducts();
+  } else if (title === "فرۆشتن") {
+  setScreen("sales");
   } else if (title === "کۆگا") {
   setScreen("inventory");
 } else if (title === "زیادکردنی بەرهەم") {
@@ -1173,6 +1175,50 @@ if (screen === "inventory") {
             </View>
           ))
         )}
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
+if (screen === "sales") {
+  return (
+    <SafeAreaView style={styles.safe}>
+      <ScrollView
+        contentContainerStyle={styles.accountingContainer}
+      >
+        <TouchableOpacity
+          onPress={() => setScreen("dashboard")}
+        >
+          <Text style={styles.back}>
+            ‹ گەڕانەوە
+          </Text>
+        </TouchableOpacity>
+
+        <Text style={styles.managerTitle}>
+          🧾 فرۆشتن
+        </Text>
+
+        <Text style={styles.accountingDate}>
+          بەرهەمێک هەڵبژێرە بۆ فرۆشتن
+        </Text>
+
+        {products.map((product) => (
+          <View
+            key={product.id}
+            style={styles.accountingNote}
+          >
+            <Text style={styles.accountingNoteTitle}>
+              📦 {product.name}
+            </Text>
+
+            <Text style={styles.accountingNoteText}>
+              💰 نرخ: {money(product.price)}
+            </Text>
+
+            <Text style={styles.accountingNoteText}>
+              📦 کۆگا: {product.stock ?? 0} دانە
+            </Text>
+          </View>
+        ))}
       </ScrollView>
     </SafeAreaView>
   );
