@@ -139,12 +139,7 @@ function Transaction({ name, date, value, income }) {
 /* =========================
    DASHBOARD
 ========================= */
-function Dashboard({
-  onBack,
-  onNavigate,
-  onAddProduct,
-  onManageProducts,
-}) {
+function Dashboard({ onBack, onNavigate }) {
   
   const cards = [
     ["💰", "فرۆشتنی ئەمڕۆ", money(accountingData.todaySales)],
@@ -258,9 +253,9 @@ function Dashboard({
   } else if (title === "بەڕێوبەرایەتی کڕیارەکان") {
     setScreen("customers");
     } else if (title.trim() === "فرۆشتن") {
-  onNavigate("sales");
+  setScreen("sales");
     } else if (title === "کۆگا") {
-  onNavigate("inventory");
+  setScreen("inventory");
   } else {
     showMessage(
       title,
@@ -806,12 +801,10 @@ const addToCart = (product) => {
 
   if (screen === "dashboard") {
   return (
-    <Dashboard
-      onBack={() => setScreen("main")}
-      onNavigate={(nextScreen) => setScreen(nextScreen)}
-      onAddProduct={() => setScreen("addProduct")}
-      onManageProducts={() => setScreen("manageProducts")}
-    />
+   <Dashboard
+  onBack={() => setScreen("main")}
+  onNavigate={(nextScreen) => setScreen(nextScreen)}
+/>
   );
 }
 
@@ -1046,7 +1039,8 @@ if (screen === "editCustomer") {
         <TouchableOpacity
           onPress={() => {
             setSelected(null);
-            onNavigate("customers");
+            setScreen("customers");
+            
           }}
         >
           <Text style={styles.back}>
