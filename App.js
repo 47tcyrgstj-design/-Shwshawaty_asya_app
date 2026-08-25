@@ -19,7 +19,7 @@ import {
   deleteDoc,
   doc,
   updateDoc,
-  addDoc
+  addDoc,
   query,
   orderBy,
 } from "firebase/firestore";
