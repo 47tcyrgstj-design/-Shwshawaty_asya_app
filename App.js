@@ -234,7 +234,44 @@ function Dashboard({ onBack, onNavigate, orders }) {
             {accountingData.lowStock} بەرهەم نزیکن لە تەواوبوون.
           </Text>
         </View>
+<View style={styles.accountingSection}>
+  <Text style={styles.accountingSectionTitle}>
+    📋 داواکارییە نوێکان
+  </Text>
 
+  {(!orders || orders.filter(order => order.status === "pending").length === 0) ? (
+    <Text style={styles.accountingNoteText}>
+      هیچ داواکارییەکی نوێ نییە.
+    </Text>
+  ) : (
+    orders
+      .filter(order => order.status === "pending")
+      .map((order) => (
+        <View
+          key={order.id}
+          style={styles.accountingNote}
+        >
+          <Text style={styles.accountingNoteTitle}>
+            👤 {order.customerName}
+          </Text>
+
+          <Text style={styles.accountingNoteText}>
+            📱 {order.phone}
+          </Text>
+
+          <Text style={styles.accountingNoteText}>
+            💰 کۆی گشتی: {money(order.total)}
+          </Text>
+
+          <Text style={styles.warningText}>
+            🟡 چاوەڕوانی پشتڕاستکردنەوە
+          </Text>
+        </View>
+      ))
+  )}
+</View>
+
+<Text style={styles.menuTitle}>بەشەکانی حسابات</Text>
         <Text style={styles.menuTitle}>بەشەکانی حسابات</Text>
 
         <View style={styles.menuGrid}>
