@@ -2218,6 +2218,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#0f0f0f",
   },
+managerSafe: {
+  flex: 1,
+  backgroundColor: "#0b0b0b",
+},
 
   welcomeContainer: {
     flex: 1,
