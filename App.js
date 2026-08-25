@@ -346,6 +346,7 @@ function ManagerPanel({
   onAddProduct,
   onManageProducts,
   products,
+  orders,
   onDeleteProduct,
   onNavigate,
   setScreen,
