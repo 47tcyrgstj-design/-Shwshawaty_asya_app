@@ -1208,9 +1208,15 @@ if (screen === "sales") {
         </Text>
 
         {products.map((product) => (
-          <View
+          <TouchableOpacity
             key={product.id}
             style={styles.accountingNote}
+            onPress={() => {
+              showMessage(
+                "فرۆشتن",
+                `${product.name}\n\nنرخ: ${money(product.price)}\nکۆگا: ${product.stock ?? 0} دانە`
+              );
+            }}
           >
             <Text style={styles.accountingNoteTitle}>
               📦 {product.name}
@@ -1223,7 +1229,11 @@ if (screen === "sales") {
             <Text style={styles.accountingNoteText}>
               📦 کۆگا: {product.stock ?? 0} دانە
             </Text>
-          </View>
+
+            <Text style={styles.goldText}>
+              ➜ فرۆشتن
+            </Text>
+          </TouchableOpacity>
         ))}
       </ScrollView>
     </SafeAreaView>
