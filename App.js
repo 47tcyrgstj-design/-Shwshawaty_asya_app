@@ -808,7 +808,6 @@ const sellProduct = async (product) => {
     );
   }
 };
-const payCustomerDebt = async () => {
   const confirmOrder = async (order) => {
   if (!order) return;
 
