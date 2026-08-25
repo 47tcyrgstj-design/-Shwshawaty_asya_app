@@ -2228,7 +2228,10 @@ const styles = StyleSheet.create({
     managerSafe: {
     flex: 1,
     backgroundColor: "#0b0b0b",
-  },
+      managerScroll: {
+    flex: 1,
+    backgroundColor: "#0b0b0b",
+   },
 
   welcomeBrand: {
     fontSize: 30,
