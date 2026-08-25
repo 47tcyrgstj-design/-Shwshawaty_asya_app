@@ -675,6 +675,42 @@ const updateProduct = async () => {
     );
   }
 };
+const sellProduct = async (product) => {
+  if (!product) return;
+
+  const currentStock = Number(product.stock) || 0;
+
+  if (currentStock <= 0) {
+    showMessage(
+      "کۆگا بەتاڵە",
+      "ئەم بەرهەمە لە کۆگا نەماوە."
+    );
+    return;
+  }
+
+  try {
+    const newStock = currentStock - 1;
+
+    await updateDoc(
+      doc(db, "products", product.id),
+      {
+        stock: newStock,
+      }
+    );
+
+    showMessage(
+      "فرۆشتن سەرکەوتوو بوو",
+      `${product.name}\nکۆگای ماوە: ${newStock} دانە`
+    );
+  } catch (error) {
+    console.error("Sell product error:", error);
+
+    showMessage(
+      "هەڵە",
+      "نەتوانرا کۆگای بەرهەم کەم بکرێتەوە."
+    );
+  }
+};
 const payCustomerDebt = async () => {
   if (!payingCustomer) return;
 
@@ -1172,11 +1208,12 @@ if (screen === "inventory") {
             هیچ بەرهەمێک نییە.
           </Text>
         ) : (
-          products.map((product) => (
-            <View
-              key={product.id}
-              style={styles.accountingNote}
-            >
+          {products.map((product) => (
+  <TouchableOpacity
+    key={product.id}
+    style={styles.accountingNote}
+    onPress={() => sellProduct(product)}
+  >
               <Text style={styles.accountingNoteTitle}>
                 📦 {product.name}
               </Text>
@@ -1221,12 +1258,7 @@ if (screen === "sales") {
           <TouchableOpacity
             key={product.id}
             style={styles.accountingNote}
-            onPress={() => {
-              showMessage(
-                "فرۆشتن",
-                `${product.name}\n\nنرخ: ${money(product.price)}\nکۆگا: ${product.stock ?? 0} دانە`
-              );
-            }}
+            onPress={() => sellProduct(product)}
           >
             <Text style={styles.accountingNoteTitle}>
               📦 {product.name}
