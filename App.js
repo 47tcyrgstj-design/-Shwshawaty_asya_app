@@ -267,6 +267,14 @@ function Dashboard({ onBack, onNavigate, orders }) {
           <Text style={styles.warningText}>
             🟡 چاوەڕوانی پشتڕاستکردنەوە
           </Text>
+          <TouchableOpacity
+  style={styles.goldBtn}
+  onPress={() => confirmOrder(order)}
+>
+  <Text style={styles.goldText}>
+    ✅ پشتڕاستکردنەوەی داواکاری
+  </Text>
+</TouchableOpacity>
         </View>
       ))
   )}
