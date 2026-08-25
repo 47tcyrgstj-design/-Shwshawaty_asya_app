@@ -402,6 +402,15 @@ function ManagerPanel({
 <Text style={styles.stockText}>
   📦 کۆگا: {product.stock ?? 0} دانە
 </Text>
+
+<TextInput
+  value={saleQuantity}
+  onChangeText={setSaleQuantity}
+  placeholder="ژمارەی دانە"
+  placeholderTextColor="#777"
+  keyboardType="numeric"
+  style={styles.passwordInput}
+/>
 <View style={styles.stockControls}>
   <TouchableOpacity
     style={styles.stockButton}
