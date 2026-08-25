@@ -1225,7 +1225,7 @@ if (screen === "inventory") {
               <Text style={styles.accountingNoteText}>
   📦 کۆگا: {product.stock ?? 0} دانە
 </Text>
-            </View>
+           </TouchableOpacity>
           ))
         )}
       </ScrollView>
