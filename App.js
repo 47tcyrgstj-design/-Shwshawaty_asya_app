@@ -1708,61 +1708,63 @@ if (screen === "checkout") {
       "\n📍 ناونیشان: " + customerAddress +
       "\n📝 تێبینی: " + customerNote +
       "\n\n🛒 بەرهەمەکان:\n" +
-      cart.map(
-        (product, index) =>
-          `${index + 1}. ${product.name} - ${money(product.price)}`
-      ).join("\n") +
+      cart
+        .map(
+          (product, index) =>
+            `${index + 1}. ${product.name} - ${money(product.price)}`
+        )
+        .join("\n") +
       "\n\n💰 کۆی گشتی: " + money(total);
 
     const url =
       "https://wa.me/9647718758585?text=" +
       encodeURIComponent(message);
 
+    // یەکەم: WhatsApp بکەرەوە
+    Linking.openURL(url).catch(() => {
+      Alert.alert(
+        "هەڵە",
+        "نەتوانرا WhatsApp بکرێتەوە."
+      );
+    });
+
+    // دووەم: داواکاری لە Firebase تۆمار بکە
     try {
-  await addDoc(collection(db, "orders"), {
-    customerName: customerName.trim(),
-    customerPhone: customerPhone.trim(),
-    customerAddress: customerAddress.trim(),
-    customerNote: customerNote.trim(),
+      await addDoc(collection(db, "orders"), {
+        customerName: customerName.trim(),
+        customerPhone: customerPhone.trim(),
+        customerAddress: customerAddress.trim(),
+        customerNote: customerNote.trim(),
 
-    items: cart.map((product) => ({
-      productId: product.id,
-      name: product.name,
-      price: Number(product.price) || 0,
-      quantity: 1,
-    })),
+        items: cart.map((product) => ({
+          productId: product.id,
+          name: product.name,
+          price: Number(product.price) || 0,
+          quantity: 1,
+        })),
 
-    total: Number(total) || 0,
-    status: "pending",
-    createdAt: new Date(),
-  });
+        total: Number(total) || 0,
+        status: "pending",
+        createdAt: new Date(),
+      });
 
-  Linking.openURL(url).catch(() => {
-    Alert.alert(
-      "هەڵە",
-      "نەتوانرا WhatsApp بکرێتەوە."
-    );
-  });
+      console.log("ORDER SAVED");
 
-} catch (error) {
-  console.error("Create order error:", error);
+    } catch (error) {
+      console.error("ORDER ERROR:", error);
 
-  Alert.alert(
-    "هەڵە",
-    error?.message || "نەتوانرا داواکاری تۆمار بکرێت."
-  );
-}
+      Alert.alert(
+        "هەڵەی Firebase",
+        error?.message ||
+          "داواکاری لە Database تۆمار نەکرا."
+      );
+    }
   }}
 >
   <Text style={styles.goldText}>
     ناردنی داواکاری
   </Text>
 </TouchableOpacity>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-}
 
   /* =========================
    MANAGER PASSWORD
