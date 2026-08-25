@@ -1824,6 +1824,7 @@ if (screen === "manager") {
   onAddProduct={() => setScreen("addProduct")}
   onManageProducts={() => setScreen("manageProducts")}
   products={products}
+  orders={orders}
   onDeleteProduct={deleteProduct}
   setScreen={setScreen}
   onNavigate={(nextScreen) => setScreen(nextScreen)}
