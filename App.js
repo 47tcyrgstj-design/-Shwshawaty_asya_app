@@ -303,7 +303,8 @@ function Dashboard({ onBack, onNavigate, orders }) {
 } else if (title.trim() === "فرۆشتن") {
   onNavigate("sales");
 } else if (title === "کۆگا") {
-  onNavigate("inventory");
+  setScreen("inventory");
+}
   } else {
     showMessage(
       title,
@@ -344,6 +345,7 @@ function ManagerPanel({
   onNavigate,
   setScreen,
 }) {
+    const [saleQuantity, setSaleQuantity] = useState("");
     const items = [
  ["📦", "بەڕێوبەرایەتی بەرهەمەکان"],
   ["📦", "کۆگا"],
@@ -400,7 +402,7 @@ function ManagerPanel({
   } else if (title === "فرۆشتن") {
   onNavigate?.("sales");
   } else if (title === "کۆگا") {
-  onNavigate?.("inventory");
+  setScreen("inventory");
 } else if (title === "زیادکردنی بەرهەم") {
   onAddProduct();
 } else if (title === "سڕینەوەی بەرهەم") {
