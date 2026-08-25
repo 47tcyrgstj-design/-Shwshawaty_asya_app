@@ -281,7 +281,6 @@ function Dashboard({ onBack, onNavigate, orders }) {
 </View>
 
 <Text style={styles.menuTitle}>بەشەکانی حسابات</Text>
-        <Text style={styles.menuTitle}>بەشەکانی حسابات</Text>
 
         <View style={styles.menuGrid}>
           {menu.map(([icon, title], index) => (
