@@ -264,13 +264,13 @@ function Dashboard({ onBack, onNavigate, orders }) {
             💰 کۆی گشتی: {money(order.total)}
           </Text>
 
-          <Text style={styles.warningText}>
+  <Text style={styles.warningText}>
             🟡 چاوەڕوانی پشتڕاستکردنەوە
-          </Text>
-          <TouchableOpacity
+</Text>
+<TouchableOpacity
   style={styles.goldBtn}
-  onPress={() => confirmOrder(order)}
->
+  onPress={() => {}}
+  >
   <Text style={styles.goldText}>
     ✅ پشتڕاستکردنەوەی داواکاری
   </Text>
@@ -546,7 +546,8 @@ const [customerTotal, setCustomerTotal] = useState("");
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [screen, setScreen] = useState("main");
 
-  const [products, setProducts] = useState([]);
+const [products, setProducts] = useState([]);
+const [orders, setOrders] = useState([]);
   const [paymentAmount, setPaymentAmount] = useState("");
 const [payingCustomer, setPayingCustomer] = useState(null);
   const [customers, setCustomers] = useState([]);
