@@ -2225,13 +2225,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 25,
   },
-    managerSafe: {
-    flex: 1,
-    backgroundColor: "#0b0b0b",
-      managerScroll: {
-    flex: 1,
-    backgroundColor: "#0b0b0b",
-   },
 
   welcomeBrand: {
     fontSize: 30,
