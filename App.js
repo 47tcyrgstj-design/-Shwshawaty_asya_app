@@ -1765,8 +1765,13 @@ if (screen === "checkout") {
     ناردنی داواکاری
   </Text>
 </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
 
-  /* =========================
+/* =========================
    MANAGER PASSWORD
 ========================= */
 
