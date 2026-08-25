@@ -141,7 +141,7 @@ function Transaction({ name, date, value, income }) {
 /* =========================
    DASHBOARD
 ========================= */
-function Dashboard({ onBack, onNavigate }) {
+function Dashboard({ onBack, onNavigate, orders }) {
   
   const cards = [
     ["💰", "فرۆشتنی ئەمڕۆ", money(accountingData.todaySales)],
