@@ -1574,16 +1574,15 @@ if (screen === "managerPassword") {
 }
 if (screen === "manager") {
   return (
-    <ManagerPanel
-      onBack={() => setScreen("main")}
-      onAddProduct={() => setScreen("addProduct")}
-      onManageProducts={() => setScreen("manageProducts")}
-      products={products}
-      onDeleteProduct={deleteProduct}
-      setScreen={setScreen}
-    />
-  );
-}
+<ManagerPanel
+  onBack={() => setScreen("main")}
+  onAddProduct={() => setScreen("addProduct")}
+  onManageProducts={() => setScreen("manageProducts")}
+  products={products}
+  onDeleteProduct={deleteProduct}
+  setScreen={setScreen}
+  onNavigate={(nextScreen) => setScreen(nextScreen)}
+/>
   /* =========================
      PRODUCT DETAILS
   ========================= */
