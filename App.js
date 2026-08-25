@@ -289,28 +289,33 @@ function Dashboard({ onBack, onNavigate, orders }) {
               key={index}
               style={styles.menuButton}
              onPress={() => {
-  if (title === "بەڕێوبەرایەتی بەرهەمەکان") {
-    onManageProducts();
-  } else if (title === "زیادکردنی بەرهەم") {
-    onAddProduct();
-  } else if (title === "سڕینەوەی بەرهەم") {
-    showMessage(
-      "سڕینەوەی بەرهەم",
-      "بەرهەمێک هەڵبژێرە بۆ سڕینەوە."
-    );
-  } else if (title === "بەڕێوبەرایەتی کڕیارەکان") {
-    setScreen("customers");
+if (title === "بەڕێوبەرایەتی بەرهەمەکان") {
+  onManageProducts();
+
+} else if (title === "زیادکردنی بەرهەم") {
+  onAddProduct();
+
+} else if (title === "سڕینەوەی بەرهەم") {
+  showMessage(
+    "سڕینەوەی بەرهەم",
+    "بەرهەمێک هەڵبژێرە بۆ سڕینەوە."
+  );
+
+} else if (title === "بەڕێوبەرایەتی کڕیارەکان") {
+  setScreen("customers");
+
 } else if (title.trim() === "فرۆشتن") {
-  onNavigate("sales");
+  onNavigate?.("sales");
+
 } else if (title === "کۆگا") {
   setScreen("inventory");
+
+} else {
+  showMessage(
+    title,
+    "ئەم بەشە ئامادەیە بۆ زیادکردنی سیستەمی ڕاستەقینە."
+  );
 }
-  } else {
-    showMessage(
-      title,
-      "ئەم بەشە ئامادەیە بۆ زیادکردنی سیستەمی ڕاستەقینە."
-    );
-  }
 }}
 >
               <Text style={styles.menuIcon}>{icon}</Text>
