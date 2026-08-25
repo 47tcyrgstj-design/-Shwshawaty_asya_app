@@ -1699,7 +1699,7 @@ if (screen === "checkout") {
          
 <TouchableOpacity
   style={styles.goldBtn}
-  onPress={() => {
+  onPress={async () => {
     const message =
       "🛍️ داواکاری نوێ\n\n" +
       "Shwshawaty ASYA\n\n" +
