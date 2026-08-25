@@ -1718,9 +1718,40 @@ if (screen === "checkout") {
       "https://wa.me/9647718758585?text=" +
       encodeURIComponent(message);
 
-    Linking.openURL(url).catch(() => {
-      Alert.alert("هەڵە", "نەتوانرا WhatsApp بکرێتەوە.");
-    });
+    try {
+  await addDoc(collection(db, "orders"), {
+    customerName: customerName.trim(),
+    customerPhone: customerPhone.trim(),
+    customerAddress: customerAddress.trim(),
+    customerNote: customerNote.trim(),
+
+    items: cart.map((product) => ({
+      productId: product.id,
+      name: product.name,
+      price: Number(product.price) || 0,
+      quantity: 1,
+    })),
+
+    total: Number(total) || 0,
+    status: "pending",
+    createdAt: new Date(),
+  });
+
+  Linking.openURL(url).catch(() => {
+    Alert.alert(
+      "هەڵە",
+      "نەتوانرا WhatsApp بکرێتەوە."
+    );
+  });
+
+} catch (error) {
+  console.error("Create order error:", error);
+
+  Alert.alert(
+    "هەڵە",
+    error?.message || "نەتوانرا داواکاری تۆمار بکرێت."
+  );
+}
   }}
 >
   <Text style={styles.goldText}>
