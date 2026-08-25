@@ -252,10 +252,10 @@ function Dashboard({ onBack, onNavigate }) {
     );
   } else if (title === "بەڕێوبەرایەتی کڕیارەکان") {
     setScreen("customers");
-    } else if (title.trim() === "فرۆشتن") {
-  setScreen("sales");
-    } else if (title === "کۆگا") {
-  setScreen("inventory");
+} else if (title.trim() === "فرۆشتن") {
+  onNavigate("sales");
+} else if (title === "کۆگا") {
+  onNavigate("inventory");
   } else {
     showMessage(
       title,
