@@ -20,6 +20,8 @@ import {
   doc,
   updateDoc,
   addDoc
+  + query,
+  + orderBy,
 } from "firebase/firestore";
 import { db } from "./firebase";
 import AddProduct from "./AddProduct";
