@@ -22,6 +22,7 @@ import {
   addDoc,
   query,
   orderBy,
+  getDoc,
 } from "firebase/firestore";
 import { db } from "./firebase";
 import AddProduct from "./AddProduct";
@@ -781,6 +782,73 @@ const sellProduct = async (product) => {
   }
 };
 const payCustomerDebt = async () => {
+  const confirmOrder = async (order) => {
+  if (!order) return;
+
+  if (order.status !== "pending") {
+    showMessage(
+      "ئاگاداری",
+      "ئەم داواکارییە پێشتر پشتڕاست کراوەتەوە."
+    );
+    return;
+  }
+
+  try {
+    for (const item of order.items || []) {
+      const productRef = doc(db, "products", item.productId);
+      const productSnap = await getDoc(productRef);
+
+      if (!productSnap.exists()) {
+        throw new Error(`بەرهەم نەدۆزرایەوە: ${item.name}`);
+      }
+
+      const product = productSnap.data() || {};
+      const currentStock = Number(product.stock) || 0;
+      const quantity = Number(item.quantity) || 0;
+
+      if (currentStock < quantity) {
+        showMessage(
+          "کۆگا بەس نییە",
+          `${product.name}\nکۆگای ماوە: ${currentStock} دانە`
+        );
+        return;
+      }
+    }
+
+    for (const item of order.items || []) {
+      const productRef = doc(db, "products", item.productId);
+      const productSnap = await getDoc(productRef);
+      const product = productSnap.data() || {};
+
+      const newStock =
+        (Number(product.stock) || 0) -
+        (Number(item.quantity) || 0);
+
+      await updateDoc(productRef, {
+        stock: newStock,
+      });
+    }
+
+    await updateDoc(
+      doc(db, "orders", order.id),
+      {
+        status: "confirmed",
+      }
+    );
+
+    showMessage(
+      "سەرکەوتوو",
+      "داواکاری پشتڕاست کرایەوە و کۆگا نوێکرایەوە."
+    );
+  } catch (error) {
+    console.error("Confirm order error:", error);
+
+    showMessage(
+      "هەڵە",
+      error?.message || "نەتوانرا داواکاری پشتڕاست بکرێتەوە."
+    );
+  }
+};
   if (!payingCustomer) return;
 
   const amount = Number(paymentAmount) || 0;
