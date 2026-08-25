@@ -581,6 +581,36 @@ const [customersLoading, setCustomersLoading] = useState(true);
 };
   }, []);
 
+useEffect(() => {
+  const ordersRef = collection(db, "orders");
+
+  const unsubscribeOrders = onSnapshot(
+    ordersRef,
+    (snapshot) => {
+      const firestoreOrders = snapshot.docs.map((doc) => {
+        const data = doc.data() || {};
+
+        return {
+          id: doc.id,
+          customerName: data.customerName || "کڕیار",
+          phone: data.phone || "",
+          items: data.items || [],
+          total: Number(data.total) || 0,
+          status: data.status || "pending",
+          createdAt: data.createdAt || null,
+        };
+      });
+
+      setOrders(firestoreOrders);
+    },
+    (error) => {
+      console.error("Firestore orders error:", error);
+      setOrders([]);
+    }
+  );
+
+  return unsubscribeOrders;
+}, []);
   /* =========================
      CATEGORIES
   ========================= */
