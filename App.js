@@ -293,6 +293,7 @@ function ManagerPanel({
   onManageProducts,
   products,
   onDeleteProduct,
+  onNavigate,
   setScreen,
 }) {
     const items = [
