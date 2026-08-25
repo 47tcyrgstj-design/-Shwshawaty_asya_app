@@ -1583,6 +1583,8 @@ if (screen === "manager") {
   setScreen={setScreen}
   onNavigate={(nextScreen) => setScreen(nextScreen)}
 />
+);
+}
   /* =========================
      PRODUCT DETAILS
   ========================= */
