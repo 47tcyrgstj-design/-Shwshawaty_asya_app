@@ -458,6 +458,7 @@ function ManagerPanel({
 export default function App() {
   const [started, setStarted] = useState(false);
   const [tab, setTab] = useState("home");
+  const [saleQuantity, setSaleQuantity] = useState("1");
   const [category, setCategory] = useState("هەموو");
   const [query, setQuery] = useState("");
   const [cart, setCart] = useState([]);
