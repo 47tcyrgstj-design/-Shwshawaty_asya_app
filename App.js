@@ -235,8 +235,13 @@ function Dashboard({ onBack, onNavigate, orders }) {
             {accountingData.lowStock} بەرهەم نزیکن لە تەواوبوون.
           </Text>
         </View>
-<View style={styles.accountingSection}>
-  <Text style={styles.accountingSectionTitle}>
+<View style={styles.accountingSection}> 
+<Text style={{ color: "red", fontSize: 16 }}>
+  TEST ORDERS: {orders?.length || 0}
+</Text>
+
+<Text
+style={styles.accountingSectionTitle}>
     📋 داواکارییە نوێکان
   </Text>
 
