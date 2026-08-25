@@ -80,7 +80,7 @@ function PasswordScreen({
   };
 
   return (
-    <SafeAreaView style={styles.safe}>
+ <SafeAreaView style={styles.managerSafe}>
       <ScrollView contentContainerStyle={styles.passwordContainer}>
         <TouchableOpacity onPress={onBack}>
           <Text style={styles.back}>‹ گەڕانەوە</Text>
@@ -2252,6 +2252,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 25,
+  },
+    managerSafe: {
+    flex: 1,
+    backgroundColor: "#0b0b0b",
   },
 
   welcomeBrand: {
