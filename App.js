@@ -373,7 +373,7 @@ contentContainerStyle={styles.accountingContainer}
 <Text style={styles.back}>‹ گەڕانەوە</Text>
         </TouchableOpacity>
 
-        <Text style={styles.managerTitle}>
+<Text style={styles.managerTitle}>
           👨‍💼 بەشی بەڕێوبەر
         </Text>
 
