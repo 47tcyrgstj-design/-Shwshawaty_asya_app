@@ -350,9 +350,9 @@ function ManagerPanel({
   if (title === "بەڕێوبەرایەتی بەرهەمەکان") {
   onManageProducts();
   } else if (title === "فرۆشتن") {
-  onNavigate("sales");
+  onNavigate?.("sales");
   } else if (title === "کۆگا") {
-  onNavigate("inventory");
+  onNavigate?.("inventory");
 } else if (title === "زیادکردنی بەرهەم") {
   onAddProduct();
 } else if (title === "سڕینەوەی بەرهەم") {
