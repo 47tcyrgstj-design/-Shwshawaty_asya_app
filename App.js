@@ -655,6 +655,9 @@ useEffect(() => {
   const unsubscribeOrders = onSnapshot(
     ordersRef,
     (snapshot) => {
+      
+      console.log("ORDERS FOUND:", snapshot.docs.length);
+      
       const firestoreOrders = snapshot.docs.map((doc) => {
         const data = doc.data() || {};
 
