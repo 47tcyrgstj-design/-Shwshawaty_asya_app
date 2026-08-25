@@ -80,7 +80,7 @@ function PasswordScreen({
   };
 
   return (
- <SafeAreaView style={styles.managerSafe}>
+<SafeAreaView style={styles.managerSafe}>
       <ScrollView contentContainerStyle={styles.passwordContainer}>
         <TouchableOpacity onPress={onBack}>
           <Text style={styles.back}>‹ گەڕانەوە</Text>
@@ -363,10 +363,10 @@ function ManagerPanel({
     ["⚙️", "ڕێکخستنەکان"],
   ];
   return (
-  <SafeAreaView style={styles.managerSafe}>
+<SafeAreaView style={styles.managerSafe}>
     <ScrollView
       style={styles.managerScroll}
-      contentContainerStyle={styles.accountingContainer}
+contentContainerStyle={styles.accountingContainer}
     showsVerticalScrollIndicator={false}
     >
         <TouchableOpacity onPress={onBack}>
