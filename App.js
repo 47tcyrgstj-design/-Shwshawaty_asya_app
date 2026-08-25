@@ -1148,8 +1148,8 @@ const addToCart = (product) => {
 </Text>
 
 <TouchableOpacity
-  style={styles.goldBtn}
-  onPress={() => {
+  style={styles.yourStyle}
+  onPress={async () => {
     setPayingCustomer(customer);
     setPaymentAmount("");
   }}
