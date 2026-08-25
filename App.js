@@ -1208,7 +1208,7 @@ if (screen === "inventory") {
             هیچ بەرهەمێک نییە.
           </Text>
         ) : (
-          {products.map((product) => (
+   {products.map((product) => (
   <TouchableOpacity
     key={product.id}
     style={styles.accountingNote}
