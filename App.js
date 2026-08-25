@@ -363,13 +363,14 @@ function ManagerPanel({
     ["⚙️", "ڕێکخستنەکان"],
   ];
   return (
-    <SafeAreaView style={styles.safe}>
-      <ScrollView
-        contentContainerStyle={styles.accountingContainer}
-        showsVerticalScrollIndicator={false}
-      >
+  <SafeAreaView style={styles.managerSafe}>
+    <ScrollView
+      style={styles.managerScroll}
+      contentContainerStyle={styles.accountingContainer}
+    showsVerticalScrollIndicator={false}
+    >
         <TouchableOpacity onPress={onBack}>
-          <Text style={styles.back}>‹ گەڕانەوە</Text>
+<Text style={styles.back}>‹ گەڕانەوە</Text>
         </TouchableOpacity>
 
         <Text style={styles.managerTitle}>
