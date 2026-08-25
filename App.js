@@ -808,7 +808,7 @@ const sellProduct = async (product) => {
     );
   }
 };
-  const confirmOrder = async (order) => {
+const confirmOrder = async (order) => {
   if (!order) return;
 
   if (order.status !== "pending") {
@@ -875,6 +875,7 @@ const sellProduct = async (product) => {
     );
   }
 };
+const payCustomerDebt = async () => {
   if (!payingCustomer) return;
 
   const amount = Number(paymentAmount) || 0;
