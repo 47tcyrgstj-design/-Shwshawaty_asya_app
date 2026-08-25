@@ -395,6 +395,36 @@ function ManagerPanel({
         <Text style={styles.menuTitle}>
           بەشەکانی بەڕێوبەر
         </Text>
+        <Text style={styles.menuTitle}>
+  🛍️ داواکارییە نوێکان ({orders?.filter(o => o.status === "pending").length || 0})
+</Text>
+
+{orders?.filter(o => o.status === "pending").map((order) => (
+  <View
+    key={order.id}
+    style={styles.accountingNote}
+  >
+    <Text style={styles.menuText}>
+      👤 {order.customerName}
+    </Text>
+
+    <Text style={styles.accountingNoteText}>
+      📱 {order.phone || "ژمارە نییە"}
+    </Text>
+
+    <Text style={styles.accountingNoteText}>
+      🛒 {order.items?.length || 0} بەرهەم
+    </Text>
+
+    <Text style={styles.accountingNoteText}>
+      💰 {money(order.total)}
+    </Text>
+
+    <Text style={styles.accountingNoteText}>
+      🟡 داواکاری نوێ
+    </Text>
+  </View>
+))}
 
         <View style={styles.menuGrid}>
           {items.map(([icon, title], index) => (
