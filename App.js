@@ -646,7 +646,7 @@ useEffect(() => {
         return {
           id: doc.id,
           customerName: data.customerName || "کڕیار",
-          phone: data.phone || "",
+          phone: data.customerPhone || "",
           items: data.items || [],
           total: Number(data.total) || 0,
           status: data.status || "pending",
@@ -662,7 +662,9 @@ useEffect(() => {
     }
   );
 
-  return unsubscribeOrders;
+  return () => {
+    unsubscribeOrders();
+  };
 }, []);
   /* =========================
      CATEGORIES
