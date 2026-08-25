@@ -373,11 +373,18 @@ contentContainerStyle={styles.accountingContainer}
 <Text style={styles.back}>‹ گەڕانەوە</Text>
         </TouchableOpacity>
 
-<Text style={styles.managerTitle}>
-          👨‍💼 بەشی بەڕێوبەر
-        </Text>
+<Text
+  style={{
+    color: "#d7a52b",
+    fontSize: 30,
+    backgroundColor: "#0b0b0b",
+    padding: 20,
+  }}
+>
+  👨‍💼 بەشی بەڕێوبەر
+</Text>
 
-        <Text style={styles.accountingDate}>
+<Text style={styles.accountingDate}>
           بەخێربێیت بۆ بەشی بەڕێوبەرایەتی
         </Text>
 
