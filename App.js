@@ -867,14 +867,10 @@ const confirmOrder = async (order) => {
       const newStock =
         (Number(product.stock) || 0) -
         (Number(item.quantity) || 0);
-        
-        console.log("🔥 PRODUCT ID:", item.productId);
-console.log("🔥 OLD STOCK:", product.stock);
-console.log("🔥 NEW STOCK:", newStock);
 
       await updateDoc(productRef, {
-        stock: newStock,
-      });
+  stock: 0,
+});
     }
 
     await updateDoc(
