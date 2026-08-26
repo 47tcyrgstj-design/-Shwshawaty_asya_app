@@ -307,6 +307,43 @@ style={styles.accountingSectionTitle}>
     🎁 داشکاندن
   </Text>
 </TouchableOpacity>
+{discountOrder && (
+  <View style={styles.accountingNote}>
+    <Text style={styles.accountingNoteTitle}>
+      🎁 هەڵبژاردنی داشکاندن
+    </Text>
+
+    {[5, 10, 15, 20, 25, 30].map((discount) => (
+      <TouchableOpacity
+        key={discount}
+        style={styles.goldBtn}
+        onPress={() => {
+          console.log(
+            "Discount selected:",
+            discount,
+            "Order:",
+            discountOrder.id
+          );
+
+          setDiscountOrder(null);
+        }}
+      >
+        <Text style={styles.goldText}>
+          {discount}%
+        </Text>
+      </TouchableOpacity>
+    ))}
+
+    <TouchableOpacity
+      style={styles.goldBtn}
+      onPress={() => setDiscountOrder(null)}
+    >
+      <Text style={styles.goldText}>
+        ❌ داخستن
+      </Text>
+    </TouchableOpacity>
+  </View>
+)}
 <TouchableOpacity
   style={styles.goldBtn}
 onPress={() => onConfirmOrder(order)}
