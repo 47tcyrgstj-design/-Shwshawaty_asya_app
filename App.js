@@ -274,7 +274,7 @@ style={styles.accountingSectionTitle}>
 </Text>
 <TouchableOpacity
   style={styles.goldBtn}
-  onPress={() => {}}
+  onPress={() => confirmOrder(order)}
   >
   <Text style={styles.goldText}>
     ✅ پشتڕاستکردنەوەی داواکاری
