@@ -565,51 +565,49 @@ const [customersLoading, setCustomersLoading] = useState(true);
   ========================= */
 
   useEffect(() => {
-    let unsubscribe = null;
-    let unsubscribeCustomers = null;
+  let unsubscribe = null;
+  let unsubscribeCustomers = null;
 
-    try {
-      const productsRef = collection(db, "products");
+  try {
+    // =========================
+    // PRODUCTS
+    // =========================
+    const productsRef = collection(db, "products");
 
-      unsubscribe = onSnapshot(
-        productsRef,
-        (snapshot) => {
-          const firestoreProducts = snapshot.docs.map((doc) => {
-            const data = doc.data() || {};
+    unsubscribe = onSnapshot(
+      productsRef,
+      (snapshot) => {
+        const firestoreProducts = snapshot.docs.map((doc) => {
+          const data = doc.data() || {};
 
-            return {
-              id: doc.id,
-              name: data.name || "بەرهەم",
-              price: Number(data.price) || 0,
-              category: data.category || "کالای ماڵ",
-              image: data.image || "",
-              stock: Number(data.stock) || 0,
-            };
-          });
+          return {
+            id: doc.id,
+            name: data.name || "بەرهەم",
+            price: Number(data.price) || 0,
+            category: data.category || "کالای ماڵ",
+            image: data.image || "",
+            stock: Number(data.stock) || 0,
+          };
+        });
 
-          setProducts(firestoreProducts);
-          setProductsLoading(false);
-          setProductsError("");
-        },
-        (error) => {
-          console.error("Firestore products error:", error);
+        setProducts(firestoreProducts);
+        setProductsLoading(false);
+        setProductsError("");
+      },
+      (error) => {
+        console.error("Firestore products error:", error);
 
-          setProducts([]);
-          setProductsLoading(false);
-          setProductsError(
-            "کێشەیەک هەیە لە پەیوەندی بە Database."
-          );
-        }
-      );
-    } catch (error) {
-      console.error("Firestore setup error:", error);
+        setProducts([]);
+        setProductsLoading(false);
+        setProductsError(
+          "کێشەیەک هەیە لە پەیوەندی بە Database."
+        );
+      }
+    );
 
-      setProducts([]);
-      setProductsLoading(false);
-      setProductsError(
-        "کێشەیەک هەیە لە ڕێکخستنی Database."
-      );
-    }
+    // =========================
+    // CUSTOMERS
+    // =========================
     const customersRef = collection(db, "customers");
 
     unsubscribeCustomers = onSnapshot(
@@ -634,51 +632,57 @@ const [customersLoading, setCustomersLoading] = useState(true);
       },
       (error) => {
         console.error("Firestore customers error:", error);
+
         setCustomers([]);
         setCustomersLoading(false);
       }
     );
-    return () => {
-  if (typeof unsubscribe === "function") {
-    unsubscribe();
+  } catch (error) {
+    console.error("Firestore setup error:", error);
+
+    setProducts([]);
+    setProductsLoading(false);
+    setProductsError(
+      "کێشەیەک هەیە لە ڕێکخستنی Database."
+    );
   }
 
-  if (typeof unsubscribeCustomers === "function") {
-    unsubscribeCustomers();
-  }
-};
-  }, []);
+  return () => {
+    if (typeof unsubscribe === "function") {
+      unsubscribe();
+    }
 
+    if (typeof unsubscribeCustomers === "function") {
+      unsubscribeCustomers();
+    }
+  };
+}, []);
+
+
+// =========================
+// ORDERS
+// =========================
 useEffect(() => {
   const ordersRef = collection(db, "orders");
 
-const unsubscribeOrders = onSnapshot(
-  ordersRef,
-  (snapshot) => {
+  const unsubscribeOrders = onSnapshot(
+    ordersRef,
+    (snapshot) => {
+      console.log(
+        "🔥 FIREBASE PROJECT:",
+        db.app.options.projectId
+      );
 
-    console.log("🔥 FIREBASE PROJECT:", db.app.options.projectId);
-    console.log("🔥 ORDERS FOUND:", snapshot.docs.length);
-    console.log("🔥 ORDER IDS:", snapshot.docs.map(doc => doc.id));
+      console.log(
+        "🔥 ORDERS FOUND:",
+        snapshot.docs.length
+      );
 
-    const firestoreOrders = snapshot.docs.map((doc) => {
-      const data = doc.data() || {};
+      console.log(
+        "🔥 ORDER IDS:",
+        snapshot.docs.map((doc) => doc.id)
+      );
 
-      return {
-        id: doc.id,
-        customerName: data.customerName || "کڕیار",
-        phone: data.customerPhone || "",
-        items: data.items || [],
-        total: Number(data.total) || 0,
-        status: data.status || "pending",
-        createdAt: data.createdAt || null,
-      };
-    });
-
-    setOrders(firestoreOrders);
-  },
-      
-console.log("ORDERS FOUND:", snapshot.docs.length);
-      
       const firestoreOrders = snapshot.docs.map((doc) => {
         const data = doc.data() || {};
 
@@ -695,8 +699,13 @@ console.log("ORDERS FOUND:", snapshot.docs.length);
 
       setOrders(firestoreOrders);
     },
+
     (error) => {
-      console.error("Firestore orders error:", error);
+      console.error(
+        "Firestore orders error:",
+        error
+      );
+
       setOrders([]);
     }
   );
