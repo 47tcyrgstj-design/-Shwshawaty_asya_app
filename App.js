@@ -1229,19 +1229,12 @@ const addToCart = (product) => {
 
   if (screen === "dashboard") {
   return (
-<Dashboard
-  onBack={() => setScreen("main")}
-  onNavigate={(nextScreen) => setScreen(nextScreen)}
-  orders={orders}
+
   <Dashboard
   onBack={() => setScreen("main")}
   onNavigate={(nextScreen) => setScreen(nextScreen)}
   orders={orders}
   products={products}
-  onConfirmOrder={confirmOrder}
-  onShipOrder={shipOrder}
-  onDeliverOrder={deliverOrder}
-/>
   onConfirmOrder={confirmOrder}
   onShipOrder={shipOrder}
   onDeliverOrder={deliverOrder}
