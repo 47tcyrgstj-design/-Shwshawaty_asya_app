@@ -289,6 +289,47 @@ onPress={() => onConfirmOrder(order)}
         </View>
       ))
   )}
+    )}
+
+  <View style={styles.accountingSection}>
+    <Text style={styles.accountingSectionTitle}>
+      ✅ داواکارییە پشتڕاستکراوەکان
+    </Text>
+
+    {(!orders ||
+      orders.filter(order => order.status === "confirmed").length === 0) ? (
+      <Text style={styles.accountingNoteText}>
+        هیچ داواکارییەکی پشتڕاستکراو نییە.
+      </Text>
+    ) : (
+      orders
+        .filter(order => order.status === "confirmed")
+        .map((order) => (
+          <View
+            key={order.id}
+            style={styles.accountingNote}
+          >
+            <Text style={styles.accountingNoteTitle}>
+              👤 {order.customerName}
+            </Text>
+
+            <Text style={styles.accountingNoteText}>
+              📱 {order.phone}
+            </Text>
+
+            <Text style={styles.accountingNoteText}>
+              💰 کۆی گشتی: {money(order.total)}
+            </Text>
+
+            <Text style={styles.income}>
+              🟢 پشتڕاستکراوە
+            </Text>
+          </View>
+        ))
+    )}
+  </View>
+
+<Text style={styles.menuTitle}>بەشەکانی حسابات</Text>
 </View>
 
 <Text style={styles.menuTitle}>بەشەکانی حسابات</Text>
