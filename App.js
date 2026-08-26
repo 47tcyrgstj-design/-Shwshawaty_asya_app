@@ -291,9 +291,19 @@ style={styles.accountingSectionTitle}>
             📱 {order.phone}
           </Text>
 
-          <Text style={styles.accountingNoteText}>
-            💰 کۆی گشتی: {money(order.total)}
-          </Text>
+<Text style={styles.accountingNoteText}>
+  💰 نرخی سەرەتایی: {money(order.originalTotal ?? order.total)}
+</Text>
+
+{order.discount > 0 && (
+  <Text style={styles.warningText}>
+    🎁 داشکاندن: {order.discount}% (-{money(order.discountAmount)})
+  </Text>
+)}
+
+<Text style={styles.accountingNoteText}>
+  💵 کۆی دوای داشکاندن: {money(order.total)}
+</Text>
 
   <Text style={styles.warningText}>
             🟡 چاوەڕوانی پشتڕاستکردنەوە
@@ -318,7 +328,8 @@ style={styles.accountingSectionTitle}>
         key={discount}
         style={styles.goldBtn}
         onPress={async () => {
-  const originalTotal = Number(discountOrder.total) || 0;
+  const originalTotal =
+  Number(discountOrder.originalTotal ?? discountOrder.total) || 0;
   const discountAmount = Math.round(
     originalTotal * discount / 100
   );
@@ -328,10 +339,11 @@ style={styles.accountingSectionTitle}>
     await updateDoc(
       doc(db, "orders", discountOrder.id),
       {
-        discount: discount,
-        discountAmount: discountAmount,
-        total: newTotal,
-      }
+  originalTotal: originalTotal,
+  discount: discount,
+  discountAmount: discountAmount,
+  total: newTotal,
+}
     );
 
     setDiscountOrder(null);
