@@ -673,10 +673,9 @@ useEffect(() => {
         db.app.options.projectId
       );
 
-      console.log(
-        "🔥 ORDERS FOUND:",
-        snapshot.docs.length
-      );
+      console.log("🔥 FIREBASE PROJECT:", db.app.options.projectId);
+console.log("🔥 ORDERS FOUND:", snapshot.docs.length);
+console.log("🔥 ERROR TEST: orders listener is running");
 
       console.log(
         "🔥 ORDER IDS:",
