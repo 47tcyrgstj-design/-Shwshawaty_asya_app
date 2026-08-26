@@ -980,8 +980,6 @@ const deliverOrder = async (order) => {
 };
 
 const payCustomerDebt = async () => {
-};
-const payCustomerDebt = async () => {
   if (!payingCustomer) return;
 
   const amount = Number(paymentAmount) || 0;
