@@ -151,7 +151,7 @@ function Dashboard({
   onShipOrder,
   onDeliverOrder,
 }) {
-  
+  const [discountOrder, setDiscountOrder] = useState(null);
   const totalInventoryValue = (products || []).reduce(
   (total, product) =>
     total +
