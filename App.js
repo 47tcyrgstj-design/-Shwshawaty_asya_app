@@ -289,7 +289,6 @@ onPress={() => onConfirmOrder(order)}
         </View>
       ))
   )}
-    )}
 
   <View style={styles.accountingSection}>
     <Text style={styles.accountingSectionTitle}>
@@ -324,6 +323,14 @@ onPress={() => onConfirmOrder(order)}
             <Text style={styles.income}>
               🟢 پشتڕاستکراوە
             </Text>
+            <TouchableOpacity
+  style={styles.goldBtn}
+  onPress={() => onShipOrder(order)}
+>
+  <Text style={styles.goldText}>
+    🚚 ناردرا
+  </Text>
+</TouchableOpacity>
           </View>
         ))
     )}
@@ -1079,6 +1086,7 @@ const addToCart = (product) => {
   onNavigate={(nextScreen) => setScreen(nextScreen)}
   orders={orders}
   onConfirmOrder={confirmOrder}
+  onShipOrder={shipOrder}
 />
   );
 }
