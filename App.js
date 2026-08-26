@@ -355,13 +355,6 @@ await updateDoc(
     total: newTotal,
   }
 );
-  {
-  originalTotal: originalTotal,
-  discount: discount,
-  discountAmount: discountAmount,
-  total: newTotal,
-}
-        );
 
         setDiscountOrder(null);
 
