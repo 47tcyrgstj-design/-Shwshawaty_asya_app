@@ -404,7 +404,6 @@ onPress={() => onConfirmOrder(order)}
 </View>
 
 <Text style={styles.menuTitle}>بەشەکانی حسابات</Text>
-</View>
 
         <View style={styles.menuGrid}>
           {menu.map(([icon, title], index) => (
