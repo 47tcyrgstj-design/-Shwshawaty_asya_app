@@ -298,6 +298,20 @@ style={styles.accountingSectionTitle}>
   <Text style={styles.warningText}>
             🟡 چاوەڕوانی پشتڕاستکردنەوە
 </Text>
+
+<TouchableOpacity
+  style={styles.goldBtn}
+  onPress={() => {
+    showMessage(
+      "🎁 داشکاندن",
+      "5% • 10% • 15% • 20% • 25% • 30%"
+    );
+  }}
+>
+  <Text style={styles.goldText}>
+    🎁 داشکاندن
+  </Text>
+</TouchableOpacity>
 <TouchableOpacity
   style={styles.goldBtn}
 onPress={() => onConfirmOrder(order)}
