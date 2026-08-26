@@ -344,7 +344,7 @@ style={styles.accountingSectionTitle}>
     key={discount}
     style={styles.goldBtn}
     onPress={async () => {
-      const originalTotal = Number(discountOrder.originalTotal);
+const originalTotalNumber(discountOrder.originalTotal);
 
 await updateDoc(
   doc(db, "orders", discountOrder.id),
