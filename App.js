@@ -594,8 +594,13 @@ const [customersLoading, setCustomersLoading] = useState(true);
         setProductsLoading(false);
         setProductsError("");
       },
-      (error) => {
-        console.error("Firestore products error:", error);
+     (error) => {
+  console.error("🔥 ORDERS ERROR:", error);
+  console.error("🔥 ERROR CODE:", error?.code);
+  console.error("🔥 ERROR MESSAGE:", error?.message);
+
+  setOrders([]);
+}
 
         setProducts([]);
         setProductsLoading(false);
