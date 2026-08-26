@@ -942,6 +942,38 @@ await updateDoc(productRef, {
     );
   }
 };
+const shipOrder = async (order) => {
+  if (!order) return;
+
+  if (order.status !== "confirmed") {
+    showMessage(
+      "ئاگاداری",
+      "ئەم داواکارییە هێشتا پشتڕاست نەکراوەتەوە."
+    );
+    return;
+  }
+
+  try {
+    await updateDoc(
+      doc(db, "orders", order.id),
+      {
+        status: "shipped",
+      }
+    );
+
+    showMessage(
+      "سەرکەوتوو",
+      "داواکارییەکە نێردرا."
+    );
+  } catch (error) {
+    console.error("Ship order error:", error);
+
+    showMessage(
+      "هەڵە",
+      error?.message || "نەتوانرا داواکارییەکە بنێردرێت."
+    );
+  }
+};
 const payCustomerDebt = async () => {
   if (!payingCustomer) return;
 
