@@ -142,7 +142,12 @@ function Transaction({ name, date, value, income }) {
 /* =========================
    DASHBOARD
 ========================= */
-function Dashboard({ onBack, onNavigate, orders }) {
+function Dashboard({
+  onBack,
+  onNavigate,
+  orders,
+  onConfirmOrder,
+}) {
   
   const cards = [
     ["💰", "فرۆشتنی ئەمڕۆ", money(accountingData.todaySales)],
@@ -274,7 +279,7 @@ style={styles.accountingSectionTitle}>
 </Text>
 <TouchableOpacity
   style={styles.goldBtn}
-  onPress={() => confirmOrder(order)}
+  
   >
   <Text style={styles.goldText}>
     ✅ پشتڕاستکردنەوەی داواکاری
@@ -1029,6 +1034,7 @@ const addToCart = (product) => {
   onBack={() => setScreen("main")}
   onNavigate={(nextScreen) => setScreen(nextScreen)}
   orders={orders}
+  onConfirmOrder={confirmOrder}
 />
   );
 }
