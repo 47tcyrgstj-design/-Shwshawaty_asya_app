@@ -973,6 +973,13 @@ const shipOrder = async (order) => {
       error?.message || "نەتوانرا داواکارییەکە بنێردرێت."
     );
   }
+  };
+
+const deliverOrder = async (order) => {
+  // ...
+};
+
+const payCustomerDebt = async () => {
 };
 const payCustomerDebt = async () => {
   if (!payingCustomer) return;
