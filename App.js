@@ -301,12 +301,7 @@ style={styles.accountingSectionTitle}>
 
 <TouchableOpacity
   style={styles.goldBtn}
-  onPress={() => {
-    showMessage(
-      "🎁 داشکاندن",
-      "5% • 10% • 15% • 20% • 25% • 30%"
-    );
-  }}
+  onPress={() => setDiscountOrder(order)}
 >
   <Text style={styles.goldText}>
     🎁 داشکاندن
