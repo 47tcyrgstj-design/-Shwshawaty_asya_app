@@ -366,7 +366,7 @@ style={styles.accountingSectionTitle}>
     await updateDoc(
       doc(db, "orders", discountOrder.id),
       {
-  originalTotal: originalTotal,
+        
   discount: discount,
   discountAmount: discountAmount,
   total: newTotal,
