@@ -311,7 +311,23 @@ style={styles.accountingSectionTitle}>
 
 <TouchableOpacity
   style={styles.goldBtn}
-  onPress={() => setDiscountOrder(order)}
+  onPress={() =>
+  setDiscountOrder({
+    ...order,
+    originalTotal:
+      Number(order.originalTotal) ||
+      Number(
+        order.items?.reduce(
+          (sum, item) =>
+            sum +
+            (Number(item.price) || 0) *
+            (Number(item.quantity) || 1),
+          0
+        )
+      ) ||
+      0,
+  })
+}
 >
   <Text style={styles.goldText}>
     🎁 داشکاندن
