@@ -462,9 +462,19 @@ onPress={() => onConfirmOrder(order)}
             📱 {order.phone}
           </Text>
 
-          <Text style={styles.accountingNoteText}>
-            💰 کۆی گشتی: {money(order.total)}
-          </Text>
+ <Text style={styles.accountingNoteText}>
+  💰 نرخی سەرەتایی: {money(order.originalTotal ?? order.total)}
+</Text>
+
+{order.discount > 0 && (
+  <Text style={styles.warningText}>
+    🎁 داشکاندن: {order.discount}% (-{money(order.discountAmount)})
+  </Text>
+)}
+
+<Text style={styles.accountingNoteText}>
+  💵 کۆی دوای داشکاندن: {money(order.total)}
+</Text>
 
           <Text style={styles.warningText}>
             🚚 نێردراوە
