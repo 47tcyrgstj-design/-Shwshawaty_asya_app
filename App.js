@@ -339,79 +339,50 @@ style={styles.accountingSectionTitle}>
       🎁 هەڵبژاردنی داشکاندن
     </Text>
 
-    {[5, 10, 15, 20, 25, 30].map((discount) => (
-      <TouchableOpacity
-        key={discount}
-        style={styles.goldBtn}
-        const originalTotal = Number(discountOrder.originalTotal);
+   {[5, 10, 15, 20, 25, 30].map((discount) => (
+  <TouchableOpacity
+    key={discount}
+    style={styles.goldBtn}
+    onPress={async () => {
+      const originalTotal = Number(discountOrder.originalTotal);
 
-const discountAmount = Math.round(
-  originalTotal * discount / 100
-);
+      const discountAmount = Math.round(
+        originalTotal * discount / 100
+      );
 
-const newTotal = originalTotal - discountAmount;
+      const newTotal = originalTotal - discountAmount;
 
-try {
-  await updateDoc(
-    doc(db, "orders", discountOrder.id),
-    {
-      discount: discount,
-      discountAmount: discountAmount,
-      total: newTotal,
-    }
-  );
+      try {
+        await updateDoc(
+          doc(db, "orders", discountOrder.id),
+          {
+            discount: discount,
+            discountAmount: discountAmount,
+            total: newTotal,
+          }
+        );
 
-  setDiscountOrder(null);
+        setDiscountOrder(null);
 
-  showMessage(
-    "سەرکەوتوو",
-    `داشکاندن: ${discount}%\nکۆی نوێ: ${money(newTotal)}`
-  );
-} catch (error) {
-  console.error("Discount error:", error);
+        showMessage(
+          "سەرکەوتوو",
+          `داشکاندن: ${discount}%\nکۆی نوێ: ${money(newTotal)}`
+        );
+      } catch (error) {
+        console.error("Discount error:", error);
 
-  showMessage(
-    "هەڵە",
-    "نەتوانرا داشکاندن پاشەکەوت بکرێت."
-  );
-}
-  const discountAmount = Math.round(
-    originalTotal * discount / 100
-  );
-  const newTotal = originalTotal - discountAmount;
-
-  try {
-    await updateDoc(
-      doc(db, "orders", discountOrder.id),
-      {
-        
-  discount: discount,
-  discountAmount: discountAmount,
-  total: newTotal,
-}
-    );
-
-    setDiscountOrder(null);
-
-    showMessage(
-      "سەرکەوتوو",
-      `داشکاندن: ${discount}%\nکۆی نوێ: ${money(newTotal)}`
-    );
-  } catch (error) {
-    console.error("Discount error:", error);
-
-    showMessage(
-      "هەڵە",
-      "نەتوانرا داشکاندن پاشەکەوت بکرێت."
-    );
-  }
-}}
-      >
-        <Text style={styles.goldText}>
-          {discount}%
-        </Text>
-      </TouchableOpacity>
-    ))}
+        showMessage(
+          "هەڵە",
+          "نەتوانرا داشکاندن پاشەکەوت بکرێت."
+        );
+      }
+    }}
+  >
+    <Text style={styles.goldText}>
+      {discount}%
+    </Text>
+  </TouchableOpacity>
+))}
 
     <TouchableOpacity
       style={styles.goldBtn}
