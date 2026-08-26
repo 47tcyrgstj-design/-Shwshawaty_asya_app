@@ -279,7 +279,7 @@ style={styles.accountingSectionTitle}>
 </Text>
 <TouchableOpacity
   style={styles.goldBtn}
-  onPress={() => onConfirmOrder(order.id)}
+onPress={() => onConfirmOrder(order)}
   
   >
   <Text style={styles.goldText}>
@@ -869,8 +869,8 @@ const confirmOrder = async (order) => {
         (Number(product.stock) || 0) -
         (Number(item.quantity) || 0);
 
-      await updateDoc(productRef, {
-  stock: 0,
+await updateDoc(productRef, {
+  stock: newStock,
 });
     }
 
