@@ -279,6 +279,7 @@ style={styles.accountingSectionTitle}>
 </Text>
 <TouchableOpacity
   style={styles.goldBtn}
+  onPress={() => onConfirmOrder(order.id)}
   
   >
   <Text style={styles.goldText}>
@@ -564,7 +565,25 @@ const [payingCustomer, setPayingCustomer] = useState(null);
 const [customersLoading, setCustomersLoading] = useState(true);
   const [productsLoading, setProductsLoading] = useState(true);
   const [productsError, setProductsError] = useState("");
-  
+const confirmOrder = async (orderId) => {
+  try {
+    await updateDoc(doc(db, "orders", orderId), {
+      status: "confirmed",
+    });
+
+    showMessage(
+      "سەرکەوتوو بوو",
+      "داواکارییەکە پشتڕاستکرایەوە."
+    );
+  } catch (error) {
+    console.error("Confirm order error:", error);
+
+    showMessage(
+      "هەڵە",
+      "نەتوانرا داواکارییەکە پشتڕاست بکرێتەوە."
+    );
+  }
+};
   /* =========================
      FIRESTORE PRODUCTS
   ========================= */
