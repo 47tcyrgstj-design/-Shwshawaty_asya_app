@@ -972,6 +972,8 @@ const deleteCustomer = async (customer) => {
   }
 };
 const addToCart = (product) => {
+  console.log("🛒 PRODUCT TO CART:", product);
+  
    setCart((current) => [...current, product]);
 
     showMessage(
