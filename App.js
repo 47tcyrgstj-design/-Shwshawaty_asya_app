@@ -563,15 +563,11 @@ const [customersLoading, setCustomersLoading] = useState(true);
   /* =========================
      FIRESTORE PRODUCTS
   ========================= */
-
-  useEffect(() => {
+useEffect(() => {
   let unsubscribe = null;
   let unsubscribeCustomers = null;
 
   try {
-    // =========================
-    // PRODUCTS
-    // =========================
     const productsRef = collection(db, "products");
 
     unsubscribe = onSnapshot(
@@ -594,13 +590,8 @@ const [customersLoading, setCustomersLoading] = useState(true);
         setProductsLoading(false);
         setProductsError("");
       },
-     (error) => {
-  console.error("🔥 ORDERS ERROR:", error);
-  console.error("🔥 ERROR CODE:", error?.code);
-  console.error("🔥 ERROR MESSAGE:", error?.message);
-
-  setOrders([]);
-}
+      (error) => {
+        console.error("Firestore products error:", error);
 
         setProducts([]);
         setProductsLoading(false);
@@ -610,9 +601,6 @@ const [customersLoading, setCustomersLoading] = useState(true);
       }
     );
 
-    // =========================
-    // CUSTOMERS
-    // =========================
     const customersRef = collection(db, "customers");
 
     unsubscribeCustomers = onSnapshot(
@@ -663,29 +651,14 @@ const [customersLoading, setCustomersLoading] = useState(true);
   };
 }, []);
 
-
-// =========================
-// ORDERS
-// =========================
 useEffect(() => {
   const ordersRef = collection(db, "orders");
 
   const unsubscribeOrders = onSnapshot(
     ordersRef,
     (snapshot) => {
-      console.log(
-        "🔥 FIREBASE PROJECT:",
-        db.app.options.projectId
-      );
-
       console.log("🔥 FIREBASE PROJECT:", db.app.options.projectId);
-console.log("🔥 ORDERS FOUND:", snapshot.docs.length);
-console.log("🔥 ERROR TEST: orders listener is running");
-
-      console.log(
-        "🔥 ORDER IDS:",
-        snapshot.docs.map((doc) => doc.id)
-      );
+      console.log("🔥 ORDERS FOUND:", snapshot.docs.length);
 
       const firestoreOrders = snapshot.docs.map((doc) => {
         const data = doc.data() || {};
@@ -703,12 +676,10 @@ console.log("🔥 ERROR TEST: orders listener is running");
 
       setOrders(firestoreOrders);
     },
-
     (error) => {
-      console.error(
-        "Firestore orders error:",
-        error
-      );
+      console.error("🔥 ORDERS ERROR:", error);
+      console.error("🔥 ERROR CODE:", error?.code);
+      console.error("🔥 ERROR MESSAGE:", error?.message);
 
       setOrders([]);
     }
