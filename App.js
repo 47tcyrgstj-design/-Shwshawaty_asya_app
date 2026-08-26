@@ -329,7 +329,18 @@ style={styles.accountingSectionTitle}>
         style={styles.goldBtn}
         onPress={async () => {
   const originalTotal =
-  Number(discountOrder.originalTotal ?? discountOrder.total) || 0;
+  Number(discountOrder.originalTotal) ||
+  Number(
+    discountOrder.items?.reduce(
+      (sum, item) =>
+        sum +
+        (Number(item.price) || 0) *
+        (Number(item.quantity) || 0),
+      0
+    )
+  ) ||
+  Number(discountOrder.total) ||
+  0;
   const discountAmount = Math.round(
     originalTotal * discount / 100
   );
