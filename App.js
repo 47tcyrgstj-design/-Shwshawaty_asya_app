@@ -317,16 +317,38 @@ style={styles.accountingSectionTitle}>
       <TouchableOpacity
         key={discount}
         style={styles.goldBtn}
-        onPress={() => {
-          console.log(
-            "Discount selected:",
-            discount,
-            "Order:",
-            discountOrder.id
-          );
+        onPress={async () => {
+  const originalTotal = Number(discountOrder.total) || 0;
+  const discountAmount = Math.round(
+    originalTotal * discount / 100
+  );
+  const newTotal = originalTotal - discountAmount;
 
-          setDiscountOrder(null);
-        }}
+  try {
+    await updateDoc(
+      doc(db, "orders", discountOrder.id),
+      {
+        discount: discount,
+        discountAmount: discountAmount,
+        total: newTotal,
+      }
+    );
+
+    setDiscountOrder(null);
+
+    showMessage(
+      "سەرکەوتوو",
+      `داشکاندن: ${discount}%\nکۆی نوێ: ${money(newTotal)}`
+    );
+  } catch (error) {
+    console.error("Discount error:", error);
+
+    showMessage(
+      "هەڵە",
+      "نەتوانرا داشکاندن پاشەکەوت بکرێت."
+    );
+  }
+}}
       >
         <Text style={styles.goldText}>
           {discount}%
