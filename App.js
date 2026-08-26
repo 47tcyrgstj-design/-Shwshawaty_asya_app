@@ -346,15 +346,15 @@ style={styles.accountingSectionTitle}>
     onPress={async () => {
       const originalTotal = Number(discountOrder.originalTotal);
 
-      const discountAmount = Math.round(
-        originalTotal * discount / 100
-      );
-
-      const newTotal = originalTotal - discountAmount;
-
-      try {
-        await updateDoc(
-          doc(db, "orders", discountOrder.id),
+await updateDoc(
+  doc(db, "orders", discountOrder.id),
+  {
+    originalTotal: originalTotal,
+    discount: discount,
+    discountAmount: discountAmount,
+    total: newTotal,
+  }
+);
        {
   originalTotal: originalTotal,
   discount: discount,
