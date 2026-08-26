@@ -146,11 +146,20 @@ function Dashboard({
   onBack,
   onNavigate,
   orders,
+  products,
   onConfirmOrder,
   onShipOrder,
   onDeliverOrder,
 }) {
   
+  const totalInventoryValue = (products || []).reduce(
+  (total, product) =>
+    total +
+    (Number(product.price) || 0) *
+    (Number(product.stock) || 0),
+  0
+);
+
   const cards = [
     ["💰", "فرۆشتنی ئەمڕۆ", money(accountingData.todaySales)],
     ["📈", "قازانجی ئەمڕۆ", money(accountingData.todayProfit)],
@@ -185,6 +194,16 @@ function Dashboard({
         <Text style={styles.accountingDate}>
           کورتەی حساباتی ئەمڕۆ
         </Text>
+
+<View style={styles.accountingSection}>
+  <Text style={styles.accountingSectionTitle}>
+    📦 کۆی بەهای کاڵاکان
+  </Text>
+
+  <Text style={styles.accountingCardValue}>
+    {money(totalInventoryValue)}
+  </Text>
+</View>
 
         <View style={styles.accountingGrid}>
           {cards.map((card, index) => (
@@ -1214,6 +1233,15 @@ const addToCart = (product) => {
   onBack={() => setScreen("main")}
   onNavigate={(nextScreen) => setScreen(nextScreen)}
   orders={orders}
+  <Dashboard
+  onBack={() => setScreen("main")}
+  onNavigate={(nextScreen) => setScreen(nextScreen)}
+  orders={orders}
+  products={products}
+  onConfirmOrder={confirmOrder}
+  onShipOrder={shipOrder}
+  onDeliverOrder={deliverOrder}
+/>
   onConfirmOrder={confirmOrder}
   onShipOrder={shipOrder}
   onDeliverOrder={deliverOrder}
