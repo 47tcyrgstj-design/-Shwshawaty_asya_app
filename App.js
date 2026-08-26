@@ -652,9 +652,30 @@ const [customersLoading, setCustomersLoading] = useState(true);
 useEffect(() => {
   const ordersRef = collection(db, "orders");
 
-  const unsubscribeOrders = onSnapshot(
-    ordersRef,
-    (snapshot) => {
+const unsubscribeOrders = onSnapshot(
+  ordersRef,
+  (snapshot) => {
+
+    console.log("🔥 FIREBASE PROJECT:", db.app.options.projectId);
+    console.log("🔥 ORDERS FOUND:", snapshot.docs.length);
+    console.log("🔥 ORDER IDS:", snapshot.docs.map(doc => doc.id));
+
+    const firestoreOrders = snapshot.docs.map((doc) => {
+      const data = doc.data() || {};
+
+      return {
+        id: doc.id,
+        customerName: data.customerName || "کڕیار",
+        phone: data.customerPhone || "",
+        items: data.items || [],
+        total: Number(data.total) || 0,
+        status: data.status || "pending",
+        createdAt: data.createdAt || null,
+      };
+    });
+
+    setOrders(firestoreOrders);
+  },
       
 console.log("ORDERS FOUND:", snapshot.docs.length);
       
