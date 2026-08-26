@@ -337,6 +337,52 @@ onPress={() => onConfirmOrder(order)}
         ))
     )}
   </View>
+  <View style={styles.accountingSection}>
+  <Text style={styles.accountingSectionTitle}>
+    🚚 داواکارییە نێردراوەکان
+  </Text>
+
+  {(!orders ||
+    orders.filter(order => order.status === "shipped").length === 0) ? (
+    <Text style={styles.accountingNoteText}>
+      هیچ داواکارییەکی نێردراو نییە.
+    </Text>
+  ) : (
+    orders
+      .filter(order => order.status === "shipped")
+      .map((order) => (
+        <View
+          key={order.id}
+          style={styles.accountingNote}
+        >
+          <Text style={styles.accountingNoteTitle}>
+            👤 {order.customerName}
+          </Text>
+
+          <Text style={styles.accountingNoteText}>
+            📱 {order.phone}
+          </Text>
+
+          <Text style={styles.accountingNoteText}>
+            💰 کۆی گشتی: {money(order.total)}
+          </Text>
+
+          <Text style={styles.warningText}>
+            🚚 نێردراوە
+          </Text>
+
+          <TouchableOpacity
+            style={styles.goldBtn}
+            onPress={() => onDeliverOrder(order)}
+          >
+            <Text style={styles.goldText}>
+              ✅ گەیشتە کڕیار
+            </Text>
+          </TouchableOpacity>
+        </View>
+      ))
+  )}
+</View>
 
 <Text style={styles.menuTitle}>بەشەکانی حسابات</Text>
 </View>
