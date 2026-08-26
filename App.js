@@ -355,11 +355,12 @@ style={styles.accountingSectionTitle}>
       try {
         await updateDoc(
           doc(db, "orders", discountOrder.id),
-          {
-            discount: discount,
-            discountAmount: discountAmount,
-            total: newTotal,
-          }
+       {
+  originalTotal: originalTotal,
+  discount: discount,
+  discountAmount: discountAmount,
+  total: newTotal,
+}
         );
 
         setDiscountOrder(null);
