@@ -2070,8 +2070,11 @@ if (screen === "checkout") {
         })),
 
         total: Number(total) || 0,
-        status: "pending",
-        createdAt: new Date(),
+originalTotal: Number(total) || 0,
+discount: 0,
+discountAmount: 0,
+status: "pending",
+createdAt: new Date(),
       });
 
       console.log("ORDER SAVED");
