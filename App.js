@@ -1025,9 +1025,10 @@ const addToCart = (product) => {
 
   if (screen === "dashboard") {
   return (
-   <Dashboard
+<Dashboard
   onBack={() => setScreen("main")}
   onNavigate={(nextScreen) => setScreen(nextScreen)}
+  orders={orders}
 />
   );
 }
