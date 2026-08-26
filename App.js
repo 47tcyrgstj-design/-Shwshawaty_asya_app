@@ -343,20 +343,38 @@ style={styles.accountingSectionTitle}>
       <TouchableOpacity
         key={discount}
         style={styles.goldBtn}
-        onPress={async () => {
-  const originalTotal =
-  Number(discountOrder.originalTotal) ||
-  Number(
-    discountOrder.items?.reduce(
-      (sum, item) =>
-        sum +
-        (Number(item.price) || 0) *
-        (Number(item.quantity) || 0),
-      0
-    )
-  ) ||
-  Number(discountOrder.total) ||
-  0;
+        const originalTotal = Number(discountOrder.originalTotal);
+
+const discountAmount = Math.round(
+  originalTotal * discount / 100
+);
+
+const newTotal = originalTotal - discountAmount;
+
+try {
+  await updateDoc(
+    doc(db, "orders", discountOrder.id),
+    {
+      discount: discount,
+      discountAmount: discountAmount,
+      total: newTotal,
+    }
+  );
+
+  setDiscountOrder(null);
+
+  showMessage(
+    "سەرکەوتوو",
+    `داشکاندن: ${discount}%\nکۆی نوێ: ${money(newTotal)}`
+  );
+} catch (error) {
+  console.error("Discount error:", error);
+
+  showMessage(
+    "هەڵە",
+    "نەتوانرا داشکاندن پاشەکەوت بکرێت."
+  );
+}
   const discountAmount = Math.round(
     originalTotal * discount / 100
   );
