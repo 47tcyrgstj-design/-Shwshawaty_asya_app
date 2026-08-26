@@ -405,6 +405,8 @@ onPress={() => onConfirmOrder(order)}
 
 <Text style={styles.menuTitle}>بەشەکانی حسابات</Text>
 
+</View>
+
         <View style={styles.menuGrid}>
           {menu.map(([icon, title], index) => (
             <TouchableOpacity
