@@ -344,33 +344,40 @@ style={styles.accountingSectionTitle}>
     key={discount}
     style={styles.goldBtn}
     onPress={async () => {
-const originalTotal = Number(discountOrder.originalTotal);
+  try {
+    const originalTotal = Number(discountOrder.originalTotal);
 
-await updateDoc(
-  doc(db, "orders", discountOrder.id),
-  {
-    originalTotal: originalTotal,
-    discount: discount,
-    discountAmount: discountAmount,
-    total: newTotal,
-  }
-);
+    const discountAmount =
+      originalTotal * (discount / 100);
 
-        setDiscountOrder(null);
+    const newTotal =
+      originalTotal - discountAmount;
 
-        showMessage(
-          "سەرکەوتوو",
-          `داشکاندن: ${discount}%\nکۆی نوێ: ${money(newTotal)}`
-        );
-      } catch (error) {
-        console.error("Discount error:", error);
-
-        showMessage(
-          "هەڵە",
-          "نەتوانرا داشکاندن پاشەکەوت بکرێت."
-        );
+    await updateDoc(
+      doc(db, "orders", discountOrder.id),
+      {
+        originalTotal: originalTotal,
+        discount: discount,
+        discountAmount: discountAmount,
+        total: newTotal,
       }
-    }}
+    );
+
+    setDiscountOrder(null);
+
+    showMessage(
+      "سەرکەوتوو",
+      `داشکاندن: ${discount}%\nکۆی نوێ: ${money(newTotal)}`
+    );
+  } catch (error) {
+    console.error("Discount error:", error);
+
+    showMessage(
+      "هەڵە",
+      "نەتوانرا داشکاندن پاشەکەوت بکرێت."
+    );
+  }
+}}
   >
     <Text style={styles.goldText}>
       {discount}%
